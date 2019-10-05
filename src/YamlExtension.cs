@@ -3,22 +3,31 @@ using YamlDotNet.RepresentationModel;
 
 namespace PrDash
 {
+    /// <summary>
+    /// Custom YamlDotNet extension methods.
+    /// </summary>
     public static class YamlDotNetExtensions
     {
-        public static string GetString(this YamlMappingNode mappingNode, string field)
+        /// <summary>
+        /// Extracts a string value from the Yaml specified named scalar node.
+        /// </summary>
+        /// <param name="mappingNode">The root node that the scalar hangs off of.</param>
+        /// <param name="scalarField">The name of the scalar node we want to extract the string value for.</param>
+        public static string GetString(this YamlMappingNode mappingNode, string scalarField)
         {
             if (mappingNode == null)
             {
                 throw new ArgumentNullException(nameof(mappingNode));
             }
 
-            return ((YamlScalarNode)mappingNode.Children[new YamlScalarNode(field)]).Value;
+            return ((YamlScalarNode)mappingNode.Children[new YamlScalarNode(scalarField)]).Value;
         }
 
         /// <summary>
-        /// Extracts the string value from the yaml scalar nodel configuration stream from the specified input.
+        /// Extracts a Uri value from the Yaml specified named scalar node.
         /// </summary>
-        /// <param name="yamlReader">The input.</param>
+        /// <param name="mappingNode">The root node that the scalar hangs off of.</param>
+        /// <param name="scalarField">The name of the scalar node we want to extract the Uri value for.</param>
         public static Uri GetUri(this YamlMappingNode mappingNode, string scalarField)
         {
             return new Uri(mappingNode.GetString(scalarField));
