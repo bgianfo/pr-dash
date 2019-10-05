@@ -41,8 +41,8 @@ Example ~/.pr-dash.yml:
 ```
 accounts:
   - project_name: sample-project
-	org_url: http://dev.azure.com/example
-	pat: <your-personal-authentication-token>
+    org_url: http://dev.azure.com/example
+    pat: <your-personal-authentication-token>
 ```
 
 Now you can run pr-dash and try it out.
