@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
@@ -9,34 +10,22 @@ namespace PrDash
 {
     public static class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            if (args.Length == 3)
+            ValidateConfigExists();
+
+            Config config = Config.FromConfigFile();
+
+            foreach (AccountConfig account in config.Accounts)
             {
-                // Organization URL, for example: https://dev.azure.com/fabrikam
-                //
-                Uri orgUrl = new Uri(args[0]);
-
-                // See https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats
-                //
-                string personalAccessToken = args[1];
-
-                // The project to view.
-                //
-                string project = args[2];
-
                 // Create a connection
                 //
-                using (VssConnection connection = GetConnection(orgUrl, personalAccessToken))
+                using (VssConnection connection = GetConnection(account))
                 {
                     // Show details a work item
                     //
-                    ShowPullRequsts(connection, project).Wait();
+                    ShowPullRequsts(connection, account.Project).Wait();
                 }
-            }
-            else
-            {
-                Console.WriteLine("Usage: pr-dash {org-url} {pat-token} {project-name}");
             }
         }
 
@@ -56,16 +45,25 @@ namespace PrDash
             }
         }
 
-        private static IEnumerable<GitPullRequest> FilterRequests(IEnumerable<GitPullRequest> requests)
-        {
-            return requests;
-        }
-
-        private static VssConnection GetConnection(Uri orgUrl, string personalAccessToken)
+        private static VssConnection GetConnection(AccountConfig account)
         {
             // Create a connection
             //
-            return new VssConnection(orgUrl, new VssBasicCredential(string.Empty, personalAccessToken));
+            return new VssConnection(
+                account.OrganizationUrl,
+                new VssBasicCredential(string.Empty, account.PersonalAccessToken));
+        }
+
+        private static void ValidateConfigExists()
+        {
+            string configPath = Config.ConfigPath;
+
+            if (!File.Exists(configPath))
+            {
+                Console.WriteLine("Configuration does not exist: {0}", configPath);
+
+                Environment.Exit(1);
+            }
         }
     }
 }

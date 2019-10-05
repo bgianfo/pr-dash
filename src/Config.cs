@@ -5,12 +5,25 @@ using YamlDotNet.RepresentationModel;
 
 namespace PrDash
 {
+    /// <summary>
+    /// Represents a single account that the dashboard should poll for status.
+    /// </summary>
     public class AccountConfig
     {
+        /// <summary>
+        /// Access token for authenticating to Azure Devops.
+        /// See https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats
+        /// </summary>
         public string PersonalAccessToken { get; set; }
 
+        /// <summary>
+        // Organization URL, for example: https://dev.azure.com/fabrikam
+        /// </summary>
         public Uri OrganizationUrl { get; set; }
 
+        /// <summary>
+        /// The Project to query inside the organization.
+        /// </summary>
         public string Project { get; set; }
     }
 
@@ -19,6 +32,24 @@ namespace PrDash
     /// </summary>
     public class Config
     {
+        /// <summary>
+        /// The default configuration file name.
+        /// </summary>
+        private static string ConfigName = "pr-dash.yml";
+
+        /// <summary>
+        /// The fully qualified configuration file path.
+        /// </summary>
+        public static string ConfigPath
+        {
+            get
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    ConfigName);
+            }
+        }
+
         /// <summary>
         /// Individual configured accounts.
         /// </summary>
@@ -38,6 +69,19 @@ namespace PrDash
         /// </summary>
         public Config()
         {
+        }
+
+        /// <summary>
+        /// Factory function to initializes a new instance of the
+        /// <see cref="Config"/> from a Yaml configuration file.
+        /// </summary>
+        public static Config FromConfigFile()
+        {
+            string configFile = ConfigPath;
+
+            Console.WriteLine("Loading configuration from: {0}", configFile);
+
+            return FromFile(configFile);
         }
 
         /// <summary>
