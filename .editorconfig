@@ -1,0 +1,8 @@
+# Top-most EditorConfig file
+root = true
+
+# Tab indentation
+[*.cs]
+indent_style = space
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.CA1303.severity = none
