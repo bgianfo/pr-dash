@@ -5,7 +5,7 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace PullRequestDashboard
+namespace PrDash
 {
     public static class Program
     {
