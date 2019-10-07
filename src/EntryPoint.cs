@@ -18,6 +18,8 @@ namespace PrDash
         /// </summary>
         public static void Main()
         {
+            Demo.UiMain();
+
             ValidateConfigExists();
 
             Config config = Config.FromConfigFile();
