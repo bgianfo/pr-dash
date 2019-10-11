@@ -41,7 +41,7 @@ Example ~/.pr-dash.yml:
 ```
 accounts:
   - project_name: sample-project
-    org_url: http://dev.azure.com/example
+    org_url: https://dev.azure.com/example
     pat: <your-personal-authentication-token>
 ```
 
