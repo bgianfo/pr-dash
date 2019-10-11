@@ -20,6 +20,6 @@ namespace PrDash
 
             Display display = new Display(pullRequestSource);
             display.RunUiLoop();
-       }
-   }
+        }
+    }
 }

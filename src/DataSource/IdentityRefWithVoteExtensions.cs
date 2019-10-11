@@ -14,7 +14,7 @@ namespace PrDash.DataSource
             }
 
             return identityRef.Vote == 10 || // Approved
-                   identityRef.Vote == 5  || // Approved with suggestions
+                   identityRef.Vote == 5 || // Approved with suggestions
                    identityRef.Vote == -10;  // Rejected
         }
 

@@ -51,9 +51,9 @@ namespace PrDash.View
             };
 
             PullRequestView content = new PullRequestView(FetchPrData())
-			{
-				AllowsMarking = true
-			};
+            {
+                AllowsMarking = true
+            };
 
             win.Add(content);
 
