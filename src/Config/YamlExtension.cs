@@ -30,6 +30,11 @@ namespace PrDash.Configuration
         /// <param name="scalarField">The name of the scalar node we want to extract the Uri value for.</param>
         public static Uri GetUri(this YamlMappingNode mappingNode, string scalarField)
         {
+            if (mappingNode == null)
+            {
+                throw new ArgumentNullException(nameof(mappingNode));
+            }
+
             return new Uri(mappingNode.GetString(scalarField));
         }
     }

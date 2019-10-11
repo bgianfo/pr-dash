@@ -46,40 +46,42 @@ namespace PrDash.DataSource
             using (VssConnection connection = GetConnection(accountConfig))
             using (GitHttpClient client = connection.GetClient<GitHttpClient>())
             {
+                // Capture the currentUserId so it can be used to filter PR's later.
+                //
                 currentUserId = connection.AuthorizedIdentity.Id;
-                GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria();
-                criteria.Status = PullRequestStatus.Active;
-                criteria.IncludeLinks = true;
 
-                IEnumerable<GitPullRequest> pullRequests = client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
-                return pullRequests;
+                GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
+                {
+                    Status = PullRequestStatus.Active,
+                    IncludeLinks = true
+                };
+
+                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
             }
         }
 
         private static IEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
-            Guid currentUserId;
-            IEnumerable<GitPullRequest> source = FetchAccountActivePullRequsts(accountConfig, out currentUserId);
-
-            foreach (GitPullRequest pr in source)
+            foreach (GitPullRequest pr in FetchAccountActivePullRequsts(accountConfig, out Guid currentUserId))
             {
                 // Hack to not display drafts for now.
                 //
-                if (pr.IsDraft.Value)
+                if (pr.IsDraft.HasValue && pr.IsDraft.Value)
                 {
                     continue;
                 }
 
                 // Try to find our selves in the reviewer list.
                 //
-                IdentityRefWithVote reviewer;
-                if (!TryGetReviewer(pr, currentUserId, out reviewer))
+                if (!TryGetReviewer(pr, currentUserId, out IdentityRefWithVote reviewer))
                 {
                     //  SKip this review if we aren't assigned.
                     //
                     continue;
                 }
 
+                // If we have already casted a "final" vote, then skip it.
+                //
                 if (reviewer.HasFinalVoteBeenCast())
                 {
                     continue;
