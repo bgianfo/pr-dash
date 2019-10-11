@@ -72,6 +72,18 @@ namespace PrDash.Configuration
         }
 
         /// <summary>
+        /// Validates that the required configuration file exists, terminates otherwise.
+        /// </summary>
+        public static void ValidateConfigExists()
+        {
+            if (!File.Exists(ConfigPath))
+            {
+                Console.WriteLine("Configuration does not exist: {0}", ConfigPath);
+                Environment.Exit(1);
+            }
+        }
+
+        /// <summary>
         /// Factory function to initializes a new instance of the
         /// <see cref="Config"/> from a Yaml configuration file.
         /// </summary>
