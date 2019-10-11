@@ -5,7 +5,7 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.DataSource;
 using Terminal.Gui;
 
-namespace PrDash
+namespace PrDash.View
 {
     /// <summary>
     /// The display class encapsulates the rendering of the console UI.
@@ -49,7 +49,10 @@ namespace PrDash
                 Height = Dim.Fill()
             };
 
-            ListView content = new ListView(FetchPrData());
+            PullRequestView content = new PullRequestView(FetchPrData())
+			{
+				AllowsMarking = true
+			};
 
             win.Add(content);
 

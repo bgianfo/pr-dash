@@ -1,5 +1,6 @@
 ﻿using PrDash.Configuration;
 using PrDash.DataSource;
+using PrDash.View;
 
 namespace PrDash
 {
