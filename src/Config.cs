@@ -8,7 +8,7 @@ namespace PrDash
     /// <summary>
     /// Represents a single account that the dashboard should poll for status.
     /// </summary>
-    public class AccountConfig
+    public sealed class AccountConfig
     {
         /// <summary>
         /// Access token for authenticating to Azure Devops.
@@ -17,7 +17,7 @@ namespace PrDash
         public string PersonalAccessToken { get; set; }
 
         /// <summary>
-        // Organization URL, for example: https://dev.azure.com/fabrikam
+        /// Organization URL, for example: https://dev.azure.com/fabrikam
         /// </summary>
         public Uri OrganizationUrl { get; set; }
 
@@ -30,7 +30,7 @@ namespace PrDash
     /// <summary>
     /// Represents the complete configuration for the dashboard.
     /// </summary>
-    public class Config
+    public sealed class Config
     {
         /// <summary>
         /// The default configuration file name.
@@ -53,7 +53,7 @@ namespace PrDash
         /// <summary>
         /// Individual configured accounts.
         /// </summary>
-        private List<AccountConfig> m_accounts = new List<AccountConfig>();
+        private readonly List<AccountConfig> m_accounts = new List<AccountConfig>();
 
         /// <summary>
         /// Gets the individual configured accounts.
@@ -85,7 +85,7 @@ namespace PrDash
         }
 
         /// <summary>
-        /// Factory function to initializes a new instance of the <see cref="Config"/> 
+        /// Factory function to initializes a new instance of the <see cref="Config"/>
         /// from a Yaml configuration file.
         /// </summary>
         /// <param name="filePath">The file system path to the configuration file.</param>
@@ -102,7 +102,7 @@ namespace PrDash
         }
 
         /// <summary>
-        /// Factory function to initializes a new instance of the <see cref="Config"/> 
+        /// Factory function to initializes a new instance of the <see cref="Config"/>
         /// from a string with Yaml contents.
         /// </summary>
         /// <param name="yamlPayload">The string with Yaml contents.</param>
@@ -124,7 +124,7 @@ namespace PrDash
         /// <param name="yamlReader">The input.</param>
         private void LoadYaml(TextReader yamlReader)
         {
-            // Load the stream 
+            // Load the stream
             var yaml = new YamlStream();
             yaml.Load(yamlReader);
 

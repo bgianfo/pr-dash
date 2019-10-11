@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pr-dash", "src\pr-dash.csproj", "{4FD7F797-0EE6-416E-8F86-EB3B66E06847}"
 EndProject
@@ -15,9 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4FD7F797-0EE6-416E-8F86-EB3B66E06847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +41,11 @@ Global
 		{AECDF7D3-7F05-49F8-8822-3A9B67852ABE}.Release|x64.Build.0 = Release|Any CPU
 		{AECDF7D3-7F05-49F8-8822-3A9B67852ABE}.Release|x86.ActiveCfg = Release|Any CPU
 		{AECDF7D3-7F05-49F8-8822-3A9B67852ABE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C32AAF8-76F3-41A2-AACD-225BAC203C61}
 	EndGlobalSection
 EndGlobal
