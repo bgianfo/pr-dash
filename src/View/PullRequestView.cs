@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using Terminal.Gui;
 
 namespace PrDash.View
 {
-	public class PullRequestView : ListView
-	{
+    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "This isn't a collection")]
+    [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
+    public class PullRequestView : ListView
+    {
 		IList m_backingList;
 
 		public PullRequestView(IList source) : base(source)
