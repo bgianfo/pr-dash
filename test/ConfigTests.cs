@@ -1,6 +1,7 @@
 using PrDash;
 using System.IO;
 using Xunit;
+using PrDash.Configuration;
 
 namespace PrDashTest
 {
@@ -10,7 +11,7 @@ namespace PrDashTest
     public class ConfigTests
     {
         /// <summary>
-        /// Example Yaml configuration document. 
+        /// Example Yaml configuration document.
         /// </summary>
         private static string ExampleConfigDocument = @"
             accounts:
@@ -24,7 +25,7 @@ namespace PrDashTest
             ";
 
         /// <summary>
-        /// Testing loading Yaml configuration from an in memory string. 
+        /// Testing loading Yaml configuration from an in memory string.
         /// </summary>
         [Fact]
         public void TestParsingInMemoryYamlConfig()
@@ -45,7 +46,7 @@ namespace PrDashTest
         }
 
         /// <summary>
-        /// Testing loading Yaml configuration from a file on disk. 
+        /// Testing loading Yaml configuration from a file on disk.
         /// </summary>
         [Fact]
         public void TestParsingOnDiskYamlConfig()
@@ -75,11 +76,11 @@ namespace PrDashTest
         }
 
         /// <summary>
-        /// Utility function to create a temporary Yaml configuration file. 
+        /// Utility function to create a temporary Yaml configuration file.
         /// </summary>
         private static string CreateTemporaryConfigFile()
         {
-            // Get the full name of the newly created Temporary file. 
+            // Get the full name of the newly created Temporary file.
             //
             // Note: that the GetTempFileName() method actually creates
             // a 0-byte file and returns the name of the created file.
@@ -90,18 +91,18 @@ namespace PrDashTest
             //
             FileInfo fileInfo = new FileInfo(fileName);
 
-            // Set the Attribute property of this file to Temporary. 
-            // Although this is not completely necessary, the .NET Framework is able 
+            // Set the Attribute property of this file to Temporary.
+            // Although this is not completely necessary, the .NET Framework is able
             // to optimize the use of Temporary files by keeping them cached in memory.
             //
             fileInfo.Attributes = FileAttributes.Temporary;
 
             // Write the example configuration to disk.
             //
-            using (StreamWriter sw = fileInfo.AppendText()) 
+            using (StreamWriter sw = fileInfo.AppendText())
             {
                 sw.Write(ExampleConfigDocument);
-            }	
+            }
 
             return fileName;
         }

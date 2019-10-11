@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using YamlDotNet.RepresentationModel;
 
-namespace PrDash
+namespace PrDash.Configuration
 {
     /// <summary>
     /// Represents a single account that the dashboard should poll for status.

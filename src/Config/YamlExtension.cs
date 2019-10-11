@@ -1,7 +1,7 @@
 using System;
 using YamlDotNet.RepresentationModel;
 
-namespace PrDash
+namespace PrDash.Configuration
 {
     /// <summary>
     /// Custom YamlDotNet extension methods.
