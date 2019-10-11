@@ -1,4 +1,3 @@
-
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 
 namespace PrDash.View
@@ -7,7 +6,7 @@ namespace PrDash.View
     /// Represents a pull request element in the <see cref="PullRequestView"/>.
     /// </summary>
     /// <remarks>
-    /// This exists purley so that we can customize the ToString implementation.
+    /// This exists purely so that we can customize the ToString implementation.
     /// </remarks>
     public class PullRequestViewElement
     {

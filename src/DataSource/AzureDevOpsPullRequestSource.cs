@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using PrDash.Configuration;
-using PrDash.DataSource;
 
 namespace PrDash.DataSource
 {
     public class AzureDevOpsPullRequestSource : IPullRequestSource
     {
-        private Config m_config;
+        private readonly Config m_config;
 
         public AzureDevOpsPullRequestSource(Config config)
         {

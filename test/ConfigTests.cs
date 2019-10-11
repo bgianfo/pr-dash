@@ -3,7 +3,7 @@ using System.IO;
 using Xunit;
 using PrDash.Configuration;
 
-namespace PrDashTest
+namespace PrDash.Tests
 {
     /// <summary>
     /// Test cases for validating the parsing functionality in the <see cref="Config"/> class.

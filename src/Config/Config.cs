@@ -22,7 +22,7 @@ namespace PrDash.Configuration
         public Uri OrganizationUrl { get; set; }
 
         /// <summary>
-        /// The Project to query inside the organization.
+        /// The Project name to query inside the organization.
         /// </summary>
         public string Project { get; set; }
     }
