@@ -32,8 +32,9 @@ namespace PrDash.View
         /// <returns>A list of pull request content.</returns>
         private IList FetchPrData()
         {
-            IEnumerable<GitPullRequest> pullRequests = m_pullRequestSource.FetchActivePullRequsts();
-            return pullRequests.Select(pr => pr.Title).ToList();
+            return m_pullRequestSource.FetchActivePullRequsts()
+                .Select(pr => new PullRequestViewElement(pr))
+                    .ToList();
         }
 
         /// <summary>

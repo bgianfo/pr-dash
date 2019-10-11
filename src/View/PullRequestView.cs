@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Terminal.Gui;
 
@@ -5,8 +6,22 @@ namespace PrDash.View
 {
 	public class PullRequestView : ListView
 	{
+		IList m_backingList;
+
 		public PullRequestView(IList source) : base(source)
 		{
+			m_backingList = source;
+		}
+
+		private bool HandleOpenPullRequest(int selectedIndex)
+		{
+			PullRequestViewElement element = (PullRequestViewElement)m_backingList[selectedIndex];
+
+			// This is the API URL, not the browser URL
+			//
+			Console.WriteLine(element.PullRequest.Url);
+
+			return true;
 		}
 
 		public override bool ProcessKey(KeyEvent keyEvent)
@@ -39,6 +54,11 @@ namespace PrDash.View
 				case Key.ControlC:
 					Application.RequestStop();
 					return true;
+
+				// Hook Enter to open the given pull request under the cursor.
+				//
+				case Key.Enter:
+					return HandleOpenPullRequest(SelectedItem);
 			}
 
 			// Forward everything else to the real implementation.
@@ -47,4 +67,3 @@ namespace PrDash.View
 		}
 	}
 }
-
