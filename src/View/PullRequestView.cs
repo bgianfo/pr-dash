@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using Terminal.Gui;
@@ -9,22 +8,25 @@ namespace PrDash.View
     [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
     public class PullRequestView : ListView
     {
-        IList m_backingList;
+        private readonly IList m_backingList;
 
-        public PullRequestView(IList source) : base(source)
+        public PullRequestView(IList source)
+            : base(source)
         {
+            AllowsMarking = true;
+
             m_backingList = source;
+
+            // Override the color scheme to our main theme for this view.
+            //
+            ColorScheme = CustomColorSchemes.Main;
         }
 
-        private bool HandleOpenPullRequest(int selectedIndex)
+        private void HandleSelectedPullRequest(int selectedIndex)
         {
             PullRequestViewElement element = (PullRequestViewElement)m_backingList[selectedIndex];
 
-            // This is the API URL, not the browser URL
-            //
-            Console.WriteLine(element.PullRequest.Url);
-
-            return true;
+            element.InvokeHandler();
         }
 
         public override bool ProcessKey(KeyEvent keyEvent)
@@ -61,7 +63,8 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    return HandleOpenPullRequest(SelectedItem);
+                    HandleSelectedPullRequest(SelectedItem);
+                    return true;
             }
 
             // Forward everything else to the real implementation.

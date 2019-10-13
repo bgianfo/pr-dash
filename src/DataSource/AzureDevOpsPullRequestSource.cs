@@ -4,6 +4,7 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using PrDash.Configuration;
+using PrDash.View;
 
 namespace PrDash.DataSource
 {
@@ -16,13 +17,13 @@ namespace PrDash.DataSource
             m_config = config;
         }
 
-        public IEnumerable<GitPullRequest> FetchActivePullRequsts()
+        public IEnumerable<PullRequestViewElement> FetchActivePullRequsts()
         {
             foreach (AccountConfig account in m_config.Accounts)
             {
                 foreach (var pr in FetchActionablePullRequests(account))
                 {
-                    yield return pr;
+                    yield return new PullRequestViewElement(pr, account.Handler);
                 }
             }
         }
@@ -41,7 +42,7 @@ namespace PrDash.DataSource
 
         private static IEnumerable<GitPullRequest> FetchAccountActivePullRequsts(AccountConfig accountConfig, out Guid currentUserId)
         {
-            // Create a connection to the AzureDevOps git API.
+            // Create a connection to the AzureDevOps Git API.
             //
             using (VssConnection connection = GetConnection(accountConfig))
             using (GitHttpClient client = connection.GetClient<GitHttpClient>())
@@ -50,10 +51,12 @@ namespace PrDash.DataSource
                 //
                 currentUserId = connection.AuthorizedIdentity.Id;
 
+                // Only fetch pull requests which are active, and assigned to this user.
+                //
                 GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
                 {
+                    ReviewerId = currentUserId,
                     Status = PullRequestStatus.Active,
-                    IncludeLinks = true
                 };
 
                 return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
@@ -66,7 +69,7 @@ namespace PrDash.DataSource
             {
                 // Hack to not display drafts for now.
                 //
-                if (pr.IsDraft.HasValue && pr.IsDraft.Value)
+                if (pr.IsDraft == true)
                 {
                     continue;
                 }
@@ -105,7 +108,7 @@ namespace PrDash.DataSource
         {
             foreach (IdentityRefWithVote r in pullRequest.Reviewers)
             {
-                if (currentUserId.Equals(new Guid(r.Id)))
+                if (currentUserId.Equals(Guid.Parse(r.Id)))
                 {
                     reviewer = r;
                     return true;

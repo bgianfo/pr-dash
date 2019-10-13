@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="YamlDotNet" Version="7.0.0" />
     <PackageReference Include="Terminal.Gui" Version="0.24.0" />
+    <PackageReference Include="Humanizer" Version="2.7.9" />
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.158.0-preview" />
 
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">

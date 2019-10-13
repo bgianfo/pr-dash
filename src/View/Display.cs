@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.DataSource;
 using Terminal.Gui;
 
@@ -20,7 +18,7 @@ namespace PrDash.View
         /// <summary>
         /// Constructs a display.
         /// </summary>
-        /// <param name="pullRequestSource">The backing datasource to render from.</param>
+        /// <param name="pullRequestSource">The backing data source to render from.</param>
         public Display(IPullRequestSource pullRequestSource)
         {
             m_pullRequestSource = pullRequestSource;
@@ -32,9 +30,7 @@ namespace PrDash.View
         /// <returns>A list of pull request content.</returns>
         private IList FetchPrData()
         {
-            return m_pullRequestSource.FetchActivePullRequsts()
-                .Select(pr => new PullRequestViewElement(pr))
-                    .ToList();
+            return m_pullRequestSource.FetchActivePullRequsts().ToList();
         }
 
         /// <summary>
@@ -44,20 +40,17 @@ namespace PrDash.View
         {
             Application.Init();
 
-            var win = new Window("PR's To Review:")
+            var contentWindow = new Window("Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
-                Height = Dim.Fill()
+                Height = Dim.Fill(),
+                ColorScheme = CustomColorSchemes.MutedEdges,
             };
 
-            PullRequestView content = new PullRequestView(FetchPrData())
-            {
-                AllowsMarking = true
-            };
+            contentWindow.Add(new PullRequestView(FetchPrData()));
 
-            win.Add(content);
+            Application.Top.Add(contentWindow);
 
-            Application.Top.Add(win);
             Application.Run();
         }
     }
