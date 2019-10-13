@@ -16,6 +16,16 @@ namespace PrDash.Configuration
         /// </summary>
         private static string ConfigName = "pr-dash.yml";
 
+        private static string YamlRootAccountsToken = "accounts";
+
+        private static string YamlFieldPatToken = "pat";
+
+        private static string YamlFieldOrgUrlToken = "org_url";
+
+        private static string YamlFieldProjectToken = "project_name";
+
+        private static string YamlFieldHandlerToken = "handler";
+
         /// <summary>
         /// The fully qualified configuration file path.
         /// </summary>
@@ -125,16 +135,28 @@ namespace PrDash.Configuration
 
             // Fetch the root of the accounts list.
             //
-            var accountNodes = (YamlSequenceNode)root.Children[new YamlScalarNode("accounts")];
+            var accountNodes = (YamlSequenceNode)root.Children[new YamlScalarNode(YamlRootAccountsToken)];
 
             foreach (YamlMappingNode accountNode in accountNodes)
             {
                 AccountConfig newAccount = new AccountConfig
                 {
-                    PersonalAccessToken = accountNode.GetString("pat"),
-                    OrganizationUrl = accountNode.GetUri("org_url"),
-                    Project = accountNode.GetString("project_name"),
+                    PersonalAccessToken = accountNode.GetString(YamlFieldPatToken),
+                    OrganizationUrl = accountNode.GetUri(YamlFieldOrgUrlToken),
+                    Project = accountNode.GetString(YamlFieldProjectToken),
                 };
+
+                // If a handler is configured use the custom handler, default to the web UI handler.
+                //
+                if (accountNode.Children.ContainsKey(YamlFieldHandlerToken))
+                {
+                    string protocol = accountNode.GetString(YamlFieldHandlerToken);
+                    newAccount.Handler = new CustomPullRequestHandler(newAccount, protocol);
+                }
+                else
+                {
+                    newAccount.Handler = new WebPullRequestHandler(newAccount);
+                }
 
                 m_accounts.Add(newAccount);
             }
