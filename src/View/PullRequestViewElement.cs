@@ -68,8 +68,8 @@ namespace PrDash.View
                     return string.Empty;
                 }
 
-                int added  = 0;
-                int edits  = 0;
+                int added = 0;
+                int edits = 0;
                 int delete = 0;
                 foreach (var change in m_pullRequest.Commits)
                 {

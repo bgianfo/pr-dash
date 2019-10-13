@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.Configuration;
 
@@ -39,9 +40,35 @@ namespace PrDash.Handlers
 
             string url = ConstructUri(pullRequest);
 
-            // This is the only way to get the protocol handler to be invoked AFAIK?
-            //
-            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // Use xdg-open to open the users configured browser on Linux.
+                //
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = "/usr/bin/xdg-open",
+                    Arguments = $"{url}",
+                    UseShellExecute = false,
+
+                    // Redirect std-out and std-error, as lots of browsers spew
+                    // to console when launching a new instance / tab.
+                    //
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                };
+
+                Process.Start(startInfo);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // This is the best way to users configured browser on windows AFAIK?
+                //
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+            }
+            else
+            {
+                throw new NotSupportedException("Opening the URL from this operating system is not yet supported.");
+            }
         }
 
         /// <summary>
