@@ -2,31 +2,10 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using YamlDotNet.RepresentationModel;
+using PrDash.Handlers;
 
 namespace PrDash.Configuration
 {
-    /// <summary>
-    /// Represents a single account that the dashboard should poll for status.
-    /// </summary>
-    public sealed class AccountConfig
-    {
-        /// <summary>
-        /// Access token for authenticating to Azure Devops.
-        /// See https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats
-        /// </summary>
-        public string PersonalAccessToken { get; set; }
-
-        /// <summary>
-        /// Organization URL, for example: https://dev.azure.com/fabrikam
-        /// </summary>
-        public Uri OrganizationUrl { get; set; }
-
-        /// <summary>
-        /// The Project name to query inside the organization.
-        /// </summary>
-        public string Project { get; set; }
-    }
-
     /// <summary>
     /// Represents the complete configuration for the dashboard.
     /// </summary>
@@ -58,7 +37,6 @@ namespace PrDash.Configuration
         /// <summary>
         /// Gets the individual configured accounts.
         /// </summary>
-        /// <value>The accounts.</value>
         public IList<AccountConfig> Accounts
         {
             get { return m_accounts; }
@@ -136,8 +114,9 @@ namespace PrDash.Configuration
         /// <param name="yamlReader">The input.</param>
         private void LoadYaml(TextReader yamlReader)
         {
-            // Load the stream
-            var yaml = new YamlStream();
+            // Load the stream from the text reader.
+            //
+            YamlStream yaml = new YamlStream();
             yaml.Load(yamlReader);
 
             // Fetch the root of the document.
