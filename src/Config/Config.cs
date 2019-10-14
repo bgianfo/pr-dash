@@ -16,14 +16,29 @@ namespace PrDash.Configuration
         /// </summary>
         private static string ConfigName = "pr-dash.yml";
 
+        /// <summary>
+        /// The name of the root account node.
+        /// </summary>
         private static string YamlRootAccountsToken = "accounts";
 
+        /// <summary>
+        /// The name of the PAT token field.
+        /// </summary>
         private static string YamlFieldPatToken = "pat";
 
+        /// <summary>
+        /// The name of the Organization Url token field.
+        /// </summary>
         private static string YamlFieldOrgUrlToken = "org_url";
 
+        /// <summary>
+        /// The name of the project name token field.
+        /// </summary>
         private static string YamlFieldProjectToken = "project_name";
 
+        /// <summary>
+        /// The name of the pull request handler token field.
+        /// </summary>
         private static string YamlFieldHandlerToken = "handler";
 
         /// <summary>
@@ -91,14 +106,10 @@ namespace PrDash.Configuration
         /// <param name="filePath">The file system path to the configuration file.</param>
         public static Config FromFile(string filePath)
         {
-            Config configuration = new Config();
-
             using (StreamReader reader = new StreamReader(filePath))
             {
-                configuration.LoadYaml(reader);
+                return FromTextReader(reader);
             }
-
-            return configuration;
         }
 
         /// <summary>
@@ -108,13 +119,21 @@ namespace PrDash.Configuration
         /// <param name="yamlPayload">The string with Yaml contents.</param>
         public static Config FromString(string yamlPayload)
         {
-            Config configuration = new Config();
-
             using (StringReader reader = new StringReader(yamlPayload))
             {
-                configuration.LoadYaml(reader);
+                return FromTextReader(reader);
             }
+        }
 
+        /// <summary>
+        /// Loads the Yaml configuration stream from the specified input.
+        /// </summary>
+        /// <param name="yamlReader">The input <see cref="TextReader"/>.</param>
+        /// <returns></returns>
+        private static Config FromTextReader(TextReader yamlReader)
+        {
+            Config configuration = new Config();
+            configuration.LoadYaml(yamlReader);
             return configuration;
         }
 
