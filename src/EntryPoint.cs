@@ -5,12 +5,12 @@ using PrDash.View;
 namespace PrDash
 {
     /// <summary>
-    /// The class entrypoint for the program.
+    /// The class entry point for the program.
     /// </summary>
     public static class EntryPoint
     {
         /// <summary>
-        /// The program entrypoint for pr-dash.
+        /// The program entry point for pr-dash.
         /// </summary>
         public static void Main()
         {
