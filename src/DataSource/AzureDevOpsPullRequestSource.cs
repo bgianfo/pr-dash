@@ -8,15 +8,30 @@ using PrDash.View;
 
 namespace PrDash.DataSource
 {
+    /// <summary>
+    /// An implmeentation of <see cref="IPullRequestSource"/> which retreives the active
+    /// pull requests for a user, from the Azure DevOps server.
+    /// </summary>
     public class AzureDevOpsPullRequestSource : IPullRequestSource
     {
+        /// <summary>
+        /// The configuration that we shoudl use to connect to the backing store.
+        /// </summary>
         private readonly Config m_config;
 
+        /// <summary>
+        /// Constructs a new request source.
+        /// </summary>
+        /// <param name="config">The config to driver the system.</param>
         public AzureDevOpsPullRequestSource(Config config)
         {
             m_config = config;
         }
 
+        /// <summary>
+        /// Retrieves all active & actionable pull requests to the configured data source.
+        /// </summary>
+        /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         public IEnumerable<PullRequestViewElement> FetchActivePullRequsts()
         {
             foreach (AccountConfig account in m_config.Accounts)
@@ -29,40 +44,10 @@ namespace PrDash.DataSource
         }
 
         /// <summary>
-        /// Factory method for creating the connection.
+        /// Retrieves all active & actionable pull requests to the configured data source.
         /// </summary>
-        /// <param name="account">Account details to create the connection for.</param>
-        /// <returns>A valid <see cref="VssConnection"/> for the given account.</returns>
-        private static VssConnection GetConnection(AccountConfig account)
-        {
-            return new VssConnection(
-                account.OrganizationUrl,
-                new VssBasicCredential(string.Empty, account.PersonalAccessToken));
-        }
-
-        private static IEnumerable<GitPullRequest> FetchAccountActivePullRequsts(AccountConfig accountConfig, out Guid currentUserId)
-        {
-            // Create a connection to the AzureDevOps Git API.
-            //
-            using (VssConnection connection = GetConnection(accountConfig))
-            using (GitHttpClient client = connection.GetClient<GitHttpClient>())
-            {
-                // Capture the currentUserId so it can be used to filter PR's later.
-                //
-                currentUserId = connection.AuthorizedIdentity.Id;
-
-                // Only fetch pull requests which are active, and assigned to this user.
-                //
-                GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
-                {
-                    ReviewerId = currentUserId,
-                    Status = PullRequestStatus.Active,
-                };
-
-                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
-            }
-        }
-
+        /// <param name="accountConfig">The account to retreive the pull requests for.</param>
+        /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private static IEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
             foreach (GitPullRequest pr in FetchAccountActivePullRequsts(accountConfig, out Guid currentUserId))
@@ -104,6 +89,42 @@ namespace PrDash.DataSource
             }
         }
 
+        /// <summary>
+        /// Retrieves all active & actionable pull requests for a specific account.
+        /// </summary>
+        /// <param name="accountConfig">The account to get the pull requests for.</param>
+        /// <param name="currentUserId">An out paramter that receives the <see cref="Guid"/> of the current user.</param>
+        /// <returns>A stream of <see cref="GitPullRequest"/></returns>
+        private static IEnumerable<GitPullRequest> FetchAccountActivePullRequsts(AccountConfig accountConfig, out Guid currentUserId)
+        {
+            // Create a connection to the AzureDevOps Git API.
+            //
+            using (VssConnection connection = GetConnection(accountConfig))
+            using (GitHttpClient client = connection.GetClient<GitHttpClient>())
+            {
+                // Capture the currentUserId so it can be used to filter PR's later.
+                //
+                currentUserId = connection.AuthorizedIdentity.Id;
+
+                // Only fetch pull requests which are active, and assigned to this user.
+                //
+                GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
+                {
+                    ReviewerId = currentUserId,
+                    Status = PullRequestStatus.Active,
+                };
+
+                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
+            }
+        }
+
+        /// <summary>
+        /// Tries to get the current users reviewer object from a pull request.
+        /// </summary>
+        /// <param name="pullRequest">The pull request we want to look our selves up in.</param>
+        /// <param name="currentUserId">The <see cref="Guid"/> of our current user.</param>
+        /// <param name="reviewer">Output  parameter that points to our own reviewer object.</param>
+        /// <returns></returns>
         private static bool TryGetReviewer(GitPullRequest pullRequest, Guid currentUserId, out IdentityRefWithVote reviewer)
         {
             foreach (IdentityRefWithVote r in pullRequest.Reviewers)
@@ -117,6 +138,18 @@ namespace PrDash.DataSource
 
             reviewer = null;
             return false;
+        }
+
+        /// <summary>
+        /// Factory method for creating the connection.
+        /// </summary>
+        /// <param name="account">Account details to create the connection for.</param>
+        /// <returns>A valid <see cref="VssConnection"/> for the given account.</returns>
+        private static VssConnection GetConnection(AccountConfig account)
+        {
+            return new VssConnection(
+                account.OrganizationUrl,
+                new VssBasicCredential(string.Empty, account.PersonalAccessToken));
         }
     }
 }
