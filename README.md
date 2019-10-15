@@ -45,4 +45,6 @@ accounts:
     pat: <your-personal-authentication-token>
 ```
 
+You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
+
 Now you can run pr-dash and try it out.
