@@ -11,6 +11,6 @@ namespace PrDash.Handlers
         /// Invokes an action on the specified pull request action.
         /// </summary>
         /// <param name="pr">The pull request that was selected.</param>
-        public void InvokeHandler(GitPullRequest pr);
+        void InvokeHandler(GitPullRequest pr);
     }
 }

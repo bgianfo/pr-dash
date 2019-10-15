@@ -13,6 +13,6 @@ namespace PrDash.DataSource
         /// Retrieves all active pull requests to the configured data source.
         /// </summary>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        public IEnumerable<PullRequestViewElement> FetchActivePullRequsts();
+        IEnumerable<PullRequestViewElement> FetchActivePullRequsts();
     }
 }
