@@ -18,17 +18,31 @@ namespace PrDash.View
         {
             Application.Init();
 
+            Application.Current.ColorScheme = CustomColorSchemes.Main;
+
             var contentWindow = new Window("Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
-                Height = Dim.Fill(),
+                Height = Dim.Fill() - Dim.Sized(3),
                 ColorScheme = CustomColorSchemes.MutedEdges,
             };
 
-            contentWindow.Add(new PullRequestView(source));
+            PullRequestView reView = new PullRequestView(source);
+            contentWindow.Add(reView);
+
+            StatusBar status = new StatusBar();
+            var statusWindow = new Window("Status:")
+            {
+                Width = Dim.Fill(),
+                Height = Dim.Sized(3),
+                Y = Pos.Bottom(contentWindow),
+                ColorScheme = CustomColorSchemes.MutedEdges,
+            };
+
+            statusWindow.Add(status);
 
             Application.Top.Add(contentWindow);
-
+            Application.Top.Add(statusWindow);
 
             Application.Run();
         }
