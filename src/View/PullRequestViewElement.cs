@@ -1,9 +1,6 @@
-using System.Net.NetworkInformation;
 using System.Text;
 using Humanizer;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
-using Microsoft.VisualStudio.Services.Account;
-using PrDash.Configuration;
 using PrDash.Handlers;
 using Terminal.Gui;
 
@@ -27,20 +24,28 @@ namespace PrDash.View
         /// </summary>
         private readonly IPullRequestHandler m_handler;
 
-        private const int AuthorWidth = 25;
+        /// <summary>
+        /// The width in characters of the author column.
+        /// </summary>
+        private const int AuthorColumnWidth = 25;
 
-        private const int DateWidth = 20;
+        /// <summary>
+        /// The width in characters of the date column.
+        /// </summary>
+        private const int DateColumnWidth = 20;
+
+        /// <summary>
+        /// The width in characters of the pull request title column.
+        /// </summary>
+        private static int TitleColumnWidth =>
+            Application.Top.Frame.Size.Width - (AuthorColumnWidth + DateColumnWidth);
 
         /// <summary>
         /// Gets the title bound to the confines of the window.
         /// </summary>
         private string BoundedTitle
         {
-            get
-            {
-                int titleBoundWidth = Application.Top.Frame.Size.Width - (AuthorWidth + DateWidth);
-                return FitStringToBound(m_pullRequest.Title.Trim(), titleBoundWidth);
-            }
+            get => FitStringToBound(m_pullRequest.Title.Trim(), TitleColumnWidth);
         }
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace PrDash.View
         /// </summary>
         private string BoundedAuthor
         {
-            get { return FitStringToBound(m_pullRequest.CreatedBy.DisplayName, AuthorWidth); }
+            get => FitStringToBound(m_pullRequest.CreatedBy.DisplayName, AuthorColumnWidth);
         }
 
         /// <summary>
@@ -56,7 +61,7 @@ namespace PrDash.View
         /// </summary>
         private string BoundedCreationDate
         {
-            get { return FitStringToBound(m_pullRequest.CreationDate.Humanize(), DateWidth, leftPad: true); }
+            get => FitStringToBound(m_pullRequest.CreationDate.Humanize(), DateColumnWidth, leftPad: true);
         }
 
         private string ChangeSize
@@ -112,17 +117,10 @@ namespace PrDash.View
         }
 
         /// <summary>
-        /// Gets the pull request.
-        /// </summary>
-        /// <value>
-        /// The pull request.
-        /// </value>
-        private GitPullRequest PullRequest { get { return m_pullRequest; } }
-
-        /// <summary>
         /// Constructs a new element which wraps a <see cref="GitPullRequest"/> object.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The pull request this element represents.</param>
+        /// <param name="handler">The handler to execute on the request.</param>
         public PullRequestViewElement(GitPullRequest request, IPullRequestHandler handler)
         {
             m_handler = handler;
@@ -132,10 +130,7 @@ namespace PrDash.View
         /// <summary>
         /// Invokes the pull request action handler callback on this pull request.
         /// </summary>
-        public void InvokeHandler()
-        {
-            m_handler.InvokeHandler(m_pullRequest);
-        }
+        public void InvokeHandler() => m_handler.InvokeHandler(m_pullRequest);
 
         /// <summary>
         /// Special ToString implementation that will be called by the ListView control when it renders each element.
@@ -148,9 +143,7 @@ namespace PrDash.View
         /// </summary>
         /// <param name="value">The string value to fit.</param>
         /// <param name="maxLength">The maxLength to constrain the string to.</param>
-        /// <returns>
-        /// The string that has been trimmed and padded..
-        /// </returns>
+        /// <returns> The string that has been trimmed and padded.</returns>
         private static string FitStringToBound(string value, int maxLength, bool leftPad = false)
         {
             const char PadChar = ' ';

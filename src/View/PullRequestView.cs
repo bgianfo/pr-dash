@@ -1,20 +1,29 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Terminal.Gui;
 
 namespace PrDash.View
 {
+    /// <summary>
+    /// Custom ListView implementation that to support custom key processing.
+    /// </summary>
+    /// <seealso cref="Terminal.Gui.ListView" />
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "This isn't a collection")]
     [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
     public class PullRequestView : ListView
     {
-        private readonly IList m_backingList;
+        /// <summary>
+        /// The list of elements that this view is currently rendering.
+        /// </summary>
+        private readonly List<PullRequestViewElement> m_backingList;
 
-        public PullRequestView(IList source)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PullRequestView"/> class.
+        /// </summary>
+        /// <param name="source">The source of elements for this view.</param>
+        public PullRequestView(List<PullRequestViewElement> source)
             : base(source)
         {
-            AllowsMarking = true;
-
             m_backingList = source;
 
             // Override the color scheme to our main theme for this view.
@@ -22,13 +31,13 @@ namespace PrDash.View
             ColorScheme = CustomColorSchemes.Main;
         }
 
-        private void HandleSelectedPullRequest(int selectedIndex)
-        {
-            PullRequestViewElement element = (PullRequestViewElement)m_backingList[selectedIndex];
-
-            element.InvokeHandler();
-        }
-
+        /// <summary>
+        /// Implement custom key handling on this view.
+        /// </summary>
+        /// <param name="keyEvent">Contains the details about the key that produced the event.</param>
+        /// <returns>
+        /// True if the key was handled, False otherwise.
+        /// </returns>
         public override bool ProcessKey(KeyEvent keyEvent)
         {
             // Handle specific characters we want to have behavior.
@@ -63,7 +72,7 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    HandleSelectedPullRequest(SelectedItem);
+                    m_backingList[SelectedItem].InvokeHandler();
                     return true;
             }
 

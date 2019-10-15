@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using PrDash.DataSource;
 using Terminal.Gui;
@@ -16,7 +16,7 @@ namespace PrDash.View
         private readonly IPullRequestSource m_pullRequestSource;
 
         /// <summary>
-        /// Constructs a display.
+        /// Constructs a new display to render the UI.
         /// </summary>
         /// <param name="pullRequestSource">The backing data source to render from.</param>
         public Display(IPullRequestSource pullRequestSource)
@@ -28,7 +28,7 @@ namespace PrDash.View
         /// Populate the list of pull requests from the data source.
         /// </summary>
         /// <returns>A list of pull request content.</returns>
-        private IList FetchPrData()
+        private List<PullRequestViewElement> FetchPrData()
         {
             return m_pullRequestSource.FetchActivePullRequsts().ToList();
         }
