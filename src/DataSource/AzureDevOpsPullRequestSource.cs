@@ -9,20 +9,20 @@ using PrDash.View;
 namespace PrDash.DataSource
 {
     /// <summary>
-    /// An implmeentation of <see cref="IPullRequestSource"/> which retreives the active
+    /// An implementation of <see cref="IPullRequestSource"/> which retrieves the active
     /// pull requests for a user, from the Azure DevOps server.
     /// </summary>
     public class AzureDevOpsPullRequestSource : IPullRequestSource
     {
         /// <summary>
-        /// The configuration that we shoudl use to connect to the backing store.
+        /// The configuration that we should use to connect to the backing store.
         /// </summary>
         private readonly Config m_config;
 
         /// <summary>
         /// Constructs a new request source.
         /// </summary>
-        /// <param name="config">The config to driver the system.</param>
+        /// <param name="config">The configuration to driver the system.</param>
         public AzureDevOpsPullRequestSource(Config config)
         {
             m_config = config;
@@ -46,7 +46,7 @@ namespace PrDash.DataSource
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
         /// </summary>
-        /// <param name="accountConfig">The account to retreive the pull requests for.</param>
+        /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private static IEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
@@ -93,7 +93,7 @@ namespace PrDash.DataSource
         /// Retrieves all active & actionable pull requests for a specific account.
         /// </summary>
         /// <param name="accountConfig">The account to get the pull requests for.</param>
-        /// <param name="currentUserId">An out paramter that receives the <see cref="Guid"/> of the current user.</param>
+        /// <param name="currentUserId">An out parameter that receives the <see cref="Guid"/> of the current user.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private static IEnumerable<GitPullRequest> FetchAccountActivePullRequsts(AccountConfig accountConfig, out Guid currentUserId)
         {
