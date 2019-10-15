@@ -11,32 +11,10 @@ namespace PrDash.View
     public sealed class Display
     {
         /// <summary>
-        /// Local reference to the backing pull request data source.
-        /// </summary>
-        private readonly IPullRequestSource m_pullRequestSource;
-
-        /// <summary>
-        /// Constructs a new display to render the UI.
-        /// </summary>
-        /// <param name="pullRequestSource">The backing data source to render from.</param>
-        public Display(IPullRequestSource pullRequestSource)
-        {
-            m_pullRequestSource = pullRequestSource;
-        }
-
-        /// <summary>
-        /// Populate the list of pull requests from the data source.
-        /// </summary>
-        /// <returns>A list of pull request content.</returns>
-        private List<PullRequestViewElement> FetchPrData()
-        {
-            return m_pullRequestSource.FetchActivePullRequsts().ToList();
-        }
-
-        /// <summary>
         /// Initialize and run the UI main loop.
         /// </summary>
-        public void RunUiLoop()
+        /// <param name="source">The backing data source to render from.</param>
+        public static void RunUiLoop(IPullRequestSource source)
         {
             Application.Init();
 
@@ -47,9 +25,10 @@ namespace PrDash.View
                 ColorScheme = CustomColorSchemes.MutedEdges,
             };
 
-            contentWindow.Add(new PullRequestView(FetchPrData()));
+            contentWindow.Add(new PullRequestView(source));
 
             Application.Top.Add(contentWindow);
+
 
             Application.Run();
         }

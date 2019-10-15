@@ -16,10 +16,10 @@ namespace PrDash
         {
             Config.ValidateConfigExists();
             Config config = Config.FromConfigFile();
-            AzureDevOpsPullRequestSource pullRequestSource = new AzureDevOpsPullRequestSource(config);
 
-            Display display = new Display(pullRequestSource);
-            display.RunUiLoop();
+            AzureDevOpsPullRequestSource source = new AzureDevOpsPullRequestSource(config);
+
+            Display.RunUiLoop(source);
         }
     }
 }
