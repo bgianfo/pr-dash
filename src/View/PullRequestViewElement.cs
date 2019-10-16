@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Humanizer;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -12,7 +14,8 @@ namespace PrDash.View
     /// <remarks>
     /// This exists purely so that we can customize the ToString implementation.
     /// </remarks>
-    public class PullRequestViewElement
+    [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "We just want to sort.")]
+    public class PullRequestViewElement : IComparable<PullRequestViewElement>
     {
         /// <summary>
         /// The pull request we are wrapping.
@@ -168,6 +171,29 @@ namespace PrDash.View
                     return string.Concat(substring, PadChar);
                 }
             }
+        }
+
+        /// <summary>
+        /// Implements IComparable<![CDATA[T]]> so we can sort elements correctly.
+        /// </summary>
+        /// <param name="other">The other element to compare to.</param>
+        /// <returns>
+        /// Less than zero, this instance precedes other in the sort order.
+        /// Zero, this instance occurs in the same position in the sort order as other.
+        /// Greater than zero, this instance follows other in the sort order.
+        /// </returns>
+        public int CompareTo([AllowNull] PullRequestViewElement other)
+        {
+            // If other is null, than we must be greater.
+            //
+            if (other == null)
+            {
+                return 1;
+            }
+
+            // Force sort order decending by negating the default sort order.
+            //
+            return -m_pullRequest.CreationDate.CompareTo(other.m_pullRequest.CreationDate);
         }
     }
 }
