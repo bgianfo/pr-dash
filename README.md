@@ -41,10 +41,13 @@ Example ~/.pr-dash.yml:
 ```
 accounts:
   - project_name: sample-project
+    repo_name: sample-git-repo
     org_url: https://dev.azure.com/example
     pat: <your-personal-authentication-token>
 ```
 
-You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
+Notes: 
+- *repo_name* is optional, if it's ommitted the project name will be used for the repo name as well.
+- You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 
 Now you can run pr-dash and try it out.

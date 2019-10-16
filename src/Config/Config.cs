@@ -37,6 +37,11 @@ namespace PrDash.Configuration
         private static string YamlFieldProjectToken = "project_name";
 
         /// <summary>
+        /// The name of the repository name token field.
+        /// </summary>
+        private static string YamlFieldRepoNameToken = "repo_name";
+
+        /// <summary>
         /// The name of the pull request handler token field.
         /// </summary>
         private static string YamlFieldHandlerToken = "handler";
@@ -164,6 +169,18 @@ namespace PrDash.Configuration
                     OrganizationUrl = accountNode.GetUri(YamlFieldOrgUrlToken),
                     Project = accountNode.GetString(YamlFieldProjectToken),
                 };
+
+                // If a repository name is configured use it, otherwise defaultt the repo name
+                // to be the same as the project name.
+                //
+                if (accountNode.Children.ContainsKey(YamlFieldRepoNameToken))
+                {
+                    newAccount.RepoName = accountNode.GetString(YamlFieldRepoNameToken);
+                }
+                else
+                {
+                    newAccount.RepoName = newAccount.Project;
+                }
 
                 // If a handler is configured use the custom handler, default to the web UI handler.
                 //

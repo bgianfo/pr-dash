@@ -25,6 +25,11 @@ namespace PrDash.Configuration
         public string Project { get; set; }
 
         /// <summary>
+        /// The repository n ame to query inside the project.
+        /// </summary>
+        public string RepoName { get; set; }
+
+        /// <summary>
         /// Handler to be executed when a pull request from this account is selected.
         /// </summary>
         public IPullRequestHandler Handler { get; set; }

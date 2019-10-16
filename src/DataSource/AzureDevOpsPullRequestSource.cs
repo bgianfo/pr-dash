@@ -114,7 +114,7 @@ namespace PrDash.DataSource
                     Status = PullRequestStatus.Active,
                 };
 
-                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.Project, criteria).Result;
+                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria).Result;
             }
         }
 
