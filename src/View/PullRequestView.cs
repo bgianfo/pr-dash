@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Mono.Terminal;
 using PrDash.DataSource;
@@ -40,6 +41,8 @@ namespace PrDash.View
         /// </summary>
         private List<PullRequestViewElement> m_backingList;
 
+        private object m_viewRefreshMonitor = new object();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
         /// </summary>
@@ -48,6 +51,8 @@ namespace PrDash.View
             : base(LoadingContents)
         {
             m_pullRequestSource = source;
+
+            m_backingList = new List<PullRequestViewElement>();
 
             // Override the color scheme to our main theme for this view.
             //
@@ -129,30 +134,72 @@ namespace PrDash.View
         /// </summary>
         private void RefreshListDataAsync()
         {
-            Task.Run(() => { this.RefreshListDataCallBack(); });
+            // We will enter the monitor for the duration of the refresh.
+            // See the exit at the bottom of RefreshListDataCallBack.
+            //
+            if (Monitor.TryEnter(m_viewRefreshMonitor))
+            {
+                // Clear the backing list, but don't re-render yet.
+                //
+                m_backingList.Clear();
+
+                Task task = new Task(() =>
+                {
+                    // Invoke the callback, wait for the population to finish.
+                    //
+                    RefreshListDataCallBack().Wait();
+
+                    // Once popuation is finished, exit the monitor.
+                    //
+                    Application.MainLoop.Invoke(() =>
+                    {
+                        // Exit the monitor that was entered
+                        // before the task was launched.
+                        // See: RefreshListDataAsync
+                        //
+                        Monitor.Exit(m_viewRefreshMonitor);
+                    });
+                });
+
+                task.Start();
+            }
         }
 
         /// <summary>
         /// Populate the list of pull requests from the data source.
         /// </summary>
         /// <returns>A list of pull request content.</returns>
-        private void RefreshListDataCallBack()
+        private async Task RefreshListDataCallBack()
         {
-            // Fetch the new data on this background thread, so it's non blocking.
-            //
-            List<PullRequestViewElement> tmp = m_pullRequestSource.FetchActivePullRequsts().ToList();
-
-            // Force the re-rendering to occur on the main thread.
-            //
-            Application.MainLoop.Invoke(() =>
+            try
             {
-                m_backingList = tmp;
-                SetSource(m_backingList);
-                SelectedItem = 0;
-                TopItem = 0;
-                SetNeedsDisplay();
-                Application.Refresh();
-            });
+                await foreach (PullRequestViewElement element in m_pullRequestSource.FetchActivePullRequsts())
+                {
+                    // Force the re-rendering to occur on the main thread.
+                    //
+                    Application.MainLoop.Invoke(() =>
+                    {
+                        m_backingList.Add(element);
+
+                        // Sort the entries by the elements sort implementation.
+                        //
+                        m_backingList.Sort();
+
+                        SetSource(m_backingList);
+                        SelectedItem = 0;
+                        TopItem = 0;
+                        SetNeedsDisplay();
+                        Application.Refresh();
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                Application.RequestStop();
+                Environment.Exit(1);
+                throw;
+            }
         }
     }
 }

@@ -31,12 +31,24 @@ namespace PrDash.DataSource
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
         /// </summary>
-        /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        public IEnumerable<PullRequestViewElement> FetchActivePullRequsts()
+        /// <returns>A an async stream of <see cref="PullRequestViewElement"/></returns>
+        public IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts()
+        {
+            return FetchActivePullRequstsInternal();
+        }
+
+        /// <summary>
+        /// Helper function to make async code line up, since interface methods cannot be marked
+        /// as async.
+        /// </summary>
+        /// <returns></returns>
+        private async IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequstsInternal()
         {
             foreach (AccountConfig account in m_config.Accounts)
             {
-                foreach (var pr in FetchActionablePullRequests(account))
+                IAsyncEnumerable<GitPullRequest> actionable = FetchActionablePullRequests(account);
+
+                await foreach (var pr in actionable)
                 {
                     yield return new PullRequestViewElement(pr, account.Handler);
                 }
@@ -48,9 +60,9 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private static IEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
+        private static async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
-            foreach (GitPullRequest pr in FetchAccountActivePullRequsts(accountConfig, out Guid currentUserId))
+            await foreach (var (currentUserId, pr) in FetchAccountActivePullRequsts(accountConfig))
             {
                 // Hack to not display drafts for now.
                 //
@@ -93,9 +105,8 @@ namespace PrDash.DataSource
         /// Retrieves all active & actionable pull requests for a specific account.
         /// </summary>
         /// <param name="accountConfig">The account to get the pull requests for.</param>
-        /// <param name="currentUserId">An out parameter that receives the <see cref="Guid"/> of the current user.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private static IEnumerable<GitPullRequest> FetchAccountActivePullRequsts(AccountConfig accountConfig, out Guid currentUserId)
+        private static async IAsyncEnumerable<Tuple<Guid, GitPullRequest>> FetchAccountActivePullRequsts(AccountConfig accountConfig)
         {
             // Create a connection to the AzureDevOps Git API.
             //
@@ -104,7 +115,7 @@ namespace PrDash.DataSource
             {
                 // Capture the currentUserId so it can be used to filter PR's later.
                 //
-                currentUserId = connection.AuthorizedIdentity.Id;
+                Guid currentUserId = connection.AuthorizedIdentity.Id;
 
                 // Only fetch pull requests which are active, and assigned to this user.
                 //
@@ -114,7 +125,12 @@ namespace PrDash.DataSource
                     Status = PullRequestStatus.Active,
                 };
 
-                return client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria).Result;
+                List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
+
+                foreach (var request in requests)
+                {
+                    yield return Tuple.Create<Guid, GitPullRequest>(currentUserId, request);
+                }
             }
         }
 
