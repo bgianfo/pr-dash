@@ -34,16 +34,23 @@ $ dotnet test
 
 ### Configuration
 
-To configure pr-dash you simply need to setup a yaml file at ~/.pr-dash.yml.
+To configure pr-dash you simply need to setup a yaml file at ~/.pr-dash.yml, with one or more
+projects/repo's to monitor for reiews.
 
 Example ~/.pr-dash.yml:
 
 ```
 accounts:
-  - project_name: sample-project
-    repo_name: sample-git-repo
-    org_url: https://dev.azure.com/example
+  - project_name: sample-project1
+    repo_name: sample-git-repo1
+    [org_url](org_url): https://dev.azure.com/example1
     pat: <your-personal-authentication-token>
+ 
+  - project_name: sample-project2
+    repo_name: sample-git-repo
+    org_url: https://example2.visualstudio.com
+    pat: <your-personal-authentication-token>
+
 ```
 
 Notes: 
