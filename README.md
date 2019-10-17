@@ -11,7 +11,7 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 
 ### Building/Installation
 
-`pr-dash` is written in C#, targetting dotnet core so you'll need to grab a
+`pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
 [dotnet core 3.0 installation](https://dotnet.microsoft.com/download/dotnet-core/3.0) in order to compile it.
 Building is easy:
 
@@ -54,7 +54,7 @@ accounts:
 ```
 
 Notes: 
-- *repo_name* is optional, if it's ommitted the project name will be used for the repo name as well.
+- *repo_name* is optional, if it's omitted the project name will be used for the repo name as well.
 - You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 
 Now you can run pr-dash and try it out.
