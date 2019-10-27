@@ -101,13 +101,13 @@ namespace PrDash.Configuration
         /// Factory function to initializes a new instance of the
         /// <see cref="Config"/> from a Yaml configuration file.
         /// </summary>
-        public static Config FromConfigFile()
+        public static Config FromConfigFile(CommandLineOptions options = null)
         {
             string configFile = ConfigPath;
 
             Console.WriteLine("Loading configuration from: {0}", configFile);
 
-            return FromFile(configFile);
+            return FromFile(configFile, options);
         }
 
         /// <summary>
@@ -115,11 +115,11 @@ namespace PrDash.Configuration
         /// from a Yaml configuration file.
         /// </summary>
         /// <param name="filePath">The file system path to the configuration file.</param>
-        public static Config FromFile(string filePath)
+        public static Config FromFile(string filePath, CommandLineOptions options = null)
         {
             using (StreamReader reader = new StreamReader(filePath))
             {
-                return FromTextReader(reader);
+                return FromTextReader(reader, options);
             }
         }
 
@@ -128,11 +128,11 @@ namespace PrDash.Configuration
         /// from a string with Yaml contents.
         /// </summary>
         /// <param name="yamlPayload">The string with Yaml contents.</param>
-        public static Config FromString(string yamlPayload)
+        public static Config FromString(string yamlPayload, CommandLineOptions options = null)
         {
             using (StringReader reader = new StringReader(yamlPayload))
             {
-                return FromTextReader(reader);
+                return FromTextReader(reader, options);
             }
         }
 
@@ -140,10 +140,12 @@ namespace PrDash.Configuration
         /// Loads the Yaml configuration stream from the specified input.
         /// </summary>
         /// <param name="yamlReader">The input <see cref="TextReader"/>.</param>
-        /// <returns></returns>
-        private static Config FromTextReader(TextReader yamlReader)
+        /// <returns>
+        /// The populated config object.
+        /// </returns>
+        private static Config FromTextReader(TextReader yamlReader, CommandLineOptions options = null)
         {
-            Config configuration = new Config();
+            Config configuration = new Config(options);
             configuration.LoadYaml(yamlReader);
             return configuration;
         }

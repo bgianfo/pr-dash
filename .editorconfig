@@ -1,7 +1,6 @@
 # Top-most EditorConfig file
 root = true
 
-
 # Tab indentation
 [*.cs]
 end_of_line = lf
