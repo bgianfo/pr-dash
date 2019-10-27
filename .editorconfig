@@ -3,6 +3,9 @@ root = true
 
 # Tab indentation
 [*.cs]
+end_of_line = lf
+indent_size = tab
+tab_width = 4
 indent_style = space
 dotnet_sort_system_directives_first = true
 

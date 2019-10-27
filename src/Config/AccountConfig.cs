@@ -25,7 +25,7 @@ namespace PrDash.Configuration
         public string Project { get; set; }
 
         /// <summary>
-        /// The repository n ame to query inside the project.
+        /// The repository name to query inside the project.
         /// </summary>
         public string RepoName { get; set; }
 
