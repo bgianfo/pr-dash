@@ -1,6 +1,7 @@
 ﻿using PrDash.Configuration;
 using PrDash.DataSource;
 using PrDash.View;
+using CommandLine;
 
 namespace PrDash
 {
@@ -12,14 +13,16 @@ namespace PrDash
         /// <summary>
         /// The program entry point for pr-dash.
         /// </summary>
-        public static void Main()
+        public static void Main(string[] args)
         {
+			var options = Parser.Default.ParseArguments<CommandLineOptions>(args);
+
             Config.ValidateConfigExists();
             Config config = Config.FromConfigFile();
 
             AzureDevOpsPullRequestSource source = new AzureDevOpsPullRequestSource(config);
 
-            Display.RunUiLoop(source);
+            Display.RunUiLoop(config, source);
         }
     }
 }
