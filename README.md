@@ -4,6 +4,8 @@ pr-dash
 of all Azure Dev Ops pull requests you are assigned a reviewer of, right
 at home in your terminal.
 
+pr-dash is currently tested on Windows and Linux.
+
 Note: This tool is not created by, affiliated with, or supported by Microsoft/Azure DevOps.
 
 [![Build Status](https://travis-ci.org/bgianfo/pr-dash.svg?branch=master)](https://travis-ci.org/bgianfo/pr-dash)
