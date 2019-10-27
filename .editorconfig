@@ -1,12 +1,14 @@
 # Top-most EditorConfig file
 root = true
 
+
 # Tab indentation
 [*.cs]
 end_of_line = lf
 indent_size = tab
 tab_width = 4
 indent_style = space
+indent_size = 4
 dotnet_sort_system_directives_first = true
 
 dotnet_diagnostic.CA2007.severity = none

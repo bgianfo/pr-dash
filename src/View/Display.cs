@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PrDash.DataSource;
+using PrDash.Configuration;
 using Terminal.Gui;
 
 namespace PrDash.View
@@ -14,8 +16,13 @@ namespace PrDash.View
         /// Initialize and run the UI main loop.
         /// </summary>
         /// <param name="source">The backing data source to render from.</param>
-        public static void RunUiLoop(IPullRequestSource source)
+        public static void RunUiLoop(Config config, IPullRequestSource source)
         {
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             Application.Init();
 
             Application.Current.ColorScheme = CustomColorSchemes.Main;
@@ -23,26 +30,28 @@ namespace PrDash.View
             var contentWindow = new Window("Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
-                Height = Dim.Fill() - Dim.Sized(3),
+                Height = config.StatusBarEnabled ? Dim.Fill() - Dim.Sized(3) : Dim.Fill(),
                 ColorScheme = CustomColorSchemes.MutedEdges,
             };
 
             PullRequestView reView = new PullRequestView(source);
             contentWindow.Add(reView);
 
-            StatusBar status = new StatusBar();
-            var statusWindow = new Window("Status:")
-            {
-                Width = Dim.Fill(),
-                Height = Dim.Sized(3),
-                Y = Pos.Bottom(contentWindow),
-                ColorScheme = CustomColorSchemes.MutedEdges,
-            };
-
-            statusWindow.Add(status);
-
             Application.Top.Add(contentWindow);
-            Application.Top.Add(statusWindow);
+
+			if (config.StatusBarEnabled)
+			{
+				StatusBar status = new StatusBar();
+				var statusWindow = new Window("Status:")
+				{
+					Width = Dim.Fill(),
+					Height = Dim.Sized(3),
+					Y = Pos.Bottom(contentWindow),
+					ColorScheme = CustomColorSchemes.MutedEdges,
+				};
+				statusWindow.Add(status);
+				Application.Top.Add(statusWindow);
+			}
 
             Application.Run();
         }

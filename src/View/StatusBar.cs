@@ -1,4 +1,5 @@
-﻿using Terminal.Gui;
+using System.Diagnostics.CodeAnalysis;
+using Terminal.Gui;
 
 namespace PrDash.View
 {
@@ -6,6 +7,8 @@ namespace PrDash.View
     /// A view which represents the status bar of the application.
     /// </summary>
     /// <seealso cref="Terminal.Gui.View" />
+    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "This isn't a collection")]
+    [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
     public class StatusBar : Terminal.Gui.View
     {
         /// <summary>

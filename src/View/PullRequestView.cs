@@ -149,7 +149,7 @@ namespace PrDash.View
                     //
                     RefreshListDataCallBack().Wait();
 
-                    // Once popuation is finished, exit the monitor.
+                    // Once population is finished, exit the monitor.
                     //
                     Application.MainLoop.Invoke(() =>
                     {
