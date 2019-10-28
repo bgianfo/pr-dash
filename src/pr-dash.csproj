@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.6">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="2.1.0">
+    <PackageReference Include="Roslynator.Analyzers" Version="2.2.0">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
   </ItemGroup>
