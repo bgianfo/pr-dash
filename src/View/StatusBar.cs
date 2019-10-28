@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using PrDash.DataSource;
 using Terminal.Gui;
 
 namespace PrDash.View
@@ -16,15 +17,18 @@ namespace PrDash.View
         /// </summary>
         private readonly Label m_status;
 
+        private readonly IPullRequestSource m_source;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
         /// </summary>
-        public StatusBar()
+        public StatusBar(IPullRequestSource source)
         {
             CanFocus = false;
             Height = 1;
             ColorScheme = CustomColorSchemes.MutedEdges;
 
+            m_source = source;
             m_status = new Label("TODO!");
 
             Add(m_status);

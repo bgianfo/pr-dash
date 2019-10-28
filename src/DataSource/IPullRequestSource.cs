@@ -10,6 +10,11 @@ namespace PrDash.DataSource
     public interface IPullRequestSource
     {
         /// <summary>
+        /// Getter to retreive statistics.
+        /// </summary>
+        PullRequestStatistics Statistics { get; }
+
+        /// <summary>
         /// Retrieves all active pull requests to the configured data source.
         /// </summary>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>

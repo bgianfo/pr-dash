@@ -19,6 +19,8 @@ namespace PrDash.DataSource
         /// </summary>
         private readonly Config m_config;
 
+        private PullRequestStatistics m_statistics;
+
         /// <summary>
         /// Constructs a new request source.
         /// </summary>
@@ -26,7 +28,10 @@ namespace PrDash.DataSource
         public AzureDevOpsPullRequestSource(Config config)
         {
             m_config = config;
+            m_statistics = new PullRequestStatistics();
         }
+
+        public PullRequestStatistics Statistics { get { return m_statistics; } }
 
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
@@ -34,6 +39,8 @@ namespace PrDash.DataSource
         /// <returns>A an async stream of <see cref="PullRequestViewElement"/></returns>
         public IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts()
         {
+            m_statistics.Reset();
+
             return FetchActivePullRequstsInternal();
         }
 
@@ -60,7 +67,7 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private static async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
+        private async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
             await foreach (var (currentUserId, pr) in FetchAccountActivePullRequsts(accountConfig))
             {
@@ -68,6 +75,7 @@ namespace PrDash.DataSource
                 //
                 if (pr.IsDraft == true)
                 {
+                    m_statistics.Drafts++;
                     continue;
                 }
 
@@ -84,6 +92,7 @@ namespace PrDash.DataSource
                 //
                 if (reviewer.HasFinalVoteBeenCast())
                 {
+                    m_statistics.SignedOff++;
                     continue;
                 }
 
@@ -92,11 +101,14 @@ namespace PrDash.DataSource
                 //
                 if (reviewer.IsWaiting())
                 {
+                    m_statistics.Waiting++;
                     continue;
                 }
 
                 // If  these criteria haven't been met, then display the review.
                 //
+                m_statistics.Actionable++;
+
                 yield return pr;
             }
         }

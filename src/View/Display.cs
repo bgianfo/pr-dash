@@ -42,7 +42,7 @@ namespace PrDash.View
 
             if (config.StatusBarEnabled)
             {
-                StatusBar status = new StatusBar();
+                StatusBar status = new StatusBar(source);
                 var statusWindow = new Window("Status:")
                 {
                     Width = Dim.Fill(),
