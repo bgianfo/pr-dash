@@ -111,7 +111,7 @@ namespace PrDash.DataSource
             // Create a connection to the AzureDevOps Git API.
             //
             using (VssConnection connection = GetConnection(accountConfig))
-            using (GitHttpClient client = connection.GetClient<GitHttpClient>())
+            using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
             {
                 // Capture the currentUserId so it can be used to filter PR's later.
                 //

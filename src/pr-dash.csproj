@@ -31,6 +31,10 @@
     <PackageReference Include="Roslynator.Analyzers" Version="2.2.0">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="AsyncFixer" Version="1.1.6">
+      <PrivateAssets>analyzers</PrivateAssets>
+    </PackageReference>
+
   </ItemGroup>
 
 </Project>
