@@ -10,6 +10,7 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 
 [![Build Status](https://travis-ci.org/bgianfo/pr-dash.svg?branch=master)](https://travis-ci.org/bgianfo/pr-dash)
 [![GitHub license](https://img.shields.io/github/license/bgianfo/pr-dash.svg)]()
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
 
 ### Building/Installation
 
