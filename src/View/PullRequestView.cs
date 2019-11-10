@@ -134,55 +134,55 @@ namespace PrDash.View
         /// </summary>
         private void RefreshListDataAsync()
         {
-			bool needsRelease = false;
-			try
-			{
-				// We will enter the monitor for the duration of the refresh.
-				// See the exit at the bottom of RefreshListDataCallBack.
-				//
-				if (Monitor.TryEnter(m_viewRefreshMonitor))
-				{
-					needsRelease = true;
+            bool needsRelease = false;
+            try
+            {
+                // We will enter the monitor for the duration of the refresh.
+                // See the exit at the bottom of RefreshListDataCallBack.
+                //
+                if (Monitor.TryEnter(m_viewRefreshMonitor))
+                {
+                    needsRelease = true;
 
-					// Clear the backing list, but don't re-render yet.
-					//
-					m_backingList.Clear();
+                    // Clear the backing list, but don't re-render yet.
+                    //
+                    m_backingList.Clear();
 
-					Task task = new Task(() =>
-					{
-						try 
-						{
-							// Invoke the callback, wait for the population to finish.
-							//
-							RefreshListDataCallBack().Wait();
-						}
-						finally
-						{
-							// Once population is finished, exit the monitor.
-							//
-							Application.MainLoop.Invoke(() =>
-							{
-								// Exit the monitor that was entered
-								// before the task was launched.
-								// See: RefreshListDataAsync
-								//
-								Monitor.Exit(m_viewRefreshMonitor);
-							});
-						}
-					});
+                    Task task = new Task(() =>
+                    {
+                        try
+                        {
+                            // Invoke the callback, wait for the population to finish.
+                            //
+                            RefreshListDataCallBack().Wait();
+                        }
+                        finally
+                        {
+                            // Once population is finished, exit the monitor.
+                            //
+                            Application.MainLoop.Invoke(() =>
+                            {
+                                // Exit the monitor that was entered
+                                // before the task was launched.
+                                // See: RefreshListDataAsync
+                                //
+                                Monitor.Exit(m_viewRefreshMonitor);
+                            });
+                        }
+                    });
 
-					task.Start();
+                    task.Start();
 
-					needsRelease = false;
-				}
-			}
-			finally
-			{
-				if (needsRelease)
-				{
-					Monitor.Exit(m_viewRefreshMonitor);
-				}
-			}
+                    needsRelease = false;
+                }
+            }
+            finally
+            {
+                if (needsRelease)
+                {
+                    Monitor.Exit(m_viewRefreshMonitor);
+                }
+            }
         }
 
         /// <summary>
