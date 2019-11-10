@@ -23,7 +23,6 @@ namespace PrDash.View
             Focus = Attribute.Make(Color.BrightGreen, DefaultBackGround),
         };
 
-
         /// <summary>
         /// The color scheme for the boarder/edges of the user interface.
         /// </summary>

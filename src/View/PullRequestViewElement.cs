@@ -191,7 +191,7 @@ namespace PrDash.View
                 return 1;
             }
 
-            // Force sort order decending by negating the default sort order.
+            // Force sort order descending by negating the default sort order.
             //
             return -m_pullRequest.CreationDate.CompareTo(other.m_pullRequest.CreationDate);
         }

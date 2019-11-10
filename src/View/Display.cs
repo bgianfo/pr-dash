@@ -16,6 +16,7 @@ namespace PrDash.View
         /// Initialize and run the UI main loop.
         /// </summary>
         /// <param name="source">The backing data source to render from.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="config"/> is <c>null</c>.</exception>
         public static void RunUiLoop(Config config, IPullRequestSource source)
         {
             if (config == null)

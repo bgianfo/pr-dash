@@ -17,6 +17,14 @@ namespace PrDash.Handlers
         private readonly string m_protocolPrefix;
         private readonly AccountConfig m_config;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomPullRequestHandler"/> class.
+        /// </summary>
+        /// <param name="accountConfig">The account configuration.</param>
+        /// <param name="protocolPrefix">The protocol prefix.</param>
+        /// <exception cref="ArgumentNullException">When <paramref name="accountConfig"/> or
+        /// <paramref name="protocolPrefix"/> is <c>null</c>.
+        /// </exception>
         public CustomPullRequestHandler(AccountConfig accountConfig, string protocolPrefix)
         {
             if (accountConfig == null)
@@ -33,6 +41,11 @@ namespace PrDash.Handlers
             m_config = accountConfig;
         }
 
+        /// <summary>
+        /// Invokes the handler.
+        /// </summary>
+        /// <param name="pullRequest">The pull request to handle.</param>
+        /// <exception cref="ArgumentNullException">pullRequest</exception>
         public void InvokeHandler(GitPullRequest pullRequest)
         {
             if (pullRequest == null)
@@ -63,7 +76,7 @@ namespace PrDash.Handlers
             string proj = m_config.Project;
             string url = $"{m_config.OrganizationUrl}&project={proj}&repo={proj}&pullRequest={pr.PullRequestId}&alert=true";
 
-            // Some app Urll decoders don't seem to support full url de-encoding... so just encode "enough".
+            // Some app Url decoders don't seem to support full url de-encoding... so just encode "enough".
             //
             url = url.Replace("/", "%2F", StringComparison.InvariantCultureIgnoreCase);
             url = url.Replace(":", "%3A", StringComparison.InvariantCultureIgnoreCase);

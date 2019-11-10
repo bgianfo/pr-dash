@@ -30,7 +30,8 @@ namespace PrDash.Handlers
         /// Invokes the handler.
         /// </summary>
         /// <param name="pullRequest">The pull request.</param>
-        /// <exception cref="ArgumentNullException">pullRequest</exception>
+        /// <exception cref="ArgumentNullException">When <paramref name="pullRequest"/> is <c>null</c>.</exception>
+        /// <exception cref="NotSupportedException">Is thrown on operating systems where the handler is not yet implemented.</exception>
         public void InvokeHandler(GitPullRequest pullRequest)
         {
             if (pullRequest == null)
