@@ -11,6 +11,7 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 [![Build Status](https://travis-ci.org/bgianfo/pr-dash.svg?branch=master)](https://travis-ci.org/bgianfo/pr-dash)
 [![GitHub license](https://img.shields.io/github/license/bgianfo/pr-dash.svg)]()
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
 
 ### Building/Installation
 
