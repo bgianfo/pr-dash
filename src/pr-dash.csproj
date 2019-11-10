@@ -34,6 +34,18 @@
     <PackageReference Include="AsyncFixer" Version="1.1.6">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="ErrorProne.Net.CoreAnalyzers" Version="0.2.0-beta.7">
+      <PrivateAssets>analyzers</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="ErrorProne.Net.Structs" Version="0.2.0-beta.7">
+      <PrivateAssets>analyzers</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SmartAnalyzers.ExceptionAnalyzer" Version="1.0.10">
+      <PrivateAssets>analyzers</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SmartAnalyzers.MultithreadingAnalyzer" Version="1.1.31">
+      <PrivateAssets>analyzers</PrivateAssets>
+    </PackageReference>
 
   </ItemGroup>
 
