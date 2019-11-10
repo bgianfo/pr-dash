@@ -17,7 +17,7 @@ namespace PrDash
         /// <returns>The process exit code.</returns>
         public static int Main(string[] args)
         {
-			var options = Parser.Default.ParseArguments<CommandLineOptions>(args);
+            var options = Parser.Default.ParseArguments<CommandLineOptions>(args);
 
             return options.MapResult(
                 options => RunAndReturnExitCode(options),

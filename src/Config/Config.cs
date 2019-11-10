@@ -150,60 +150,60 @@ namespace PrDash.Configuration
             return configuration;
         }
 
-		/// <summary>
-		/// Loads the Yaml configuration stream from the specified input.
-		/// </summary>
-		/// <param name="yamlReader">The input.</param>
-		private void LoadYaml(TextReader yamlReader)
-		{
-			// Load the stream from the text reader.
-			//
-			YamlStream yaml = new YamlStream();
-			yaml.Load(yamlReader);
+        /// <summary>
+        /// Loads the Yaml configuration stream from the specified input.
+        /// </summary>
+        /// <param name="yamlReader">The input.</param>
+        private void LoadYaml(TextReader yamlReader)
+        {
+            // Load the stream from the text reader.
+            //
+            YamlStream yaml = new YamlStream();
+            yaml.Load(yamlReader);
 
-			// Fetch the root of the document.
-			//
-			var root = (YamlMappingNode)yaml.Documents[0].RootNode;
+            // Fetch the root of the document.
+            //
+            var root = (YamlMappingNode)yaml.Documents[0].RootNode;
 
-			// Fetch the root of the accounts list.
-			//
-			var accountNodes = (YamlSequenceNode)root.Children[new YamlScalarNode(YamlRootAccountsToken)];
+            // Fetch the root of the accounts list.
+            //
+            var accountNodes = (YamlSequenceNode)root.Children[new YamlScalarNode(YamlRootAccountsToken)];
 
-			foreach (YamlMappingNode accountNode in accountNodes)
-			{
-				AccountConfig newAccount = new AccountConfig
-				{
-					PersonalAccessToken = accountNode.GetString(YamlFieldPatToken),
-										OrganizationUrl = accountNode.GetUri(YamlFieldOrgUrlToken),
-										Project = accountNode.GetString(YamlFieldProjectToken),
-				};
+            foreach (YamlMappingNode accountNode in accountNodes)
+            {
+                AccountConfig newAccount = new AccountConfig
+                {
+                    PersonalAccessToken = accountNode.GetString(YamlFieldPatToken),
+                    OrganizationUrl = accountNode.GetUri(YamlFieldOrgUrlToken),
+                    Project = accountNode.GetString(YamlFieldProjectToken),
+                };
 
-				// If a repository name is configured use it, otherwise default the repo name
-				// to be the same as the project name.
-				//
-				if (accountNode.Children.ContainsKey(YamlFieldRepoNameToken))
-				{
-					newAccount.RepoName = accountNode.GetString(YamlFieldRepoNameToken);
-				}
-				else
-				{
-					newAccount.RepoName = newAccount.Project;
-				}
+                // If a repository name is configured use it, otherwise default the repo name
+                // to be the same as the project name.
+                //
+                if (accountNode.Children.ContainsKey(YamlFieldRepoNameToken))
+                {
+                    newAccount.RepoName = accountNode.GetString(YamlFieldRepoNameToken);
+                }
+                else
+                {
+                    newAccount.RepoName = newAccount.Project;
+                }
 
-				// If a handler is configured use the custom handler, default to the web UI handler.
-				//
-				if (accountNode.Children.ContainsKey(YamlFieldHandlerToken))
-				{
-					string protocol = accountNode.GetString(YamlFieldHandlerToken);
-					newAccount.Handler = new CustomPullRequestHandler(newAccount, protocol);
-				}
-				else
-				{
-					newAccount.Handler = new WebPullRequestHandler(newAccount);
-				}
+                // If a handler is configured use the custom handler, default to the web UI handler.
+                //
+                if (accountNode.Children.ContainsKey(YamlFieldHandlerToken))
+                {
+                    string protocol = accountNode.GetString(YamlFieldHandlerToken);
+                    newAccount.Handler = new CustomPullRequestHandler(newAccount, protocol);
+                }
+                else
+                {
+                    newAccount.Handler = new WebPullRequestHandler(newAccount);
+                }
 
-				m_accounts.Add(newAccount);
-			}
-		}
+                m_accounts.Add(newAccount);
+            }
+        }
     }
 }
