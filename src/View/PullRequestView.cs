@@ -41,7 +41,7 @@ namespace PrDash.View
         /// </summary>
         private List<PullRequestViewElement> m_backingList;
 
-        private object m_viewRefreshMonitor = new object();
+        private readonly object m_viewRefreshMonitor = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
