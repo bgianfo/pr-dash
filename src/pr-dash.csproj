@@ -17,7 +17,7 @@
     <PackageReference Include="Terminal.Gui" Version="0.24.0" />
     <PackageReference Include="Humanizer" Version="2.7.9" />
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.158.0-preview" />
-    <PackageReference Include="CommandLineParser" Version="2.6.0" />
+    <PackageReference Include="CommandLineParser" Version="2.7.82" />
 
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>analyzers</PrivateAssets>
