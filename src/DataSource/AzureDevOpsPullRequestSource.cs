@@ -31,7 +31,10 @@ namespace PrDash.DataSource
             m_statistics = new PullRequestStatistics();
         }
 
-        public PullRequestStatistics Statistics { get { return m_statistics; } }
+        /// <summary>
+        /// Event handler for receiving updates to the pull request statistics.
+        /// </summary>
+        public event EventHandler<StatisticsUpdateEventArgs> StatisticsUpdate;
 
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
@@ -111,6 +114,10 @@ namespace PrDash.DataSource
 
                 yield return pr;
             }
+
+            // Post event on stats update.
+            //
+            OnStatisticsUpdate();
         }
 
         /// <summary>
@@ -178,6 +185,24 @@ namespace PrDash.DataSource
             return new VssConnection(
                 account.OrganizationUrl,
                 new VssBasicCredential(string.Empty, account.PersonalAccessToken));
+        }
+
+        /// <summary>
+        /// Invokes event update when statistics are updated.
+        /// </summary>
+        /// <param name="account">Account details to create the connection for.</param>
+        private void OnStatisticsUpdate()
+        {
+            StatisticsUpdateEventArgs eventArgs = new StatisticsUpdateEventArgs()
+            {
+                Statistics = m_statistics
+            };
+
+            EventHandler<StatisticsUpdateEventArgs> handler = StatisticsUpdate;
+            if (handler != null)
+            {
+                handler(this, eventArgs);
+            }
         }
     }
 }

@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.View;
 
 namespace PrDash.DataSource
 {
+    public class StatisticsUpdateEventArgs
+    {
+        public PullRequestStatistics Statistics { set; get; }
+    }
+
     /// <summary>
     /// Interface for interacting with the pull request.
     /// </summary>
@@ -12,7 +18,9 @@ namespace PrDash.DataSource
         /// <summary>
         /// Getter to retreive statistics.
         /// </summary>
-        PullRequestStatistics Statistics { get; }
+        //PullRequestStatistics Statistics { get; }
+
+        event EventHandler<StatisticsUpdateEventArgs>  StatisticsUpdate;
 
         /// <summary>
         /// Retrieves all active pull requests to the configured data source.
