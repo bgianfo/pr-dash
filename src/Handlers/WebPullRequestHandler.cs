@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Web;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.Configuration;
 
@@ -80,7 +81,9 @@ namespace PrDash.Handlers
         /// </remarks>
         private string ConstructUri(GitPullRequest pr)
         {
-            return $"{m_config.OrganizationUrl}/_git/{m_config.Project}/pullrequest/{pr.PullRequestId}";
+            string repo = Uri.EscapeUriString(m_config.RepoName);
+            string proj = Uri.EscapeUriString(m_config.Project);
+            return $"{m_config.OrganizationUrl}/{proj}/_git/{repo}/pullrequest/{pr.PullRequestId}";
         }
     }
 }

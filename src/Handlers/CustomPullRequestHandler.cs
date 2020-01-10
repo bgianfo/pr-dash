@@ -74,14 +74,12 @@ namespace PrDash.Handlers
         private string ConstructUri(GitPullRequest pr)
         {
             string proj = m_config.Project;
-            string url = $"{m_config.OrganizationUrl}&project={proj}&repo={proj}&pullRequest={pr.PullRequestId}&alert=true";
+            string repo = m_config.RepoName;
+            string url = $"{m_config.OrganizationUrl}&project={proj}&repo={repo}&pullRequest={pr.PullRequestId}&alert=true";
 
-            // Some app Url decoders don't seem to support full url de-encoding... so just encode "enough".
-            //
-            url = url.Replace("/", "%2F", StringComparison.InvariantCultureIgnoreCase);
-            url = url.Replace(":", "%3A", StringComparison.InvariantCultureIgnoreCase);
+            string escapedUrl = Uri.EscapeUriString(url);
 
-            return $"{m_protocolPrefix}://open/?server={url}";
+            return $"{m_protocolPrefix}://open/?server={escapedUrl}";
         }
     }
 }
