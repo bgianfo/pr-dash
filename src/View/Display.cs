@@ -28,7 +28,7 @@ namespace PrDash.View
 
             Application.Current.ColorScheme = CustomColorSchemes.Main;
 
-            var contentWindow = new Window("Pull Requests To Review:")
+            var contentWindow = new Window("Actionable Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
                 Height = config.StatusBarEnabled ? Dim.Fill() - Dim.Sized(3) : Dim.Fill(),
@@ -42,7 +42,7 @@ namespace PrDash.View
 
             if (config.StatusBarEnabled)
             {
-                StatusBar status = new StatusBar();
+                StatusBar status = new StatusBar(source);
                 var statusWindow = new Window("Status:")
                 {
                     Width = Dim.Fill(),

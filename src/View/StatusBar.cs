@@ -1,4 +1,7 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using PrDash.DataSource;
 using Terminal.Gui;
 
 namespace PrDash.View
@@ -17,17 +20,40 @@ namespace PrDash.View
         private readonly Label m_status;
 
         /// <summary>
+        /// The data source the status bar pull data from.
+        /// </summary>
+        private readonly IPullRequestSource m_source;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
         /// </summary>
-        public StatusBar()
+        public StatusBar(IPullRequestSource source)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             CanFocus = false;
             Height = 1;
             ColorScheme = CustomColorSchemes.MutedEdges;
 
-            m_status = new Label("TODO!");
+            // Listen on statistics update callback.
+            //
+            m_source = source;
+            m_source.StatisticsUpdate += StatisUpdateCallback;
+
+            m_status = new Label("Loading...");
 
             Add(m_status);
+        }
+
+        private void StatisUpdateCallback(object sender, StatisticsUpdateEventArgs eventArgs)
+        {
+            PullRequestStatistics stats = eventArgs.Statistics;
+
+            m_status.Text = string.Format("Actionable: {0} | Waiting: {1} | SignedOff: {2} | Drafts: {3}",
+                stats.Actionable, stats.Waiting, stats.SignedOff, stats.Drafts);
         }
     }
 }

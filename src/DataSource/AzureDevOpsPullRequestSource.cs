@@ -19,6 +19,8 @@ namespace PrDash.DataSource
         /// </summary>
         private readonly Config m_config;
 
+        private PullRequestStatistics m_statistics;
+
         /// <summary>
         /// Constructs a new request source.
         /// </summary>
@@ -26,7 +28,13 @@ namespace PrDash.DataSource
         public AzureDevOpsPullRequestSource(Config config)
         {
             m_config = config;
+            m_statistics = new PullRequestStatistics();
         }
+
+        /// <summary>
+        /// Event handler for receiving updates to the pull request statistics.
+        /// </summary>
+        public event EventHandler<StatisticsUpdateEventArgs> StatisticsUpdate;
 
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
@@ -34,6 +42,8 @@ namespace PrDash.DataSource
         /// <returns>A an async stream of <see cref="PullRequestViewElement"/></returns>
         public IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts()
         {
+            m_statistics.Reset();
+
             return FetchActivePullRequstsInternal();
         }
 
@@ -60,7 +70,7 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private static async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
+        private async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
         {
             await foreach (var (currentUserId, pr) in FetchAccountActivePullRequsts(accountConfig))
             {
@@ -68,6 +78,7 @@ namespace PrDash.DataSource
                 //
                 if (pr.IsDraft == true)
                 {
+                    m_statistics.Drafts++;
                     continue;
                 }
 
@@ -84,6 +95,7 @@ namespace PrDash.DataSource
                 //
                 if (reviewer.HasFinalVoteBeenCast())
                 {
+                    m_statistics.SignedOff++;
                     continue;
                 }
 
@@ -92,13 +104,20 @@ namespace PrDash.DataSource
                 //
                 if (reviewer.IsWaiting())
                 {
+                    m_statistics.Waiting++;
                     continue;
                 }
 
                 // If  these criteria haven't been met, then display the review.
                 //
+                m_statistics.Actionable++;
+
                 yield return pr;
             }
+
+            // Post event on stats update.
+            //
+            OnStatisticsUpdate();
         }
 
         /// <summary>
@@ -166,6 +185,24 @@ namespace PrDash.DataSource
             return new VssConnection(
                 account.OrganizationUrl,
                 new VssBasicCredential(string.Empty, account.PersonalAccessToken));
+        }
+
+        /// <summary>
+        /// Invokes event update when statistics are updated.
+        /// </summary>
+        /// <param name="account">Account details to create the connection for.</param>
+        private void OnStatisticsUpdate()
+        {
+            StatisticsUpdateEventArgs eventArgs = new StatisticsUpdateEventArgs()
+            {
+                Statistics = m_statistics
+            };
+
+            EventHandler<StatisticsUpdateEventArgs> handler = StatisticsUpdate;
+            if (handler != null)
+            {
+                handler(this, eventArgs);
+            }
         }
     }
 }
