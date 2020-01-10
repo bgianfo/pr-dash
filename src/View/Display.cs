@@ -40,19 +40,19 @@ namespace PrDash.View
 
             Application.Top.Add(contentWindow);
 
-			if (config.StatusBarEnabled)
-			{
-				StatusBar status = new StatusBar();
-				var statusWindow = new Window("Status:")
-				{
-					Width = Dim.Fill(),
-					Height = Dim.Sized(3),
-					Y = Pos.Bottom(contentWindow),
-					ColorScheme = CustomColorSchemes.MutedEdges,
-				};
-				statusWindow.Add(status);
-				Application.Top.Add(statusWindow);
-			}
+            if (config.StatusBarEnabled)
+            {
+                StatusBar status = new StatusBar();
+                var statusWindow = new Window("Status:")
+                {
+                    Width = Dim.Fill(),
+                    Height = Dim.Sized(3),
+                    Y = Pos.Bottom(contentWindow),
+                    ColorScheme = CustomColorSchemes.MutedEdges,
+                };
+                statusWindow.Add(status);
+                Application.Top.Add(statusWindow);
+            }
 
             Application.Run();
         }
