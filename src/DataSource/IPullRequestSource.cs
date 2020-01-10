@@ -21,7 +21,7 @@ namespace PrDash.DataSource
         /// <summary>
         /// Event to list on statistics updates.
         /// </summary>
-        event EventHandler<StatisticsUpdateEventArgs>  StatisticsUpdate;
+        event EventHandler<StatisticsUpdateEventArgs> StatisticsUpdate;
 
         /// <summary>
         /// Retrieves all active pull requests to the configured data source.
