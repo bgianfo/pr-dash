@@ -5,6 +5,9 @@ using PrDash.View;
 
 namespace PrDash.DataSource
 {
+    /// <summary>
+    /// Event arguments for callback on statistics updates.
+    /// </summary>
     public class StatisticsUpdateEventArgs
     {
         public PullRequestStatistics Statistics { set; get; }
@@ -16,10 +19,8 @@ namespace PrDash.DataSource
     public interface IPullRequestSource
     {
         /// <summary>
-        /// Getter to retreive statistics.
+        /// Event to list on statistics updates.
         /// </summary>
-        //PullRequestStatistics Statistics { get; }
-
         event EventHandler<StatisticsUpdateEventArgs>  StatisticsUpdate;
 
         /// <summary>
