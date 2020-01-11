@@ -82,7 +82,9 @@ namespace PrDash.Configuration
         /// </summary>
         public Config(CommandLineOptions options = null)
         {
-            StatusBarEnabled = options == null ? false : options.StatusBarEnabled;
+            // Status bar is always enabled for now.
+            //
+            StatusBarEnabled = true;
         }
 
         /// <summary>
