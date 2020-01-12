@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using YamlDotNet.RepresentationModel;
 using PrDash.Handlers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PrDash.Configuration
 {
@@ -75,11 +76,13 @@ namespace PrDash.Configuration
         /// <summary>
         /// The status bar option.
         /// </summary>
-        public bool StatusBarEnabled { get; private set; }
+        public bool StatusBarEnabled { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
+        /// <param name="options">Command line options which override configuration.</param>
+        [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "Useful extension point for the future.")]
         public Config(CommandLineOptions options = null)
         {
             // Status bar is always enabled for now.

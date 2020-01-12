@@ -52,8 +52,7 @@ namespace PrDash.View
         {
             PullRequestStatistics stats = eventArgs.Statistics;
 
-            m_status.Text = string.Format("Actionable: {0} | Waiting: {1} | SignedOff: {2} | Drafts: {3}",
-                stats.Actionable, stats.Waiting, stats.SignedOff, stats.Drafts);
+            m_status.Text = $"Actionable: {stats.Actionable} | Waiting: {stats.Waiting} | SignedOff: {stats.SignedOff} | Drafts: {stats.Drafts}";
         }
     }
 }
