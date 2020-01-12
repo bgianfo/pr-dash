@@ -19,7 +19,10 @@ namespace PrDash.DataSource
         /// </summary>
         private readonly Config m_config;
 
-        private PullRequestStatistics m_statistics;
+        /// <summary>
+        /// The running statistics of pull requests that we are tracking.
+        /// </summary>
+        private PullRequestStatistics m_statistics = new PullRequestStatistics();
 
         /// <summary>
         /// Constructs a new request source.
@@ -28,7 +31,6 @@ namespace PrDash.DataSource
         public AzureDevOpsPullRequestSource(Config config)
         {
             m_config = config;
-            m_statistics = new PullRequestStatistics();
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace PrDash.DataSource
         /// <summary>
         /// Retrieves all active & actionable pull requests to the configured data source.
         /// </summary>
-        /// <returns>A an async stream of <see cref="PullRequestViewElement"/></returns>
+        /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
         public IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts()
         {
             m_statistics.Reset();
@@ -51,7 +53,7 @@ namespace PrDash.DataSource
         /// Helper function to make async code line up, since interface methods cannot be marked
         /// as async.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
         private async IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequstsInternal()
         {
             foreach (AccountConfig account in m_config.Accounts)
@@ -86,7 +88,7 @@ namespace PrDash.DataSource
                 //
                 if (!TryGetReviewer(pr, currentUserId, out IdentityRefWithVote reviewer))
                 {
-                    //  SKip this review if we aren't assigned.
+                    //  Skip this review if we aren't assigned.
                     //
                     continue;
                 }
@@ -108,7 +110,7 @@ namespace PrDash.DataSource
                     continue;
                 }
 
-                // If  these criteria haven't been met, then display the review.
+                // If these criteria haven't been met, then display the review.
                 //
                 m_statistics.Actionable++;
 
@@ -142,6 +144,7 @@ namespace PrDash.DataSource
                 {
                     ReviewerId = currentUserId,
                     Status = PullRequestStatus.Active,
+                    IncludeLinks = true,
                 };
 
                 List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
@@ -159,7 +162,7 @@ namespace PrDash.DataSource
         /// <param name="pullRequest">The pull request we want to look our selves up in.</param>
         /// <param name="currentUserId">The <see cref="Guid"/> of our current user.</param>
         /// <param name="reviewer">Output  parameter that points to our own reviewer object.</param>
-        /// <returns></returns>
+        /// <returns>Returns <c>true</c> if the reviewer was found, <c>false</c> otherwise.</returns>
         private static bool TryGetReviewer(GitPullRequest pullRequest, Guid currentUserId, out IdentityRefWithVote reviewer)
         {
             foreach (IdentityRefWithVote r in pullRequest.Reviewers)
@@ -190,7 +193,6 @@ namespace PrDash.DataSource
         /// <summary>
         /// Invokes event update when statistics are updated.
         /// </summary>
-        /// <param name="account">Account details to create the connection for.</param>
         private void OnStatisticsUpdate()
         {
             StatisticsUpdateEventArgs eventArgs = new StatisticsUpdateEventArgs()

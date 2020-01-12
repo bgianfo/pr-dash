@@ -13,6 +13,22 @@ namespace PrDash.View
     public sealed class Display
     {
         /// <summary>
+        /// Gets the height of the status bar.
+        /// </summary>
+        private static Dim StatusBarHeight
+        {
+            get { return Dim.Sized(3); }
+        }
+
+        /// <summary>
+        /// Gets the default window theme.
+        /// </summary>
+        private static ColorScheme WindowTheme
+        {
+            get { return CustomColorSchemes.MutedEdges; }
+        }
+
+        /// <summary>
         /// Initialize and run the UI main loop.
         /// </summary>
         /// <param name="source">The backing data source to render from.</param>
@@ -25,33 +41,31 @@ namespace PrDash.View
             }
 
             Application.Init();
-
             Application.Current.ColorScheme = CustomColorSchemes.Main;
+            Toplevel top = Application.Top;
 
-            var contentWindow = new Window("Actionable Pull Requests To Review:")
+            Window contentWindow = new Window("Actionable Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
-                Height = config.StatusBarEnabled ? Dim.Fill() - Dim.Sized(3) : Dim.Fill(),
-                ColorScheme = CustomColorSchemes.MutedEdges,
+                Height = config.StatusBarEnabled ? Dim.Fill() - StatusBarHeight : Dim.Fill(),
+                ColorScheme = WindowTheme,
             };
 
-            PullRequestView reView = new PullRequestView(source);
-            contentWindow.Add(reView);
-
-            Application.Top.Add(contentWindow);
+            contentWindow.Add(new PullRequestView(source));
+            top.Add(contentWindow);
 
             if (config.StatusBarEnabled)
             {
-                StatusBar status = new StatusBar(source);
-                var statusWindow = new Window("Status:")
+                Window statusWindow = new Window("Status:")
                 {
                     Width = Dim.Fill(),
-                    Height = Dim.Sized(3),
+                    Height = StatusBarHeight,
                     Y = Pos.Bottom(contentWindow),
-                    ColorScheme = CustomColorSchemes.MutedEdges,
+                    ColorScheme = WindowTheme,
                 };
-                statusWindow.Add(status);
-                Application.Top.Add(statusWindow);
+
+                statusWindow.Add(new StatusBar(source));
+                top.Add(statusWindow);
             }
 
             Application.Run();

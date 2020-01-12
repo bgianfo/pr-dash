@@ -25,7 +25,7 @@ namespace PrDash
         }
 
         /// <summary>
-        /// The post command line option parsing entrypoint.
+        /// The post command line option parsing entry point.
         /// </summary>
         /// <param name="options">The parsed command line options.</param>
         /// <returns>The process exit code.</returns>
