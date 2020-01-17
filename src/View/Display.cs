@@ -44,6 +44,14 @@ namespace PrDash.View
             Application.Current.ColorScheme = CustomColorSchemes.Main;
             Toplevel top = Application.Top;
 
+            // We intentionally initialize the status bar first, as the status
+            // bar hooks events on the source, and the pull request view, will
+            // drive API calls on the source which will trigger those events.
+            // To avoid races here, make sure to hook first, run later.
+            //
+            StatusBar statusBar = new StatusBar(source);
+            PullRequestView requestView = new PullRequestView(source);
+
             Window contentWindow = new Window("Actionable Pull Requests To Review:")
             {
                 Width = Dim.Fill(),
@@ -51,7 +59,7 @@ namespace PrDash.View
                 ColorScheme = WindowTheme,
             };
 
-            contentWindow.Add(new PullRequestView(source));
+            contentWindow.Add(requestView);
             top.Add(contentWindow);
 
             if (config.StatusBarEnabled)
@@ -64,7 +72,7 @@ namespace PrDash.View
                     ColorScheme = WindowTheme,
                 };
 
-                statusWindow.Add(new StatusBar(source));
+                statusWindow.Add(statusBar);
                 top.Add(statusWindow);
             }
 
