@@ -48,7 +48,7 @@ namespace PrDash.View
         /// </summary>
         private string BoundedTitle
         {
-            get => FitStringToBound(m_pullRequest.Title.Trim(), TitleColumnWidth);
+            get => FitStringToBound(" " + m_pullRequest.Title.Trim(), TitleColumnWidth);
         }
 
         /// <summary>

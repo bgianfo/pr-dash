@@ -28,7 +28,7 @@ namespace PrDash.View
         /// </summary>
         private static List<string> LoadingContents = new List<string>()
         {
-            "Loading..."
+            " Loading..."
         };
 
         /// <summary>

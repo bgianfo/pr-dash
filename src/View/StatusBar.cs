@@ -25,6 +25,11 @@ namespace PrDash.View
         private readonly IPullRequestSource m_source;
 
         /// <summary>
+        /// The initial loading text for  the status bar.
+        /// </summary>
+        private readonly string LoadingText = " Loading...";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
         /// </summary>
         public StatusBar(IPullRequestSource source)
@@ -43,7 +48,7 @@ namespace PrDash.View
             m_source = source;
             m_source.StatisticsUpdate += StatisUpdateCallback;
 
-            m_status = new Label("Loading...");
+            m_status = new Label(LoadingText);
 
             Add(m_status);
         }
@@ -52,7 +57,7 @@ namespace PrDash.View
         {
             PullRequestStatistics stats = eventArgs.Statistics;
 
-            m_status.Text = $"Actionable: {stats.Actionable} | Waiting: {stats.Waiting} | SignedOff: {stats.SignedOff} | Drafts: {stats.Drafts}";
+            m_status.Text = $" Actionable: {stats.Actionable} | Waiting: {stats.Waiting} | SignedOff: {stats.SignedOff} | Drafts: {stats.Drafts}";
         }
     }
 }
