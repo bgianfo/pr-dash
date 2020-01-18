@@ -27,7 +27,7 @@ $ dotnet test
 $ dotnet run
 ```
 
-### Running tests
+### Running Tests
 
 To run the [xunit](https://xunit.net/) based test suite, use:
 
@@ -38,23 +38,26 @@ $ dotnet test
 
 ### Configuration
 
-To configure pr-dash you simply need to setup a yaml file at ~/.pr-dash.yml, with one or more
+To configure pr-dash you simply need to setup a yaml file with one or more
 projects/repo's to monitor for reiews.
 
-Example ~/.pr-dash.yml:
+The location of the yaml file differs based on the OS:
+- Linux: ~/.pr-dash.yml
+- Windows: C:\Users\<USER>\AppData\Roaming\pr-dash.yml (%APPDATA%\pr-dash.yml)
+
+Example pr-dash.yml:
 
 ```
 accounts:
   - project_name: sample-project1
     repo_name: sample-git-repo1
-    [org_url](org_url): https://dev.azure.com/example1
+    org_url: https://dev.azure.com/example1
     pat: <your-personal-authentication-token>
- 
+
   - project_name: sample-project2
     repo_name: sample-git-repo
     org_url: https://example2.visualstudio.com
     pat: <your-personal-authentication-token>
-
 ```
 
 Notes: 
