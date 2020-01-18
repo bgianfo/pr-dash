@@ -21,7 +21,7 @@ namespace PrDash.View
         /// <summary>
         /// The interval in which we should refresh this views data.
         /// </summary>
-        private static TimeSpan RefreshTimerInterval = TimeSpan.FromMinutes(15);
+        private static TimeSpan RefreshTimerInterval = TimeSpan.FromMinutes(30);
 
         /// <summary>
         /// The contents of the view when the data is loading.
@@ -39,9 +39,17 @@ namespace PrDash.View
         /// <summary>
         /// The list of elements that this view is currently rendering.
         /// </summary>
-        private List<PullRequestViewElement> m_backingList;
+        private List<PullRequestViewElement> m_backingList = new List<PullRequestViewElement>();
 
+        /// <summary>
+        /// Monitor to synchronize the updating of the view.
+        /// </summary>
         private readonly object m_viewRefreshMonitor = new object();
+
+        /// <summary>
+        /// The state we wish to view pull requests in.
+        /// </summary>
+        private PrState m_stateToView = PrState.Actionable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
@@ -51,8 +59,6 @@ namespace PrDash.View
             : base(LoadingContents)
         {
             m_pullRequestSource = source;
-
-            m_backingList = new List<PullRequestViewElement>();
 
             // Override the color scheme to our main theme for this view.
             //
@@ -65,6 +71,18 @@ namespace PrDash.View
             // Setup a timer to fire in the future to refresh again.
             //
             Application.MainLoop.AddTimeout(RefreshTimerInterval, RefreshTimerCallback);
+        }
+
+        /// <summary>
+        /// Switch what pull requests we want to view.
+        /// </summary>
+        /// <param name="newState">What state we want the pull requests we are loking at to be in.</param>
+        private void SwitchPrStateView(PrState newState)
+        {
+            // TODO: Switch state should toggle the title of the view.
+            //
+            m_stateToView = newState;
+            RefreshListDataAsync();
         }
 
         /// <summary>
@@ -89,6 +107,12 @@ namespace PrDash.View
                     return base.ProcessKey(keyEvent);
                 case 'r':
                     RefreshListDataAsync();
+                    return true;
+                case 'w':
+                    SwitchPrStateView(PrState.Waiting);
+                    return true;
+                case 'a':
+                    SwitchPrStateView(PrState.Actionable);
                     return true;
                 case 'q':
                     Application.RequestStop();
@@ -193,7 +217,7 @@ namespace PrDash.View
         {
             try
             {
-                await foreach (PullRequestViewElement element in m_pullRequestSource.FetchActivePullRequsts())
+                await foreach (PullRequestViewElement element in m_pullRequestSource.FetchPullRequests(m_stateToView))
                 {
                     // Force the re-rendering to occur on the main thread.
                     //

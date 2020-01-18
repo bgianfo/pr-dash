@@ -39,14 +39,14 @@ namespace PrDash.DataSource
         public event EventHandler<StatisticsUpdateEventArgs> StatisticsUpdate;
 
         /// <summary>
-        /// Retrieves all active & actionable pull requests to the configured data source.
+        /// Retrieves pull requests from the configured data source.
         /// </summary>
         /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
-        public IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts()
+        public IAsyncEnumerable<PullRequestViewElement> FetchPullRequests(PrState state)
         {
             m_statistics.Reset();
 
-            return FetchActivePullRequstsInternal();
+            return FetchPullRequstsInternal(state);
         }
 
         /// <summary>
@@ -54,13 +54,13 @@ namespace PrDash.DataSource
         /// as async.
         /// </summary>
         /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
-        private async IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequstsInternal()
+        private async IAsyncEnumerable<PullRequestViewElement> FetchPullRequstsInternal(PrState state)
         {
             foreach (AccountConfig account in m_config.Accounts)
             {
-                IAsyncEnumerable<GitPullRequest> actionable = FetchActionablePullRequests(account);
+                IAsyncEnumerable<GitPullRequest> requests = FetchPullRequests(account, state);
 
-                await foreach (var pr in actionable)
+                await foreach (var pr in requests)
                 {
                     yield return new PullRequestViewElement(pr, account.Handler);
                 }
@@ -72,7 +72,7 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private async IAsyncEnumerable<GitPullRequest> FetchActionablePullRequests(AccountConfig accountConfig)
+        private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(AccountConfig accountConfig, PrState state)
         {
             await foreach (var (currentUserId, pr) in FetchAccountActivePullRequsts(accountConfig))
             {
@@ -107,14 +107,23 @@ namespace PrDash.DataSource
                 if (reviewer.IsWaiting())
                 {
                     m_statistics.Waiting++;
-                    continue;
+
+                    if (state == PrState.Waiting)
+                    {
+                        yield return pr;
+                    }
                 }
+                else
+                {
+                    // If these criteria haven't been met, then the PR is actionable.
+                    //
+                    m_statistics.Actionable++;
 
-                // If these criteria haven't been met, then display the review.
-                //
-                m_statistics.Actionable++;
-
-                yield return pr;
+                    if (state == PrState.Actionable)
+                    {
+                        yield return pr;
+                    }
+                }
             }
 
             // Post event on stats update.

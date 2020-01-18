@@ -13,6 +13,15 @@ namespace PrDash.DataSource
         public PullRequestStatistics Statistics { set; get; }
     }
 
+    public enum PrState
+    {
+        // Return only actionable pull requests.
+        Actionable,
+
+        // Return pull request we are waiting on.
+        Waiting,
+    }
+
     /// <summary>
     /// Interface for interacting with the pull request.
     /// </summary>
@@ -27,6 +36,6 @@ namespace PrDash.DataSource
         /// Retrieves all active pull requests to the configured data source.
         /// </summary>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        IAsyncEnumerable<PullRequestViewElement> FetchActivePullRequsts();
+        IAsyncEnumerable<PullRequestViewElement> FetchPullRequests(PrState state);
     }
 }
