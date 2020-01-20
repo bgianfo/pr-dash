@@ -26,6 +26,9 @@ namespace PrDash.View
         {
             Normal = Attribute.Make(Color.White, BackGround),
             Focus = Attribute.Make(FocusedForGround, BackGround),
+            HotNormal = Attribute.Make(Color.White, BackGround),
+            HotFocus = Attribute.Make(FocusedForGround, BackGround),
+
         };
 
         /// <summary>
@@ -36,6 +39,8 @@ namespace PrDash.View
         {
             Normal = Attribute.Make(Color.DarkGray, BackGround),
             Focus = Attribute.Make(FocusedForGround, BackGround),
+            HotNormal = Attribute.Make(Color.DarkGray, BackGround),
+            HotFocus = Attribute.Make(FocusedForGround, BackGround),
         };
     }
 }
