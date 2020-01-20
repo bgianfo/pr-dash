@@ -39,11 +39,11 @@ $ dotnet test
 ### Configuration
 
 To configure pr-dash you simply need to setup a yaml file with one or more
-projects/repo's to monitor for reiews.
+projects/repo's to monitor for reviews.
 
 The location of the yaml file differs based on the OS:
 - Linux: ~/.pr-dash.yml
-- Windows: C:\Users\\<USER>\AppData\Roaming\pr-dash.yml (%APPDATA%\pr-dash.yml)
+- Windows: C:\Users\USER-NAME\AppData\Roaming\pr-dash.yml (%APPDATA%\pr-dash.yml)
 
 Example pr-dash.yml:
 
