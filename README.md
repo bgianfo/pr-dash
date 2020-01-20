@@ -43,7 +43,7 @@ projects/repo's to monitor for reiews.
 
 The location of the yaml file differs based on the OS:
 - Linux: ~/.pr-dash.yml
-- Windows: C:\Users\<USER>\AppData\Roaming\pr-dash.yml (%APPDATA%\pr-dash.yml)
+- Windows: C:\Users\\<USER>\AppData\Roaming\pr-dash.yml (%APPDATA%\pr-dash.yml)
 
 Example pr-dash.yml:
 
@@ -60,7 +60,7 @@ accounts:
     pat: <your-personal-authentication-token>
 ```
 
-Notes: 
+Notes:
 - *repo_name* is optional, if it's omitted the project name will be used for the repo name as well.
 - You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 
