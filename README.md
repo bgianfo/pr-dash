@@ -13,7 +13,7 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
 
-### Building/Installation
+### Building
 
 `pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
 [dotnet core 3.0 installation](https://dotnet.microsoft.com/download/dotnet-core/3.0) in order to compile it.
@@ -21,19 +21,8 @@ Building is easy:
 
 ```
 $ git clone https://github.com/bgianfo/pr-dash
-$ cd pr-dash
-$ dotnet build
-$ dotnet test
+$ cd pr-dash\src
 $ dotnet run
-```
-
-### Running Tests
-
-To run the [xunit](https://xunit.net/) based test suite, use:
-
-```
-$ cd pr-dash
-$ dotnet test
 ```
 
 ### Configuration
@@ -65,3 +54,12 @@ Notes:
 - You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 
 Now you can run pr-dash and try it out.
+### Running Tests
+
+To run the [xunit](https://xunit.net/) based test suite, use:
+
+```
+$ cd pr-dash
+$ dotnet test
+```
+
