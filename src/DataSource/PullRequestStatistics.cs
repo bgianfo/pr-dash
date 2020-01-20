@@ -2,7 +2,7 @@
 namespace PrDash.DataSource
 {
     // Ignore warning about not declare visible instance fields.
-    #pragma warning disable CA1051
+#pragma warning disable CA1051
 
     /// <summary>
     /// POD type for capturing statistics for assigned pull requests.
@@ -41,5 +41,5 @@ namespace PrDash.DataSource
         }
     }
 
-    #pragma warning restore CA1051
+#pragma warning restore CA1051
 }
