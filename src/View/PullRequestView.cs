@@ -102,18 +102,37 @@ namespace PrDash.View
                 case 'j':
                     keyEvent.Key = Key.CursorDown;
                     return base.ProcessKey(keyEvent);
+
                 case 'k':
                     keyEvent.Key = Key.CursorUp;
                     return base.ProcessKey(keyEvent);
+
+                // Enable hotkey refresh.
+                //
                 case 'r':
                     RefreshListDataAsync();
                     return true;
+
+                // Enable hotkey switch view to waiting.
+                //
                 case 'w':
                     SwitchPrStateView(PrState.Waiting);
                     return true;
+
+                // Enable hotkey switch view to actionable.
+                //
                 case 'a':
                     SwitchPrStateView(PrState.Actionable);
                     return true;
+
+                // Enable hotkey help.
+                //
+                case 'h':
+                    HelpDialog.Launch();
+                    return true;
+
+                // Enable hotkey quit.
+                //
                 case 'q':
                     Application.RequestStop();
                     return true;
