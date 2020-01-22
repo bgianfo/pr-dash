@@ -76,12 +76,25 @@ namespace PrDash.View
         /// <summary>
         /// Switch what pull requests we want to view.
         /// </summary>
-        /// <param name="newState">What state we want the pull requests we are loking at to be in.</param>
+        /// <param name="newState">What state we want the pull requests we are looking at to be in.</param>
         private void SwitchPrStateView(PrState newState)
         {
-            // TODO: Switch state should toggle the title of the view.
-            //
             m_stateToView = newState;
+
+            // Update the title of the window when we switch.
+            //
+            Window parent = Application.Top.Subviews.First() as Window;
+            if (m_stateToView == PrState.Actionable)
+            {
+                parent.Title = Display.ActionableTitle;
+            }
+            else
+            {
+                parent.Title = Display.WaitingTitle;
+            }
+
+            // Force refresh the contents.
+            //
             RefreshListDataAsync();
         }
 

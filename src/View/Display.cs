@@ -13,6 +13,16 @@ namespace PrDash.View
     public sealed class Display
     {
         /// <summary>
+        /// Gets the title for the actionable pull requests view.
+        /// </summary>
+        public const string ActionableTitle = "Actionable Pull Requests To Review:";
+
+        /// <summary>
+        /// Gets the title for the waiting pull requests view.
+        /// </summary>
+        public const string WaitingTitle = "Waiting Pull Requests To Review:";
+
+        /// <summary>
         /// Gets the height of the status bar.
         /// </summary>
         private static Dim StatusBarHeight
@@ -52,7 +62,7 @@ namespace PrDash.View
             StatusBar statusBar = new StatusBar(source);
             PullRequestView requestView = new PullRequestView(source);
 
-            Window contentWindow = new Window("Actionable Pull Requests To Review:")
+            Window contentWindow = new Window(ActionableTitle)
             {
                 Width = Dim.Fill(),
                 Height = config.StatusBarEnabled ? Dim.Fill() - StatusBarHeight : Dim.Fill(),
