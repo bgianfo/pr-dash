@@ -22,6 +22,7 @@ namespace PrDash.View
  r - Force refresh the current PR view.
  a - Switch the current view to actionable PRs.
  w - Switch the current view to waiting PRs.
+ d - Switch the current view to draft PRs.
  h - Display this help dialog.
  q - Quit the program.
  Enter - Open the currently selected PR.

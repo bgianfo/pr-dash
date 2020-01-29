@@ -23,6 +23,11 @@ namespace PrDash.View
         public const string WaitingTitle = "Waiting Pull Requests To Review:";
 
         /// <summary>
+        /// Gets the title for the draft pull requests view.
+        /// </summary>
+        public const string DraftsTitle = "Draft Pull Requests To Review:";
+
+        /// <summary>
         /// Gets the height of the status bar.
         /// </summary>
         private static Dim StatusBarHeight

@@ -81,7 +81,15 @@ namespace PrDash.DataSource
                 if (pr.IsDraft == true)
                 {
                     m_statistics.Drafts++;
-                    continue;
+
+                    if (state == PrState.Drafts)
+                    {
+                        yield return pr;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 // Try to find our selves in the reviewer list.

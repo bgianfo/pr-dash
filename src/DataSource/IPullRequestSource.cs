@@ -18,6 +18,9 @@ namespace PrDash.DataSource
         // Return only actionable pull requests.
         Actionable,
 
+        // Return pull request marked as drafts.
+        Drafts,
+
         // Return pull request we are waiting on.
         Waiting,
     }

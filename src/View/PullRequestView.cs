@@ -84,13 +84,20 @@ namespace PrDash.View
             // Update the title of the window when we switch.
             //
             Window parent = Application.Top.Subviews.First() as Window;
-            if (m_stateToView == PrState.Actionable)
+
+            switch (m_stateToView)
             {
-                parent.Title = Display.ActionableTitle;
-            }
-            else
-            {
-                parent.Title = Display.WaitingTitle;
+                case PrState.Actionable:
+                    parent.Title = Display.ActionableTitle;
+                    break;
+                case PrState.Waiting:
+                    parent.Title = Display.WaitingTitle;
+                    break;
+                case PrState.Drafts:
+                    parent.Title = Display.DraftsTitle;
+                    break;
+                default:
+                    throw new NotSupportedException(m_stateToView.ToString());
             }
 
             // Force refresh the contents.
@@ -130,6 +137,12 @@ namespace PrDash.View
                 //
                 case 'w':
                     SwitchPrStateView(PrState.Waiting);
+                    return true;
+
+                // Enable hotkey switch view to drafts.
+                //
+                case 'd':
+                    SwitchPrStateView(PrState.Drafts);
                     return true;
 
                 // Enable hotkey switch view to actionable.
