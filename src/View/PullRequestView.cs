@@ -85,6 +85,11 @@ namespace PrDash.View
             //
             Window parent = Application.Top.Subviews.First() as Window;
 
+            if (parent == null)
+            {
+                throw new InvalidOperationException("Pullrequest view's parent window is null");
+            }
+
             switch (m_stateToView)
             {
                 case PrState.Actionable:
