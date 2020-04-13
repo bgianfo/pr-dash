@@ -1,4 +1,3 @@
-using PrDash;
 using System.IO;
 using Xunit;
 using PrDash.Configuration;

@@ -1,4 +1,3 @@
-
 namespace PrDash.DataSource
 {
     // Ignore warning about not declare visible instance fields.
