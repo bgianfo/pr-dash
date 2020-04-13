@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using PrDash.DataSource;
 using PrDash.Configuration;
 using Terminal.Gui;

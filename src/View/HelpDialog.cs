@@ -1,18 +1,16 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Linq;
 using Terminal.Gui;
 
 namespace PrDash.View
 {
     /// <summary>
-    /// A view which displays the help and keyboard shortcuts for this applcation.
+    /// A view which displays the help and keyboard shortcuts for this application.
     /// </summary>
-    /// <seealso cref="Terminal.Gui.Dialog" />
+    /// <seealso cref="Dialog" />
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "This isn't a collection")]
     [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
-    public class HelpDialog : Terminal.Gui.Dialog
+    public class HelpDialog : Dialog
     {
         /// <summary>
         /// The help dialog content to display.
@@ -34,7 +32,7 @@ Movement Keys:
  j - Select one pull request down.";
 
         /// <summary>
-        /// The calculated width of the diaplog contents.
+        /// The calculated width of the dialog contents.
         /// </summary>
         private static int ContentWidth
         {
@@ -45,7 +43,7 @@ Movement Keys:
         }
 
         /// <summary>
-        /// The calculated height of the diaplog contents.
+        /// The calculated height of the dialog contents.
         /// </summary>
         private static int ContentHeight
         {
@@ -56,7 +54,7 @@ Movement Keys:
         }
 
         /// <summary>
-        /// The calculated rectangle of the diaplog contents.
+        /// The calculated rectangle of the dialog contents.
         /// </summary>
         private static Rect ContentDimensions
         {
@@ -91,7 +89,7 @@ Movement Keys:
         }
 
         /// <summary>
-        /// Run the modal help diallog until the user exits.
+        /// Run the modal help dialog until the user exits.
         /// </summary>
         public static void Launch()
         {
