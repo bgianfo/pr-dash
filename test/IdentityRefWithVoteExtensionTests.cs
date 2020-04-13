@@ -62,5 +62,40 @@ namespace PrDash.Tests
                 nullIdentity.HasFinalVoteBeenCast();
             });
         }
+
+        /// <summary>
+        /// Tests the is waiting extension, when called on a null object.
+        /// </summary>
+        [Fact]
+        public void TestIsWaitingExtension()
+        {
+            IdentityRefWithVote identity = new IdentityRefWithVote();
+
+            // Verify waiting vote value.
+            //
+            identity.Vote = -5;
+            Assert.True(identity.IsWaiting(),
+                "Approved incorrectly marked as not a final vote.");
+
+            // No vote should not be a valid final vote.
+            //
+            identity.Vote = 0;
+            Assert.False(identity.IsWaiting(),
+                "No Vote incorrectly marked as waiting.");
+        }
+
+        /// <summary>
+        /// Tests the is waiting extension, when called on a null object.
+        /// </summary>
+        [Fact]
+        public void TestIsWaitingOnNull()
+        {
+            IdentityRefWithVote nullIdentity = null;
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                nullIdentity.IsWaiting();
+            });
+        }
     }
 }
