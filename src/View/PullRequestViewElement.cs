@@ -133,7 +133,7 @@ namespace PrDash.View
         /// <summary>
         /// Invokes the pull request action handler callback on this pull request.
         /// </summary>
-        public void InvokeHandler() => m_handler.InvokeHandler(m_pullRequest);
+        public void OpenPullRequest() => m_handler.InvokeHandler(m_pullRequest);
 
         /// <summary>
         /// Special ToString implementation that will be called by the ListView control when it renders each element.

@@ -183,7 +183,7 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    m_backingList[SelectedItem].InvokeHandler();
+                    m_backingList[SelectedItem].OpenPullRequest();
                     return true;
             }
 
