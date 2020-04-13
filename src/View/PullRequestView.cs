@@ -16,7 +16,7 @@ namespace PrDash.View
     /// <seealso cref="Terminal.Gui.ListView" />
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix", Justification = "This isn't a collection")]
     [SuppressMessage("Design", "CA1010:Collections should implement generic interface", Justification = "No need to implement more enumerator")]
-    public class PullRequestView : ListView
+    public partial class PullRequestView : ListView
     {
         /// <summary>
         /// The interval in which we should refresh this views data.
@@ -42,14 +42,14 @@ namespace PrDash.View
         private List<PullRequestViewElement> m_backingList = new List<PullRequestViewElement>();
 
         /// <summary>
-        /// Monitor to synchronize the updating of the view.
+        /// The state we wish to view pull requests in.
         /// </summary>
-        private readonly object m_viewRefreshMonitor = new object();
+        private PrState m_stateToView = PrState.Actionable;
 
         /// <summary>
         /// The state we wish to view pull requests in.
         /// </summary>
-        private PrState m_stateToView = PrState.Actionable;
+        private RefreshTask m_refreshTask;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
@@ -64,9 +64,10 @@ namespace PrDash.View
             //
             ColorScheme = CustomColorSchemes.Main;
 
-            // Post an async task to populate this view.
+            // Post request to the refresh task to populate this view.
             //
-            RefreshListDataAsync();
+            m_refreshTask = RefreshTask.Create(this);
+            m_refreshTask.RequestRefresh();
 
             // Setup a timer to fire in the future to refresh again.
             //
@@ -107,7 +108,7 @@ namespace PrDash.View
 
             // Force refresh the contents.
             //
-            RefreshListDataAsync();
+            m_refreshTask.RequestRefresh();
         }
 
         /// <summary>
@@ -135,7 +136,7 @@ namespace PrDash.View
                 // Enable hotkey refresh.
                 //
                 case 'r':
-                    RefreshListDataAsync();
+                    m_refreshTask.RequestRefresh();
                     return true;
 
                 // Enable hotkey switch view to waiting.
@@ -199,74 +200,22 @@ namespace PrDash.View
         /// <returns>True if the timer should be re-added, false otherwise.</returns>
         private bool RefreshTimerCallback(MainLoop main)
         {
-            RefreshListDataAsync();
+            m_refreshTask.RequestRefresh();
             return true;
-        }
-
-        /// <summary>
-        /// Refreshes the list data asynchronous.
-        /// </summary>
-        private void RefreshListDataAsync()
-        {
-            bool needsRelease = false;
-            try
-            {
-                // We will enter the monitor for the duration of the refresh.
-                // See the exit at the bottom of RefreshListDataCallBack.
-                //
-                if (Monitor.TryEnter(m_viewRefreshMonitor))
-                {
-                    needsRelease = true;
-
-                    // Clear the backing list, but don't re-render yet.
-                    //
-                    m_backingList.Clear();
-
-                    Task task = new Task(() =>
-                    {
-                        try
-                        {
-                            // Invoke the callback, wait for the population to finish.
-                            //
-                            RefreshListDataCallBack().Wait();
-                        }
-                        finally
-                        {
-                            // Once population is finished, exit the monitor.
-                            //
-                            Application.MainLoop.Invoke(() =>
-                            {
-                                // Exit the monitor that was entered
-                                // before the task was launched.
-                                // See: RefreshListDataAsync
-                                //
-                                Monitor.Exit(m_viewRefreshMonitor);
-                            });
-                        }
-                    });
-
-                    task.Start();
-
-                    needsRelease = false;
-                }
-            }
-            finally
-            {
-                if (needsRelease)
-                {
-                    Monitor.Exit(m_viewRefreshMonitor);
-                }
-            }
         }
 
         /// <summary>
         /// Populate the list of pull requests from the data source.
         /// </summary>
         /// <returns>A list of pull request content.</returns>
-        private async Task RefreshListDataCallBack()
+        private async Task RefreshCallback()
         {
             try
             {
+                // Clear the backing list, but don't re-render yet.
+                //
+                m_backingList.Clear();
+
                 await foreach (PullRequestViewElement element in m_pullRequestSource.FetchPullRequests(m_stateToView))
                 {
                     // Force the re-rendering to occur on the main thread.
