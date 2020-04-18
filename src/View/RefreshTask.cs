@@ -31,7 +31,7 @@ namespace PrDash.View
             {
                 RefreshTask refreshTask = new RefreshTask(prView);
 
-                Task.Factory.StartNew(() => refreshTask.MainLoop(), TaskCreationOptions.LongRunning);
+                Task.Run(() => refreshTask.MainLoop());
 
                 return refreshTask;
             }
