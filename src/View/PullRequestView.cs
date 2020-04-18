@@ -119,7 +119,7 @@ namespace PrDash.View
         {
             // Handle specific characters we want to have behavior.
             //
-            char keyChar = (char)((uint)keyEvent.Key & (uint)(Key.CharMask));
+            char keyChar = (char)((uint)keyEvent.Key & (uint)Key.CharMask);
             switch (keyChar)
             {
                 // Map vim Keys to be up and down.

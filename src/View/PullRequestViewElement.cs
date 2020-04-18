@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Humanizer;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
+using PrDash.DataSource;
 using PrDash.Handlers;
 using Terminal.Gui;
 
@@ -15,7 +17,7 @@ namespace PrDash.View
     /// This exists purely so that we can customize the ToString implementation.
     /// </remarks>
     [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "We just want to sort.")]
-    public class PullRequestViewElement : IComparable<PullRequestViewElement>
+    public class PullRequestViewElement : IComparable<PullRequestViewElement>, IEqualityComparer<PullRequestViewElement>
     {
         /// <summary>
         /// The pull request we are wrapping.
@@ -26,6 +28,8 @@ namespace PrDash.View
         /// The handler to call when this pull request has been selected.
         /// </summary>
         private readonly IPullRequestHandler m_handler;
+
+        private readonly DateTime m_updatedTime;
 
         /// <summary>
         /// The width in characters of the author column.
@@ -60,11 +64,11 @@ namespace PrDash.View
         }
 
         /// <summary>
-        /// Gets the pull request creation date bound to the confines of the window.
+        /// Gets the pull request updated date bound to the confines of the window.
         /// </summary>
-        private string BoundedCreationDate
+        private string BoundedUpdatedDate
         {
-            get => FitStringToBound(m_pullRequest.CreationDate.Humanize(), DateColumnWidth, leftPad: true);
+            get => FitStringToBound(m_updatedTime.Humanize(), DateColumnWidth, leftPad: true);
         }
 
         private string ChangeSize
@@ -128,6 +132,7 @@ namespace PrDash.View
         {
             m_handler = handler;
             m_pullRequest = request;
+            m_updatedTime = request.LatestCommitDate();
         }
 
         /// <summary>
@@ -139,7 +144,7 @@ namespace PrDash.View
         /// Special ToString implementation that will be called by the ListView control when it renders each element.
         /// </summary>
         /// <returns>The string representation of the pull request.</returns>
-        public override string ToString() => BoundedTitle + BoundedAuthor + BoundedCreationDate;
+        public override string ToString() => BoundedTitle + BoundedAuthor + BoundedUpdatedDate;
 
         /// <summary>
         /// Fits the string to bounded size by trimming or padding with spaces.
@@ -193,7 +198,42 @@ namespace PrDash.View
 
             // Force sort order descending by negating the default sort order.
             //
-            return -m_pullRequest.CreationDate.CompareTo(other.m_pullRequest.CreationDate);
+            return -m_updatedTime.CompareTo(other.m_updatedTime);
+        }
+
+        /// <summary>
+        /// Compares two pull requests for equality.
+        /// </summary>
+        /// <param name="x">Pull request to compare.</param>
+        /// <param name="y">Pull request to compare</param>
+        /// <returns>True if equal, false otherwise.</returns>
+        public bool Equals([AllowNull] PullRequestViewElement x, [AllowNull] PullRequestViewElement y)
+        {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            return x.m_pullRequest.ArtifactId == x.m_pullRequest.ArtifactId;
+        }
+
+        /// <summary>
+        /// Computes hash code for the pull request value.
+        /// </summary>
+        /// <param name="pr">Pull request to compare</param>
+        public int GetHashCode([DisallowNull] PullRequestViewElement pr)
+        {
+            if (pr == null)
+            {
+                return 0;
+            }
+
+            return string.GetHashCode(pr.m_pullRequest.ArtifactId, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
