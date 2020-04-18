@@ -58,11 +58,20 @@ namespace PrDash.DataSource
         {
             foreach (AccountConfig account in m_config.Accounts)
             {
-                IAsyncEnumerable<GitPullRequest> requests = FetchPullRequests(account, state);
-
-                await foreach (var pr in requests)
+                using (VssConnection connection = GetConnection(account))
+                using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
                 {
-                    yield return new PullRequestViewElement(pr, account.Handler);
+                    await foreach (var pr in FetchPullRequests(account, state))
+                    {
+                        // Create a connection to the AzureDevOps Git API.
+                        //
+                        {
+                            var commits = await client.GetPullRequestCommitsAsync(pr.Repository.Id, pr.PullRequestId);
+                            pr.Commits = commits.ToArray();
+
+                            yield return new PullRequestViewElement(pr, account.Handler);
+                        }
+                    }
                 }
             }
         }
