@@ -38,7 +38,7 @@ namespace PrDash.View
         /// <summary>
         /// The list of elements that this view is currently rendering.
         /// </summary>
-        private List<PullRequestViewElement> m_backingList = new List<PullRequestViewElement>();
+        private List<PullRequestViewElement> m_backingData = new List<PullRequestViewElement>();
 
         /// <summary>
         /// The state we wish to view pull requests in.
@@ -183,7 +183,7 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    m_backingList[SelectedItem].OpenPullRequest();
+                    m_backingData[SelectedItem].OpenPullRequest();
                     return true;
             }
 
@@ -213,7 +213,7 @@ namespace PrDash.View
             {
                 // Clear the backing list, but don't re-render yet.
                 //
-                m_backingList.Clear();
+                m_backingData.Clear();
 
                 await foreach (PullRequestViewElement element in m_pullRequestSource.FetchPullRequests(m_stateToView))
                 {
@@ -221,13 +221,13 @@ namespace PrDash.View
                     //
                     Application.MainLoop.Invoke(() =>
                     {
-                        m_backingList.Add(element);
+                        m_backingData.Add(element);
 
                         // Sort the entries by the elements sort implementation.
                         //
-                        m_backingList.Sort();
+                        m_backingData.Sort();
 
-                        SetSource(m_backingList);
+                        SetSource(m_backingData);
                         SelectedItem = 0;
                         TopItem = 0;
                         SetNeedsDisplay();
