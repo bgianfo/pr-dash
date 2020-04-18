@@ -183,7 +183,10 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    m_backingData[SelectedItem].OpenPullRequest();
+                    if (SelectedItem < m_backingData.Count)
+                    {
+                        m_backingData[SelectedItem].OpenPullRequest();
+                    }
                     return true;
             }
 
@@ -204,6 +207,33 @@ namespace PrDash.View
         }
 
         /// <summary>
+        /// Insert the requested pull request into the backing List directly in a sorted order.
+        /// </summary>
+        /// <param name="element">The element to insert.</param>
+        private void InsertElementSorted([NotNull] PullRequestViewElement element)
+        {
+            // Implement sorted insertion to keep the list sorted as the UI is refreshed
+            // with results that are being streamed back as they are received.
+            //
+            // List<T>.BinarySearch(...) is documented to return:
+            //
+            //   The zero-based index of item in the sorted List<T>, if item is found; otherwise,
+            //   a negative number that is the bitwise complement of the index of the next element
+            //   that is larger than item or, if there is no larger element, the bitwise complement of Count.
+            //
+            // As we know there will be no matching items in the list, we can use the  bitwise compliment
+            // directly as the insertion index into the list.
+            //
+            var insertionIndex = m_backingData.BinarySearch(element);
+            m_backingData.Insert(~insertionIndex, element);
+
+            // Force the UI Loop to re-render this view.
+            //
+            SetSource(m_backingData);
+            Application.Refresh();
+        }
+
+        /// <summary>
         /// Populate the list of pull requests from the data source.
         /// </summary>
         /// <returns>A list of pull request content.</returns>
@@ -217,22 +247,7 @@ namespace PrDash.View
 
                 await foreach (PullRequestViewElement element in m_pullRequestSource.FetchPullRequests(m_stateToView))
                 {
-                    // Force the re-rendering to occur on the main thread.
-                    //
-                    Application.MainLoop.Invoke(() =>
-                    {
-                        m_backingData.Add(element);
-
-                        // Sort the entries by the elements sort implementation.
-                        //
-                        m_backingData.Sort();
-
-                        SetSource(m_backingData);
-                        SelectedItem = 0;
-                        TopItem = 0;
-                        SetNeedsDisplay();
-                        Application.Refresh();
-                    });
+                    InsertElementSorted(element);
                 }
             }
             catch (Exception ex)
