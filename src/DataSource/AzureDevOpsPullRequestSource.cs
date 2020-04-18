@@ -165,7 +165,7 @@ namespace PrDash.DataSource
             {
                 ReviewerId = userId,
                 Status = PullRequestStatus.Active,
-                IncludeLinks = true,
+                IncludeLinks = false,
             };
 
             List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
