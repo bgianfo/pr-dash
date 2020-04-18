@@ -185,7 +185,7 @@ namespace PrDash.View
                 case Key.Enter:
                     if (SelectedItem < m_backingData.Count)
                     {
-                        m_backingData[SelectedItem].OpenPullRequest();
+                        Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
                     }
                     return true;
             }
