@@ -61,7 +61,11 @@ namespace PrDash.DataSource
                 using (VssConnection connection = GetConnection(account))
                 using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
                 {
-                    await foreach (var pr in FetchPullRequests(account, state))
+                    // Capture the currentUserId so it can be used to filter PR's later.
+                    //
+                    Guid userId = connection.AuthorizedIdentity.Id;
+
+                    await foreach (var pr in FetchPullRequests(client, userId, account, state))
                     {
                         // Create a connection to the AzureDevOps Git API.
                         //
@@ -81,9 +85,9 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to retrieve the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(AccountConfig accountConfig, PrState state)
+        private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(GitHttpClient client, Guid userId, AccountConfig accountConfig, PrState state)
         {
-            await foreach (var (currentUserId, pr) in FetchAccountActivePullRequsts(accountConfig))
+            await foreach (var pr in FetchAccountActivePullRequsts(client, userId, accountConfig))
             {
                 // Hack to not display drafts for now.
                 //
@@ -103,7 +107,7 @@ namespace PrDash.DataSource
 
                 // Try to find our selves in the reviewer list.
                 //
-                if (!TryGetReviewer(pr, currentUserId, out IdentityRefWithVote reviewer))
+                if (!TryGetReviewer(pr, userId, out IdentityRefWithVote reviewer))
                 {
                     //  Skip this review if we aren't assigned.
                     //
@@ -153,32 +157,21 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="accountConfig">The account to get the pull requests for.</param>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        private static async IAsyncEnumerable<Tuple<Guid, GitPullRequest>> FetchAccountActivePullRequsts(AccountConfig accountConfig)
+        private static async IAsyncEnumerable<GitPullRequest> FetchAccountActivePullRequsts(GitHttpClient client, Guid userId, AccountConfig accountConfig)
         {
-            // Create a connection to the AzureDevOps Git API.
+            // Only fetch pull requests which are active, and assigned to this user.
             //
-            using (VssConnection connection = GetConnection(accountConfig))
-            using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
+            GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
             {
-                // Capture the currentUserId so it can be used to filter PR's later.
-                //
-                Guid currentUserId = connection.AuthorizedIdentity.Id;
+                ReviewerId = userId,
+                Status = PullRequestStatus.Active,
+                IncludeLinks = true,
+            };
 
-                // Only fetch pull requests which are active, and assigned to this user.
-                //
-                GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
-                {
-                    ReviewerId = currentUserId,
-                    Status = PullRequestStatus.Active,
-                    IncludeLinks = true,
-                };
-
-                List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
-
-                foreach (var request in requests)
-                {
-                    yield return Tuple.Create<Guid, GitPullRequest>(currentUserId, request);
-                }
+            List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
+            foreach (var request in requests)
+            {
+                yield return request;
             }
         }
 
