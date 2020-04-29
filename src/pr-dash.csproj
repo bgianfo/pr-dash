@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.167.0-preview" />
     <PackageReference Include="CommandLineParser" Version="2.7.82" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.5.0">
