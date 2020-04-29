@@ -219,7 +219,7 @@ namespace PrDash.View
                 return false;
             }
 
-            return x.m_pullRequest.ArtifactId == x.m_pullRequest.ArtifactId;
+            return x.m_pullRequest.ArtifactId == y.m_pullRequest.ArtifactId;
         }
 
         /// <summary>
