@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="YamlDotNet" Version="8.1.1" />
     <PackageReference Include="Terminal.Gui" Version="0.81.0" />
-    <PackageReference Include="Humanizer" Version="2.8.2" />
+    <PackageReference Include="Humanizer" Version="2.8.11" />
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.167.0-preview" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
 
