@@ -15,6 +15,9 @@ namespace PrDash.View
         /// <summary>
         /// The help dialog content to display.
         /// </summary>
+        /// <remarks>
+        /// Keep this in sync with the docs in the README.md
+        /// </remarks>
         private static string HelpText =
 @"Action Keys:
  r - Force refresh the current PR view.

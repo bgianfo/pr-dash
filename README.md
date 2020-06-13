@@ -13,6 +13,23 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
 
+### Key Bindings
+
+    Action Keys:
+     r - Force refresh the current PR view.
+     a - Switch the current view to actionable PRs.
+     w - Switch the current view to waiting PRs.
+     d - Switch the current view to draft PRs.
+     h - Display this help dialog.
+     q - Quit the program.
+     Enter - Open the currently selected PR.
+
+    Movement Keys:
+     ↑ - Select one pull request up.
+     ↓ - Select one pull request down.
+     k - Select one pull request up.
+     j - Select one pull request down.
+
 ### Building
 
 `pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
