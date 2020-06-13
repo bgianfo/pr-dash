@@ -12,26 +12,26 @@ namespace PrDash.Configuration
         /// Access token for authenticating to Azure DevOps.
         /// See: https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats
         /// </summary>
-        public string PersonalAccessToken { get; set; }
+        public string? PersonalAccessToken { get; set; }
 
         /// <summary>
         /// Organization Url, for example: https://dev.azure.com/fabrikam
         /// </summary>
-        public Uri OrganizationUrl { get; set; }
+        public Uri? OrganizationUrl { get; set; }
 
         /// <summary>
         /// The project name to query inside the organization.
         /// </summary>
-        public string Project { get; set; }
+        public string? Project { get; set; }
 
         /// <summary>
         /// The repository name to query inside the project.
         /// </summary>
-        public string RepoName { get; set; }
+        public string? RepoName { get; set; }
 
         /// <summary>
         /// Handler to be executed when a pull request from this account is selected.
         /// </summary>
-        public IPullRequestHandler Handler { get; set; }
+        public IPullRequestHandler? Handler { get; set; }
     }
 }

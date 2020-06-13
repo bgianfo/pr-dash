@@ -83,7 +83,7 @@ namespace PrDash.View
 
             // Update the title of the window when we switch.
             //
-            Window parent = Application.Top.Subviews.First() as Window;
+            Window? parent = Application.Top.Subviews.First() as Window;
 
             if (parent == null)
             {
@@ -185,7 +185,14 @@ namespace PrDash.View
                 case Key.Enter:
                     if (SelectedItem < m_backingData.Count)
                     {
+                        // TODO: Figure out the right way to do this.
+                        //
+                        #pragma warning disable EPC13
+
                         Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
+
+                        #pragma warning restore EPC13
+
                     }
                     return true;
             }

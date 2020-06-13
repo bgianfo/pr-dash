@@ -144,7 +144,7 @@ namespace PrDash.View
         /// Special ToString implementation that will be called by the ListView control when it renders each element.
         /// </summary>
         /// <returns>The string representation of the pull request.</returns>
-        public override string ToString() => BoundedTitle + BoundedAuthor + BoundedUpdatedDate;
+        public override string ToString() => BoundedTitle + BoundedAuthor + BoundedUpdatedDate + ChangeSize;
 
         /// <summary>
         /// Fits the string to bounded size by trimming or padding with spaces.

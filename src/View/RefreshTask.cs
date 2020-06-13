@@ -31,7 +31,11 @@ namespace PrDash.View
             {
                 RefreshTask refreshTask = new RefreshTask(prView);
 
+#pragma warning disable EPC13
+
                 Task.Run(() => refreshTask.MainLoop());
+
+#pragma warning restore EPC13
 
                 return refreshTask;
             }

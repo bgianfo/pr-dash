@@ -10,7 +10,7 @@ namespace PrDash.DataSource
     /// </summary>
     public class StatisticsUpdateEventArgs
     {
-        public PullRequestStatistics Statistics { set; get; }
+        public PullRequestStatistics? Statistics { get; set; }
     }
 
     public enum PrState

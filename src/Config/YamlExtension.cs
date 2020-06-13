@@ -20,8 +20,9 @@ namespace PrDash.Configuration
             {
                 throw new ArgumentNullException(nameof(mappingNode));
             }
-
+#nullable disable warnings
             return ((YamlScalarNode)mappingNode.Children[new YamlScalarNode(scalarField)]).Value;
+#nullable enable warnings
         }
 
         /// <summary>

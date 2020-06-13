@@ -52,11 +52,14 @@ namespace PrDash.View
             Add(m_status);
         }
 
-        private void StatisUpdateCallback(object sender, StatisticsUpdateEventArgs eventArgs)
+        private void StatisUpdateCallback(object? sender, StatisticsUpdateEventArgs eventArgs)
         {
-            PullRequestStatistics stats = eventArgs.Statistics;
+            PullRequestStatistics? stats = eventArgs.Statistics;
 
-            m_status.Text = $" Actionable: {stats.Actionable} | Waiting: {stats.Waiting} | SignedOff: {stats.SignedOff} | Drafts: {stats.Drafts}";
+            if (stats != null)
+            {
+                m_status.Text = $" Actionable: {stats.Actionable} | Waiting: {stats.Waiting} | SignedOff: {stats.SignedOff} | Drafts: {stats.Drafts}";
+            }
         }
     }
 }

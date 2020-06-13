@@ -73,8 +73,8 @@ namespace PrDash.Handlers
         /// </remarks>
         private string ConstructUri(GitPullRequest pr)
         {
-            string proj = m_config.Project;
-            string repo = m_config.RepoName;
+            string? proj = m_config.Project;
+            string? repo = m_config.RepoName;
             string url = $"{m_config.OrganizationUrl}&project={proj}&repo={repo}&pullRequest={pr.PullRequestId}&alert=true";
 
             string escapedUrl = Uri.EscapeUriString(url);

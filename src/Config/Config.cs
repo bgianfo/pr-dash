@@ -83,7 +83,7 @@ namespace PrDash.Configuration
         /// </summary>
         /// <param name="options">Command line options which override configuration.</param>
         [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "Useful extension point for the future.")]
-        public Config(CommandLineOptions options = null)
+        public Config(CommandLineOptions? options = null)
         {
             // Status bar is always enabled for now.
             //
@@ -106,7 +106,7 @@ namespace PrDash.Configuration
         /// Factory function to initializes a new instance of the
         /// <see cref="Config"/> from a Yaml configuration file.
         /// </summary>
-        public static Config FromConfigFile(CommandLineOptions options = null)
+        public static Config FromConfigFile(CommandLineOptions? options = null)
         {
             string configFile = ConfigPath;
 
@@ -120,7 +120,7 @@ namespace PrDash.Configuration
         /// from a Yaml configuration file.
         /// </summary>
         /// <param name="filePath">The file system path to the configuration file.</param>
-        public static Config FromFile(string filePath, CommandLineOptions options = null)
+        public static Config FromFile(string filePath, CommandLineOptions? options = null)
         {
             using (StreamReader reader = new StreamReader(filePath))
             {
@@ -133,7 +133,7 @@ namespace PrDash.Configuration
         /// from a string with Yaml contents.
         /// </summary>
         /// <param name="yamlPayload">The string with Yaml contents.</param>
-        public static Config FromString(string yamlPayload, CommandLineOptions options = null)
+        public static Config FromString(string yamlPayload, CommandLineOptions? options = null)
         {
             using (StringReader reader = new StringReader(yamlPayload))
             {
@@ -148,7 +148,7 @@ namespace PrDash.Configuration
         /// <returns>
         /// The populated config object.
         /// </returns>
-        private static Config FromTextReader(TextReader yamlReader, CommandLineOptions options = null)
+        private static Config FromTextReader(TextReader yamlReader, CommandLineOptions? options = null)
         {
             Config configuration = new Config(options);
             configuration.LoadYaml(yamlReader);
