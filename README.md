@@ -26,7 +26,7 @@ The location of the yaml file differs based on the OS:
 
 Example pr-dash.yml:
 
-```
+```yaml
 accounts:
   - project_name: sample-project1
     repo_name: sample-git-repo1
