@@ -52,6 +52,9 @@
     <PackageReference Include="SmartAnalyzers.MultithreadingAnalyzer" Version="1.1.31">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
+
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
