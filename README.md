@@ -1,5 +1,6 @@
 pr-dash
-----
+-------
+
 `pr-dash` is a command line tool which allows you to monitor the status
 of all Azure Dev Ops pull requests you are assigned a reviewer of, right
 at home in your terminal.
@@ -45,8 +46,8 @@ accounts:
 ```
 
 Notes:
-- *repo_name* is optional, if it's omitted the project name will be used for the repo name as well.
-- *pat* is optional when running on windows, if it's omitted the code will attempt to use AAD authentication.
+- **repo_name** is optional, if it's omitted the project name will be used for the repo name as well.
+- **pat** is optional when running on windows, if it's omitted the code will attempt to use AAD authentication.
 - You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 
 Now you can run pr-dash and try it out.
@@ -72,7 +73,7 @@ Now you can run pr-dash and try it out.
 ### Building
 
 `pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
-[dotnet core 3.0 installation](https://dotnet.microsoft.com/download/dotnet-core/3.0) in order to compile it.
+[dotnet core 3.1 installation](https://dotnet.microsoft.com/download/dotnet-core/3.1) in order to compile it.
 Building is easy:
 
 ```
