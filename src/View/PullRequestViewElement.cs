@@ -124,6 +124,11 @@ namespace PrDash.View
         }
 
         /// <summary>
+        /// Expose Pull Request description
+        /// </summary>
+        public string Description => m_pullRequest.Description;
+
+        /// <summary>
         /// Constructs a new element which wraps a <see cref="GitPullRequest"/> object.
         /// </summary>
         /// <param name="request">The pull request this element represents.</param>

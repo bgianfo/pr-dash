@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.Build.WebApi;
 using Mono.Terminal;
 using PrDash.DataSource;
 using Terminal.Gui;
@@ -51,22 +53,36 @@ namespace PrDash.View
         private RefreshTask m_refreshTask;
 
         /// <summary>
+        /// The view holding the PR description.
+        /// </summary>
+        private TextView? m_descriptionView;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
         /// </summary>
         /// <param name="source">The source of elements for this view.</param>
-        public PullRequestView(IPullRequestSource source)
+        public PullRequestView(IPullRequestSource source, TextView? descriptionView)
             : base(LoadingContents)
         {
             m_pullRequestSource = source;
+            m_descriptionView = descriptionView;
 
             // Override the color scheme to our main theme for this view.
             //
             ColorScheme = CustomColorSchemes.Main;
 
+            if (m_descriptionView != null)
+            {
+                // Subscribe to selection change.
+                //
+                SelectedChanged += OnSelectedPullRequestChanged;
+            }
+
             // Post request to the refresh task to populate this view.
             //
             m_refreshTask = RefreshTask.Create(this);
             m_refreshTask.RequestRefresh();
+
 
             // Setup a timer to fire in the future to refresh again.
             //
@@ -209,6 +225,41 @@ namespace PrDash.View
             // Forward everything else to the real implementation.
             //
             return base.ProcessKey(keyEvent);
+        }
+
+        /// <summary>
+        /// Selection change callback.
+        /// </summary>
+        private void OnSelectedPullRequestChanged()
+        {
+            if (SelectedItem > m_backingData.Count)
+            {
+                m_descriptionView!.Text = string.Empty;
+                return;
+            }
+
+            // N.B. Implement basic word wrap, as it appears TextView's don't support it currently in the terminal library we use.
+            //
+            var description = m_backingData[SelectedItem].Description.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            StringBuilder builder = new StringBuilder();
+            int actualWidth = 0;
+
+            foreach (var chunk in description)
+            {
+                actualWidth += chunk.Length + 1;
+
+                if (actualWidth > m_descriptionView!.Frame.Size.Width)
+                {
+                    builder.AppendLine();
+                    actualWidth = chunk.Length + 1;
+                }
+
+                builder.Append(chunk);
+                builder.Append(' ');
+            }
+
+            m_descriptionView!.Text = builder.ToString();
         }
 
         /// <summary>

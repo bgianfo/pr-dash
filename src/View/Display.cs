@@ -2,6 +2,7 @@ using System;
 using PrDash.DataSource;
 using PrDash.Configuration;
 using Terminal.Gui;
+using System.Linq;
 
 namespace PrDash.View
 {
@@ -39,6 +40,14 @@ namespace PrDash.View
         }
 
         /// <summary>
+        /// Gets the height of the status bar.
+        /// </summary>
+        private static Dim DescriptionHeight
+        {
+            get { return Dim.Sized(10); }
+        }
+
+        /// <summary>
         /// Gets the default window theme.
         /// </summary>
         private static ColorScheme WindowTheme
@@ -61,24 +70,56 @@ namespace PrDash.View
             Application.Init();
             Application.Current.ColorScheme = CustomColorSchemes.Main;
             Toplevel top = Application.Top;
+            Dim computedHeight = Dim.Sized(0);
 
             // We intentionally initialize the status bar first, as the status
             // bar hooks events on the source, and the pull request view, will
             // drive API calls on the source which will trigger those events.
             // To avoid races here, make sure to hook first, run later.
             //
-            StatusBar statusBar = new StatusBar(source);
-            PullRequestView requestView = new PullRequestView(source);
+            StatusBar? statusBar = null;
+            if (config.StatusBarEnabled)
+            {
+                computedHeight += StatusBarHeight;
+                statusBar = new StatusBar(source);
+            }
+
+            TextView? descriptionView = null;
+            if (config.DescriptionEnabled)
+            {
+                computedHeight += DescriptionHeight;
+
+                descriptionView = new TextView()
+                {
+                    ReadOnly = true,
+                };
+            }
+
+            PullRequestView requestView = new PullRequestView(source, descriptionView);
 
             Window contentWindow = new Window(ActionableTitle)
             {
                 Width = Dim.Fill(),
-                Height = config.StatusBarEnabled ? Dim.Fill() - StatusBarHeight : Dim.Fill(),
+                Height = Dim.Fill() - computedHeight,
                 ColorScheme = WindowTheme,
             };
 
             contentWindow.Add(requestView);
             top.Add(contentWindow);
+
+            if (config.DescriptionEnabled)
+            {
+                Window descriptionWindow = new Window("Description:")
+                {
+                    Width = Dim.Fill(),
+                    Height = DescriptionHeight,
+                    Y = Pos.Bottom(contentWindow),
+                    ColorScheme = WindowTheme,
+                };
+
+                descriptionWindow.Add(descriptionView);
+                top.Add(descriptionWindow);
+            }
 
             if (config.StatusBarEnabled)
             {
@@ -86,7 +127,7 @@ namespace PrDash.View
                 {
                     Width = Dim.Fill(),
                     Height = StatusBarHeight,
-                    Y = Pos.Bottom(contentWindow),
+                    Y = Pos.Bottom(top.Subviews.Last()),
                     ColorScheme = WindowTheme,
                 };
 

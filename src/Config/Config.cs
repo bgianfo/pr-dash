@@ -81,6 +81,11 @@ namespace PrDash.Configuration
         public bool StatusBarEnabled { get; }
 
         /// <summary>
+        /// The description window option.
+        /// </summary>
+        public bool DescriptionEnabled { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
         /// <param name="options">Command line options which override configuration.</param>
@@ -90,6 +95,10 @@ namespace PrDash.Configuration
             // Status bar is always enabled for now.
             //
             StatusBarEnabled = true;
+
+            // Description window is disabled for now.
+            //
+            DescriptionEnabled = false;
         }
 
         /// <summary>
