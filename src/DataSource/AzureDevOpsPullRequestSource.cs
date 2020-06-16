@@ -114,6 +114,13 @@ namespace PrDash.DataSource
                     continue;
                 }
 
+                // Skip declined reviews.
+                //
+                if (reviewer.HasDeclined.HasValue && reviewer.HasDeclined.Value)
+                {
+                    continue;
+                }
+
                 // If we have already casted a "final" vote, then skip it.
                 //
                 if (reviewer.HasFinalVoteBeenCast())
