@@ -107,7 +107,7 @@ namespace PrDash.DataSource
 
                 // Try to find our selves in the reviewer list.
                 //
-                if (!TryGetReviewer(pr, userId, out IdentityRefWithVote? reviewer))
+                if (!TryGetReviewer(pr, userId, out IdentityRefWithVote reviewer))
                 {
                     //  Skip this review if we aren't assigned.
                     //
@@ -116,7 +116,7 @@ namespace PrDash.DataSource
 
                 // If we have already casted a "final" vote, then skip it.
                 //
-                if (reviewer!.HasFinalVoteBeenCast())
+                if (reviewer.HasFinalVoteBeenCast())
                 {
                     m_statistics.SignedOff++;
                     continue;
@@ -125,7 +125,7 @@ namespace PrDash.DataSource
                 // TODO: It would be nice if there was a way to tell if
                 // the review was changed since you started waiting.
                 //
-                if (reviewer!.IsWaiting())
+                if (reviewer.IsWaiting())
                 {
                     m_statistics.Waiting++;
 
@@ -182,7 +182,7 @@ namespace PrDash.DataSource
         /// <param name="currentUserId">The <see cref="Guid"/> of our current user.</param>
         /// <param name="reviewer">Output  parameter that points to our own reviewer object.</param>
         /// <returns>Returns <c>true</c> if the reviewer was found, <c>false</c> otherwise.</returns>
-        private static bool TryGetReviewer(GitPullRequest pullRequest, Guid currentUserId, out IdentityRefWithVote? reviewer)
+        private static bool TryGetReviewer(GitPullRequest pullRequest, Guid currentUserId, out IdentityRefWithVote reviewer)
         {
             foreach (IdentityRefWithVote r in pullRequest.Reviewers)
             {
@@ -193,7 +193,7 @@ namespace PrDash.DataSource
                 }
             }
 
-            reviewer = null;
+            reviewer = new IdentityRefWithVote();
             return false;
         }
 
