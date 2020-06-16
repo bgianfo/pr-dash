@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using YamlDotNet.RepresentationModel;
 using PrDash.Handlers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Configuration;
 
 namespace PrDash.Configuration
 {
@@ -178,10 +180,18 @@ namespace PrDash.Configuration
             {
                 AccountConfig newAccount = new AccountConfig
                 {
-                    PersonalAccessToken = accountNode.GetString(YamlFieldPatToken),
                     OrganizationUrl = accountNode.GetUri(YamlFieldOrgUrlToken),
                     Project = accountNode.GetString(YamlFieldProjectToken),
                 };
+
+                if (accountNode.Children.ContainsKey(YamlFieldPatToken))
+                {
+                    newAccount.PersonalAccessToken = accountNode.GetString(YamlFieldPatToken);
+                }
+                else if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    throw new ConfigurationErrorsException($"Configuration for project \"{newAccount.Project}\" is missing a PAT token, it is required when running on windows.");
+                }
 
                 // If a repository name is configured use it, otherwise default the repo name
                 // to be the same as the project name.

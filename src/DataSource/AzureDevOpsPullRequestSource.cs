@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
+using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using PrDash.Configuration;
@@ -204,9 +206,20 @@ namespace PrDash.DataSource
         /// <returns>A valid <see cref="VssConnection"/> for the given account.</returns>
         private static VssConnection GetConnection(AccountConfig account)
         {
-            return new VssConnection(
-                account.OrganizationUrl,
-                new VssBasicCredential(string.Empty, account.PersonalAccessToken));
+            VssCredentials credential;
+
+            // If the user didn't configure a PAT token, try to login via AAD.
+            //
+            if (account.PersonalAccessToken == null)
+            {
+                 credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
+            }
+            else
+            {
+                credential = new VssBasicCredential(string.Empty, account.PersonalAccessToken);
+            }
+
+            return new VssConnection(account.OrganizationUrl, credential);
         }
 
         /// <summary>
