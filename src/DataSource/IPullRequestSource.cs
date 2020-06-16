@@ -23,6 +23,9 @@ namespace PrDash.DataSource
 
         // Return pull request we are waiting on.
         Waiting,
+
+        // Return pull request we signed off on.
+        SignedOff,
     }
 
     /// <summary>

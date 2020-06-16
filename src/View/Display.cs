@@ -21,6 +21,11 @@ namespace PrDash.View
         public const string WaitingTitle = "Waiting Pull Requests To Review:";
 
         /// <summary>
+        /// Gets the title for the signed off pull requests view.
+        /// </summary>
+        public const string SignedOffTitle = "Signed Off Pull Requests:";
+
+        /// <summary>
         /// Gets the title for the draft pull requests view.
         /// </summary>
         public const string DraftsTitle = "Draft Pull Requests To Review:";

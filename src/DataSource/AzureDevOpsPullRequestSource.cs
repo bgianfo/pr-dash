@@ -101,10 +101,8 @@ namespace PrDash.DataSource
                     {
                         yield return pr;
                     }
-                    else
-                    {
-                        continue;
-                    }
+
+                    continue;
                 }
 
                 // Try to find our selves in the reviewer list.
@@ -121,6 +119,12 @@ namespace PrDash.DataSource
                 if (reviewer.HasFinalVoteBeenCast())
                 {
                     m_statistics.SignedOff++;
+
+                    if (state == PrState.SignedOff)
+                    {
+                        yield return pr;
+                    }
+
                     continue;
                 }
 

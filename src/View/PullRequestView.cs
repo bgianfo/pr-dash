@@ -98,6 +98,9 @@ namespace PrDash.View
                 case PrState.Waiting:
                     parent.Title = Display.WaitingTitle;
                     break;
+                case PrState.SignedOff:
+                    parent.Title = Display.SignedOffTitle;
+                    break;
                 case PrState.Drafts:
                     parent.Title = Display.DraftsTitle;
                     break;
@@ -154,6 +157,12 @@ namespace PrDash.View
                 //
                 case 'a':
                     SwitchPrStateView(PrState.Actionable);
+                    return true;
+
+                // Enable hotkey switch view to signed off.
+                //
+                case 's':
+                    SwitchPrStateView(PrState.SignedOff);
                     return true;
 
                 // Enable hotkey help.

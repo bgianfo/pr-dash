@@ -58,6 +58,7 @@ Now you can run pr-dash and try it out.
      a - Switch the current view to actionable PRs.
      w - Switch the current view to waiting PRs.
      d - Switch the current view to draft PRs.
+     s - Switch the current view to signed off PRs.
      h - Display this help dialog.
      q - Quit the program.
      Enter - Open the currently selected PR.
