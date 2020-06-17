@@ -13,7 +13,7 @@ namespace PrDash.DataSource
                 throw new ArgumentNullException(nameof(pullRequest));
             }
 
-            if (pullRequest.Commits != null)
+            if (pullRequest.Commits != null &&  pullRequest.Commits.Any())
             {
                 return pullRequest.Commits.OrderBy(c => c.Committer.Date).Last().Committer.Date;
             }
