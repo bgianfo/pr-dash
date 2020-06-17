@@ -13,7 +13,16 @@ namespace PrDash.DataSource
                 throw new ArgumentNullException(nameof(pullRequest));
             }
 
-            return pullRequest.Commits.OrderBy(c => c.Committer.Date).Last().Committer.Date;
+            if (pullRequest.Commits != null)
+            {
+                return pullRequest.Commits.OrderBy(c => c.Committer.Date).Last().Committer.Date;
+            }
+
+            // N.B. Apparently there are cases where a PR Can exist with no commits.
+            //
+            // If no commits are available, fall back to creation date to give some sort of ordering.
+            //
+            return pullRequest.CreationDate;
         }
     }
 }
