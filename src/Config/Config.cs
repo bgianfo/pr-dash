@@ -86,6 +86,11 @@ namespace PrDash.Configuration
         public bool DescriptionEnabled { get; }
 
         /// <summary>
+        /// The option to control demo mode.
+        /// </summary>
+        public bool DemoModeEnabled { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
         /// <param name="options">Command line options which override configuration.</param>
@@ -99,6 +104,15 @@ namespace PrDash.Configuration
             // Description window is disabled for now.
             //
             DescriptionEnabled = false;
+
+            // Demo mode should always be disabled.
+            //
+            DemoModeEnabled = false;
+
+            if (options != null)
+            {
+                DemoModeEnabled = options.DemoMode;
+            }
         }
 
         /// <summary>

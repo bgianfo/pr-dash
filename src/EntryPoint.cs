@@ -34,7 +34,15 @@ namespace PrDash
             Config.ValidateConfigExists();
             Config config = Config.FromConfigFile(options);
 
-            AzureDevOpsPullRequestSource source = new AzureDevOpsPullRequestSource(config);
+            IPullRequestSource source;
+            if (config.DemoModeEnabled)
+            {
+                source = new DemoPullRequestSource();
+            }
+            else
+            {
+                source = new AzureDevOpsPullRequestSource(config);
+            }
 
             Display.RunUiLoop(config, source);
 

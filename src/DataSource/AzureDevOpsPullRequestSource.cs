@@ -243,11 +243,7 @@ namespace PrDash.DataSource
                 Statistics = m_statistics
             };
 
-            EventHandler<StatisticsUpdateEventArgs>? handler = StatisticsUpdate;
-            if (handler != null)
-            {
-                handler(this, eventArgs);
-            }
+            StatisticsUpdate?.Invoke(this, eventArgs);
         }
     }
 }

@@ -12,5 +12,11 @@ namespace PrDash.Configuration
         /// </summary>
         [Option('v', "verbose", Required = false, HelpText = "Sets output to verbose mode")]
         public bool Verbose { get; set; }
+
+        /// <summary>
+        /// Hidden demo mode option.
+        /// </summary>
+        [Option('d', "demo-mode", Required = false, HelpText = "Run in demo mode", Hidden = true)]
+        public bool DemoMode { get; set; }
     }
 }
