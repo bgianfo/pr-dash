@@ -78,8 +78,23 @@ Building is easy:
 
 ```
 $ git clone https://github.com/bgianfo/pr-dash
+
 $ cd pr-dash\src
-$ dotnet run
+
+$ dotnet build
+Microsoft (R) Build Engine version 16.6.0+5ff7b0c9e for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  pr-dash -> C:\src\pr-dash\src\bin\Debug\netcoreapp3.1\pr-dash.dll
+  pr-dash-test -> C:\src\pr-dash\test\bin\Debug\netcoreapp3.1\pr-dash-test.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:08.29
 ```
 
 ### Running Tests
@@ -88,6 +103,20 @@ To run the [xunit](https://xunit.net/) based test suite, use:
 
 ```
 $ cd pr-dash
+
 $ dotnet test
+Test run for C:\src\pr-dash\test\bin\Debug\netcoreapp3.1\pr-dash-test.dll(.NETCoreApp,Version=v3.1)
+Microsoft (R) Test Execution Command Line Tool Version 16.6.0
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+Starting test execution, please wait...
+
+A total of 1 test files matched the specified pattern.
+
+Test Run Successful.
+Total tests: 8
+     Passed: 8
+ Total time: 11.6563 Seconds
+
 ```
 
