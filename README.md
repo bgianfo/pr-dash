@@ -99,7 +99,7 @@ Time Elapsed 00:00:08.29
 
 ### Running Tests
 
-To run the [xunit](https://xunit.net/) based test suite, use:
+To run the [xUnit.net](https://xunit.net/) based test suite, use:
 
 ```
 $ cd pr-dash
