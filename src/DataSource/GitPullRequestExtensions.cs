@@ -24,5 +24,22 @@ namespace PrDash.DataSource
             //
             return pullRequest.CreationDate;
         }
+
+        /// <summary>
+        /// Returns the vote ratio string for the pull request.
+        /// </summary>
+        /// <param name="pr">The pull request to process.</param>
+        public static string VoteRatio(this GitPullRequest pr)
+        {
+            if (pr == null)
+            {
+                throw new ArgumentNullException(nameof(pr));
+            }
+
+            int reviewers = pr.Reviewers.Length;
+            int signedOff = pr.Reviewers.Count(r => r.IsSignedOff());
+
+            return $"{signedOff} / {reviewers}";
+        }
     }
 }
