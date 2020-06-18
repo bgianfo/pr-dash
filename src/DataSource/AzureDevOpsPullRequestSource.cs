@@ -256,7 +256,7 @@ namespace PrDash.DataSource
             //
             if (account.PersonalAccessToken == null)
             {
-                 credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
+                credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
             }
             else
             {

@@ -221,11 +221,11 @@ namespace PrDash.View
                     {
                         // TODO: Figure out the right way to do this.
                         //
-                        #pragma warning disable EPC13
+#pragma warning disable EPC13
 
                         Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
 
-                        #pragma warning restore EPC13
+#pragma warning restore EPC13
 
                     }
                     return true;
@@ -325,7 +325,7 @@ namespace PrDash.View
 
                 if (m_stateToView == PrState.Created)
                 {
-                   pullRequests = m_pullRequestSource.FetchCreatedPullRequests();
+                    pullRequests = m_pullRequestSource.FetchCreatedPullRequests();
                 }
                 else
                 {

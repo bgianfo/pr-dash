@@ -58,7 +58,7 @@ namespace PrDash.DataSource
             yield break;
         }
 
-        private PullRequestViewElement Fake(string title, string name =  "Brian Gianforcaro")
+        private PullRequestViewElement Fake(string title, string name = "Brian Gianforcaro")
         {
             GitPullRequest pr = new GitPullRequest
             {
