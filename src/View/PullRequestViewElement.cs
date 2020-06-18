@@ -96,63 +96,10 @@ namespace PrDash.View
             get => FitStringToBound(m_pullRequest.VoteRatio(), VoteRatioColumnWidth);
         }
 
-        private string ChangeSize
-        {
-            get
-            {
-                if (m_pullRequest.Commits == null)
-                {
-                    return string.Empty;
-                }
-
-                int added = 0;
-                int edits = 0;
-                int delete = 0;
-                foreach (var change in m_pullRequest.Commits)
-                {
-                    foreach (var count in change.ChangeCounts)
-                    {
-                        switch (count.Key)
-                        {
-                            case VersionControlChangeType.Add:
-                                added += count.Value;
-                                break;
-                            case VersionControlChangeType.Edit:
-                                edits += count.Value;
-                                break;
-                            case VersionControlChangeType.Delete:
-                                delete += count.Value;
-                                break;
-                        }
-                    }
-                }
-
-                StringBuilder builder = new StringBuilder();
-
-                if (added > 0)
-                {
-                    builder.Append($"++{added} ");
-                }
-
-                if (delete > 0)
-                {
-                    builder.Append($"--{delete} ");
-                }
-
-                if (edits > 0)
-                {
-                    builder.Append($"--{edits}");
-                }
-
-                return builder.ToString();
-            }
-        }
-
         /// <summary>
         /// Expose Pull Request description
         /// </summary>
         public string Description => m_pullRequest.Description;
-
 
         /// <summary>
         /// If the pull request item was created in Create mode.
