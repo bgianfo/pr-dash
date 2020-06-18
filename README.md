@@ -29,24 +29,20 @@ Example pr-dash.yml:
 ```yaml
 accounts:
   - project_name: sample-project1
-    repo_name: sample-git-repo1
     org_url: https://dev.azure.com/example1
     pat: <your-personal-authentication-token>
 
   - project_name: sample-project2
-    repo_name: sample-git-repo2
     org_url: https://example2.visualstudio.com
     pat: <your-personal-authentication-token>
 
   # Would only work on windows
   - project_name: sample-project3
-    repo_name: sample-git-repo3
     org_url: https://example3.visualstudio.com
 
 ```
 
 Notes:
-- **repo_name** is optional, if it's omitted the project name will be used for the repo name as well.
 - **pat** is optional when running on windows, if it's omitted the code will attempt to use AAD authentication.
 - You can read how to create an Azure DevOps PAT token [here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops).
 

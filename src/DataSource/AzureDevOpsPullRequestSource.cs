@@ -75,7 +75,7 @@ namespace PrDash.DataSource
                         IncludeLinks = false,
                     };
 
-                    List<GitPullRequest> requests = await client.GetPullRequestsAsync(account.Project, account.RepoName, criteria);
+                    List<GitPullRequest> requests = await client.GetPullRequestsByProjectAsync(account.Project, criteria);
                     foreach (var request in requests)
                     {
                         yield return new PullRequestViewElement(request, account.Handler!) { CreatedMode = true };
@@ -214,7 +214,7 @@ namespace PrDash.DataSource
                 IncludeLinks = false,
             };
 
-            List<GitPullRequest> requests = await client.GetPullRequestsAsync(accountConfig.Project, accountConfig.RepoName, criteria);
+            List<GitPullRequest> requests = await client.GetPullRequestsByProjectAsync(accountConfig.Project, criteria);
             foreach (var request in requests)
             {
                 yield return request;
