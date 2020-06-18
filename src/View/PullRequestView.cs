@@ -111,14 +111,17 @@ namespace PrDash.View
                 case PrState.Actionable:
                     parent.Title = Display.ActionableTitle;
                     break;
-                case PrState.Waiting:
-                    parent.Title = Display.WaitingTitle;
+                case PrState.Created:
+                    parent.Title = Display.CreatedTitle;
+                    break;
+                case PrState.Drafts:
+                    parent.Title = Display.DraftsTitle;
                     break;
                 case PrState.SignedOff:
                     parent.Title = Display.SignedOffTitle;
                     break;
-                case PrState.Drafts:
-                    parent.Title = Display.DraftsTitle;
+                case PrState.Waiting:
+                    parent.Title = Display.WaitingTitle;
                     break;
                 default:
                     throw new NotSupportedException(m_stateToView.ToString());
@@ -179,6 +182,12 @@ namespace PrDash.View
                 //
                 case 's':
                     SwitchPrStateView(PrState.SignedOff);
+                    return true;
+
+                // Enable hotkey switch view to our created prs.
+                //
+                case 'c':
+                    SwitchPrStateView(PrState.Created);
                     return true;
 
                 // Enable hotkey help.
@@ -312,7 +321,18 @@ namespace PrDash.View
                 //
                 m_backingData.Clear();
 
-                await foreach (PullRequestViewElement element in m_pullRequestSource.FetchPullRequests(m_stateToView))
+                IAsyncEnumerable<PullRequestViewElement> pullRequests;
+
+                if (m_stateToView == PrState.Created)
+                {
+                   pullRequests = m_pullRequestSource.FetchCreatedPullRequests();
+                }
+                else
+                {
+                    pullRequests = m_pullRequestSource.FetchAssignedPullRequests(m_stateToView);
+                }
+
+                await foreach (PullRequestViewElement element in pullRequests)
                 {
                     InsertElementSorted(element);
                 }

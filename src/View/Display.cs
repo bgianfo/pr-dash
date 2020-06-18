@@ -17,6 +17,11 @@ namespace PrDash.View
         public const string ActionableTitle = "Actionable Pull Requests To Review:";
 
         /// <summary>
+        /// Gets the title for the pull requests you created.
+        /// </summary>
+        public const string CreatedTitle = "Created Pull Requests:";
+
+        /// <summary>
         /// Gets the title for the waiting pull requests view.
         /// </summary>
         public const string WaitingTitle = "Waiting Pull Requests To Review:";

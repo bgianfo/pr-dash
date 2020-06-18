@@ -44,11 +44,44 @@ namespace PrDash.DataSource
         /// Retrieves pull requests from the configured data source.
         /// </summary>
         /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
-        public IAsyncEnumerable<PullRequestViewElement> FetchPullRequests(PrState state)
+        public IAsyncEnumerable<PullRequestViewElement> FetchAssignedPullRequests(PrState state)
         {
             m_statistics.Reset();
 
             return FetchPullRequstsInternal(state);
+        }
+
+        /// <summary>
+        /// Retrieves all active pull requests this user has created.
+        /// </summary>
+        /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
+        public async IAsyncEnumerable<PullRequestViewElement> FetchCreatedPullRequests()
+        {
+            foreach (AccountConfig account in m_config.Accounts)
+            {
+                using (VssConnection connection = GetConnection(account))
+                using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
+                {
+                    // Capture the currentUserId so it can be used to filter PR's later.
+                    //
+                    Guid userId = connection.AuthorizedIdentity.Id;
+
+                    // Only fetch pull requests which are active, and assigned to this user.
+                    //
+                    GitPullRequestSearchCriteria criteria = new GitPullRequestSearchCriteria
+                    {
+                        CreatorId = userId,
+                        Status = PullRequestStatus.Active,
+                        IncludeLinks = false,
+                    };
+
+                    List<GitPullRequest> requests = await client.GetPullRequestsAsync(account.Project, account.RepoName, criteria);
+                    foreach (var request in requests)
+                    {
+                        yield return new PullRequestViewElement(request, account.Handler!) { CreatedMode = true };
+                    }
+                }
+            }
         }
 
         /// <summary>

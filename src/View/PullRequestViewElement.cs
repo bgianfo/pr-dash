@@ -39,13 +39,30 @@ namespace PrDash.View
         /// <summary>
         /// The width in characters of the date column.
         /// </summary>
-        private const int DateColumnWidth = 20;
+        private const int DateColumnWidth = 16;
+
+        /// <summary>
+        /// The width in characters of the vote ratio column.
+        /// </summary>
+        private const int VoteRatioColumnWidth = 8;
 
         /// <summary>
         /// The width in characters of the pull request title column.
         /// </summary>
-        private static int TitleColumnWidth =>
-            Application.Top.Frame.Size.Width - (AuthorColumnWidth + DateColumnWidth);
+        private int TitleColumnWidth
+        {
+            get
+            {
+                if (CreatedMode)
+                {
+                    return Application.Top.Frame.Size.Width - (VoteRatioColumnWidth + DateColumnWidth);
+                }
+                else
+                {
+                    return Application.Top.Frame.Size.Width - (AuthorColumnWidth + DateColumnWidth);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the title bound to the confines of the window.
@@ -69,6 +86,14 @@ namespace PrDash.View
         private string BoundedUpdatedDate
         {
             get => FitStringToBound(m_updatedTime.Humanize().Transform(To.TitleCase), DateColumnWidth, leftPad: true);
+        }
+
+        /// <summary>
+        /// Gets the pull request vote ratio bound to the confines of the window.
+        /// </summary>
+        public string BoundedVoteRatio
+        {
+            get => FitStringToBound(m_pullRequest.VoteRatio(), VoteRatioColumnWidth);
         }
 
         private string ChangeSize
@@ -128,6 +153,12 @@ namespace PrDash.View
         /// </summary>
         public string Description => m_pullRequest.Description;
 
+
+        /// <summary>
+        /// If the pull request item was created in Create mode.
+        /// </summary>
+        public bool CreatedMode { get; set; }
+
         /// <summary>
         /// Constructs a new element which wraps a <see cref="GitPullRequest"/> object.
         /// </summary>
@@ -149,7 +180,17 @@ namespace PrDash.View
         /// Special ToString implementation that will be called by the ListView control when it renders each element.
         /// </summary>
         /// <returns>The string representation of the pull request.</returns>
-        public override string ToString() => BoundedTitle + BoundedAuthor + BoundedUpdatedDate;
+        public override string ToString()
+        {
+            if (CreatedMode)
+            {
+                return BoundedTitle + BoundedVoteRatio + BoundedUpdatedDate;
+            }
+            else
+            {
+                return BoundedTitle + BoundedAuthor + BoundedUpdatedDate;
+            }
+        }
 
         /// <summary>
         /// Fits the string to bounded size by trimming or padding with spaces.

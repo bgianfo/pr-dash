@@ -55,12 +55,13 @@ Now you can run pr-dash and try it out.
 ### Key Bindings
 
     Action Keys:
+     h - Display this help dialog.
      r - Force refresh the current PR view.
      a - Switch the current view to actionable PRs.
-     w - Switch the current view to waiting PRs.
+     c - Switch the current view to created PRs.
      d - Switch the current view to draft PRs.
      s - Switch the current view to signed off PRs.
-     h - Display this help dialog.
+     w - Switch the current view to waiting PRs.
      q - Quit the program.
      Enter - Open the currently selected PR.
 

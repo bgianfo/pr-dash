@@ -25,11 +25,8 @@ namespace PrDash.DataSource
         /// </summary>
         public event EventHandler<StatisticsUpdateEventArgs>? StatisticsUpdate;
 
-        /// <summary>
-        /// Retrieves pull requests from the configured data source.
-        /// </summary>
-        /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
-        public async IAsyncEnumerable<PullRequestViewElement> FetchPullRequests(PrState state)
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<PullRequestViewElement> FetchAssignedPullRequests(PrState state)
         {
             m_statistics.Reset();
 
@@ -52,6 +49,13 @@ namespace PrDash.DataSource
             m_statistics.Drafts = 1;
 
             OnStatisticsUpdate();
+        }
+
+        /// <inheritdoc/>
+        public async IAsyncEnumerable<PullRequestViewElement> FetchCreatedPullRequests()
+        {
+            await Task.CompletedTask;
+            yield break;
         }
 
         private PullRequestViewElement Fake(string title, string name =  "Brian Gianforcaro")

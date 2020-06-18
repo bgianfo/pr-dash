@@ -26,6 +26,9 @@ namespace PrDash.DataSource
 
         // Return pull request we signed off on.
         SignedOff,
+
+        // Return pull requests we created.
+        Created,
     }
 
     /// <summary>
@@ -39,9 +42,15 @@ namespace PrDash.DataSource
         event EventHandler<StatisticsUpdateEventArgs> StatisticsUpdate;
 
         /// <summary>
-        /// Retrieves all active pull requests to the configured data source.
+        /// Retrieves pull requests from the configured data source matching the given filter.
         /// </summary>
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
-        IAsyncEnumerable<PullRequestViewElement> FetchPullRequests(PrState state);
+        IAsyncEnumerable<PullRequestViewElement> FetchAssignedPullRequests(PrState state);
+
+        /// <summary>
+        /// Retrieves all active pull requests this user has created.
+        /// </summary>
+        /// <returns>A stream of <see cref="GitPullRequest"/></returns>
+        IAsyncEnumerable<PullRequestViewElement> FetchCreatedPullRequests();
     }
 }
