@@ -68,7 +68,7 @@ namespace PrDash.View
         /// </summary>
         private string BoundedUpdatedDate
         {
-            get => FitStringToBound(m_updatedTime.Humanize(), DateColumnWidth, leftPad: true);
+            get => FitStringToBound(m_updatedTime.Humanize().Transform(To.TitleCase), DateColumnWidth, leftPad: true);
         }
 
         private string ChangeSize
