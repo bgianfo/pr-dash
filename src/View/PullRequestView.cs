@@ -317,6 +317,10 @@ namespace PrDash.View
         {
             try
             {
+                // Make sure to reset selected item before insert so it's never out of range.
+                //
+                SelectedItem = 0;
+
                 // Clear the backing list, but don't re-render yet.
                 //
                 m_backingData.Clear();
