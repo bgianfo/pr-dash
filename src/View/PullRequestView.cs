@@ -58,6 +58,11 @@ namespace PrDash.View
         private TextView? m_descriptionView;
 
         /// <summary>
+        /// Current title text, for use in UI and in console title.
+        /// </summary>
+        private string m_titleText = Display.ActionableTitle;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PullRequestView"/> class.
         /// </summary>
         /// <param name="source">The source of elements for this view.</param>
@@ -81,8 +86,8 @@ namespace PrDash.View
             // Post request to the refresh task to populate this view.
             //
             m_refreshTask = RefreshTask.Create(this);
-            m_refreshTask.RequestRefresh();
 
+            SwitchPrStateView(PrState.Actionable);
 
             // Setup a timer to fire in the future to refresh again.
             //
@@ -97,34 +102,34 @@ namespace PrDash.View
         {
             m_stateToView = newState;
 
-            // Update the title of the window when we switch.
-            //
-            Window? parent = Application.Top.Subviews.First() as Window;
-
-            if (parent == null)
-            {
-                throw new InvalidOperationException("Pullrequest view's parent window is null");
-            }
-
             switch (m_stateToView)
             {
                 case PrState.Actionable:
-                    parent.Title = Display.ActionableTitle;
+                    m_titleText = Display.ActionableTitle;
                     break;
                 case PrState.Created:
-                    parent.Title = Display.CreatedTitle;
+                    m_titleText = Display.CreatedTitle;
                     break;
                 case PrState.Drafts:
-                    parent.Title = Display.DraftsTitle;
+                    m_titleText = Display.DraftsTitle;
                     break;
                 case PrState.SignedOff:
-                    parent.Title = Display.SignedOffTitle;
+                    m_titleText = Display.SignedOffTitle;
                     break;
                 case PrState.Waiting:
-                    parent.Title = Display.WaitingTitle;
+                    m_titleText = Display.WaitingTitle;
                     break;
                 default:
                     throw new NotSupportedException(m_stateToView.ToString());
+            }
+
+            // Update the title of the window when we switch.
+            //
+            Window? parent = Application.Top.Subviews.FirstOrDefault() as Window;
+
+            if (parent != null)
+            {
+                parent.Title = m_titleText;
             }
 
             // Force refresh the contents.
@@ -339,6 +344,7 @@ namespace PrDash.View
                 await foreach (PullRequestViewElement element in pullRequests)
                 {
                     InsertElementSorted(element);
+                    Console.Title = $"{m_titleText} {m_backingData.Count}";
                 }
 
                 if (!m_backingData.Any())
@@ -347,6 +353,7 @@ namespace PrDash.View
                     //
                     await SetSourceAsync(m_backingData);
                     Application.Refresh();
+                    Console.Title = $"{m_titleText} {m_backingData.Count}";
                 }
             }
             catch (Exception ex)
