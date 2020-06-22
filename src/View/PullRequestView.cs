@@ -353,6 +353,7 @@ namespace PrDash.View
                     //
                     await SetSourceAsync(m_backingData);
                     Application.Refresh();
+                    Console.Title = $"{m_titleText} {m_backingData.Count}";
                 }
             }
             catch (Exception ex)
