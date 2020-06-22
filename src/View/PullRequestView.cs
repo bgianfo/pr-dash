@@ -340,6 +340,14 @@ namespace PrDash.View
                 {
                     InsertElementSorted(element);
                 }
+
+                if (!m_backingData.Any())
+                {
+                    // Force the UI Loop to re-render empty to clear the loading text.
+                    //
+                    await SetSourceAsync(m_backingData);
+                    Application.Refresh();
+                }
             }
             catch (Exception ex)
             {
