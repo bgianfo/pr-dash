@@ -315,6 +315,7 @@ namespace PrDash.View
         /// <returns>A list of pull request content.</returns>
         private async Task RefreshCallback()
         {
+            ProgressDialog progress = new ProgressDialog();
             try
             {
                 // Make sure to reset selected item before insert so it's never out of range.
