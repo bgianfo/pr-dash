@@ -322,6 +322,9 @@ namespace PrDash.View
         {
             try
             {
+                await SetSourceAsync(LoadingContents);
+                Application.Refresh();
+
                 // Make sure to reset selected item before insert so it's never out of range.
                 //
                 SelectedItem = 0;
@@ -347,14 +350,11 @@ namespace PrDash.View
                     Console.Title = $"{m_titleText} {m_backingData.Count}";
                 }
 
-                if (!m_backingData.Any())
-                {
-                    // Force the UI Loop to re-render empty to clear the loading text.
-                    //
-                    await SetSourceAsync(m_backingData);
-                    Application.Refresh();
-                    Console.Title = $"{m_titleText} {m_backingData.Count}";
-                }
+                // Force the UI Loop to re-render empty to clear the loading text.
+                //
+                await SetSourceAsync(m_backingData);
+                Application.Refresh();
+                Console.Title = $"{m_titleText} {m_backingData.Count}";
             }
             catch (Exception ex)
             {
