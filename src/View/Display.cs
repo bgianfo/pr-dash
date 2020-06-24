@@ -14,27 +14,27 @@ namespace PrDash.View
         /// <summary>
         /// Gets the title for the actionable pull requests view.
         /// </summary>
-        public const string ActionableTitle = "Actionable Pull Requests To Review:";
+        public const string ActionableTitle = "Actionable PRs:";
 
         /// <summary>
         /// Gets the title for the pull requests you created.
         /// </summary>
-        public const string CreatedTitle = "Created Pull Requests:";
+        public const string CreatedTitle = "Created PRs:";
 
         /// <summary>
         /// Gets the title for the waiting pull requests view.
         /// </summary>
-        public const string WaitingTitle = "Waiting Pull Requests To Review:";
+        public const string WaitingTitle = "Waiting PRs:";
 
         /// <summary>
         /// Gets the title for the signed off pull requests view.
         /// </summary>
-        public const string SignedOffTitle = "Signed Off Pull Requests:";
+        public const string SignedOffTitle = "Signed Off PRs:";
 
         /// <summary>
         /// Gets the title for the draft pull requests view.
         /// </summary>
-        public const string DraftsTitle = "Draft Pull Requests To Review:";
+        public const string DraftsTitle = "Draft PRs:";
 
         /// <summary>
         /// Gets the height of the status bar.
