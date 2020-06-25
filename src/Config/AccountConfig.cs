@@ -12,6 +12,9 @@ namespace PrDash.Configuration
         /// Access token for authenticating to Azure DevOps.
         /// See: https://docs.microsoft.com/azure/devops/integrate/get-started/authentication/pats
         /// </summary>
+        /// <remarks>
+        /// If PAT token is null, then the client attempts to fall back to Azure AD Authentication.
+        /// </remarks>
         public string? PersonalAccessToken { get; set; }
 
         /// <summary>
