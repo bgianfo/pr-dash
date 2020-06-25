@@ -8,15 +8,15 @@ namespace PrDash.Configuration
     public class CommandLineOptions
     {
         /// <summary>
-        /// The verbose bar command line option.
+        /// The verbose command line option.
         /// </summary>
-        [Option('v', "verbose", Required = false, HelpText = "Sets output to verbose mode")]
+        [Option("verbose", HelpText = "Sets output to verbose mode")]
         public bool Verbose { get; set; }
 
         /// <summary>
         /// Hidden demo mode option.
         /// </summary>
-        [Option('d', "demo-mode", Required = false, HelpText = "Run in demo mode", Hidden = true)]
+        [Option('d', "demo-mode", HelpText = "Run in demo mode", Hidden = true)]
         public bool DemoMode { get; set; }
     }
 }
