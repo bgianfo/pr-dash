@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
@@ -57,10 +59,12 @@ namespace PrDash.DataSource
         /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
         public async IAsyncEnumerable<PullRequestViewElement> FetchCreatedPullRequests()
         {
-            foreach (AccountConfig account in m_config.Accounts)
+            foreach (var accountGroup in m_config.AccountsByUri)
             {
-                using (VssConnection connection = GetConnection(account))
-                using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
+                Uri organizationUri = accountGroup.Key;
+
+                using VssConnection connection = await GetConnectionAsync(organizationUri, accountGroup.Value);
+                using GitHttpClient client = await connection.GetClientAsync<GitHttpClient>();
                 {
                     // Capture the currentUserId so it can be used to filter PR's later.
                     //
@@ -75,10 +79,13 @@ namespace PrDash.DataSource
                         IncludeLinks = false,
                     };
 
-                    List<GitPullRequest> requests = await client.GetPullRequestsByProjectAsync(account.Project, criteria);
-                    foreach (var request in requests)
+                    foreach (AccountConfig account in accountGroup.Value)
                     {
-                        yield return new PullRequestViewElement(request, account.Handler!) { CreatedMode = true };
+                        List<GitPullRequest> requests = await client.GetPullRequestsByProjectAsync(account.Project, criteria);
+                        foreach (var request in requests)
+                        {
+                            yield return new PullRequestViewElement(request, account.Handler!) { CreatedMode = true };
+                        }
                     }
                 }
             }
@@ -91,28 +98,35 @@ namespace PrDash.DataSource
         /// <returns>An async stream of <see cref="PullRequestViewElement"/></returns>
         private async IAsyncEnumerable<PullRequestViewElement> FetchPullRequstsInternal(PrState state)
         {
-            foreach (AccountConfig account in m_config.Accounts)
+            foreach (var accountGroup in m_config.AccountsByUri)
             {
-                using (VssConnection connection = GetConnection(account))
-                using (GitHttpClient client = await connection.GetClientAsync<GitHttpClient>())
-                {
-                    // Capture the currentUserId so it can be used to filter PR's later.
-                    //
-                    Guid userId = connection.AuthorizedIdentity.Id;
+                Uri organizationUri = accountGroup.Key;
 
+                // Create a shared connection to the AzureDevOps Git API for all accounts sharing the same organization uri.
+                //
+                using VssConnection connection = await GetConnectionAsync(organizationUri, accountGroup.Value);
+                using GitHttpClient client = await connection.GetClientAsync<GitHttpClient>();
+
+                // Capture the currentUserId so it can be used to filter PR's later.
+                //
+                Guid userId = connection.AuthorizedIdentity.Id;
+
+                foreach (AccountConfig account in accountGroup.Value)
+                {
                     await foreach (var pr in FetchPullRequests(client, userId, account, state))
                     {
-                        // Create a connection to the AzureDevOps Git API.
+                        // We only want to fetch the commit data if the config is enabled.
                         //
+                        if (m_config.SortByRecentCommit)
                         {
                             var commits = await client.GetPullRequestCommitsAsync(pr.Repository.Id, pr.PullRequestId);
                             pr.Commits = commits.ToArray();
-
-                            yield return new PullRequestViewElement(pr, account.Handler!);
                         }
+
+                        yield return new PullRequestViewElement(pr, account.Handler!);
                     }
-                }
             }
+        }
         }
 
         /// <summary>
@@ -248,22 +262,28 @@ namespace PrDash.DataSource
         /// </summary>
         /// <param name="account">Account details to create the connection for.</param>
         /// <returns>A valid <see cref="VssConnection"/> for the given account.</returns>
-        private static VssConnection GetConnection(AccountConfig account)
+        private static async Task<VssConnection> GetConnectionAsync(Uri organizationUri, IList<AccountConfig> accounts)
         {
             VssCredentials credential;
 
+            // If the org has more than one pat token, just pick one, it doesn't matter.
+            //
+            AccountConfig? patTokenAccount = accounts.FirstOrDefault(a => a.PersonalAccessToken != null);
+
             // If the user didn't configure a PAT token, try to login via AAD.
             //
-            if (account.PersonalAccessToken == null)
+            if (patTokenAccount == null)
             {
                 credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
             }
             else
             {
-                credential = new VssBasicCredential(string.Empty, account.PersonalAccessToken);
+                credential = new VssBasicCredential(string.Empty, patTokenAccount.PersonalAccessToken);
             }
 
-            return new VssConnection(account.OrganizationUrl, credential);
+            VssConnection connection = new VssConnection(organizationUri, credential);
+            await connection.ConnectAsync();
+            return connection;
         }
 
         /// <summary>

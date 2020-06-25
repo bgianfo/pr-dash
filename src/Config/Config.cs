@@ -71,6 +71,32 @@ namespace PrDash.Configuration
         }
 
         /// <summary>
+        /// Gets the accounts grouped by organization Uri.
+        /// </summary>
+        public IDictionary<Uri, IList<AccountConfig>> AccountsByUri
+        {
+            get
+            {
+                IDictionary<Uri, IList<AccountConfig>> dict = new Dictionary<Uri, IList<AccountConfig>>();
+
+                foreach (var account in m_accounts)
+                {
+                    if (dict.TryGetValue(account.OrganizationUrl!, out IList<AccountConfig>? config))
+                    {
+                        config.Add(account);
+                    }
+                    else
+                    {
+                        config = new List<AccountConfig> { account };
+                        dict.Add(account.OrganizationUrl!, config);
+                    }
+                }
+
+                return dict;
+            }
+        }
+
+        /// <summary>
         /// The status bar option.
         /// </summary>
         public bool StatusBarEnabled { get; }
@@ -79,6 +105,14 @@ namespace PrDash.Configuration
         /// The description window option.
         /// </summary>
         public bool DescriptionEnabled { get; }
+
+        /// <summary>
+        /// Configure if the results should be sorted by recent commit.
+        /// </summary>
+        /// <remarks>
+        /// Has performance impact when fetching lots of PRs.
+        /// </remarks>
+        public bool SortByRecentCommit { get; }
 
         /// <summary>
         /// The option to control demo mode.
@@ -95,6 +129,10 @@ namespace PrDash.Configuration
             // Status bar is always enabled for now.
             //
             StatusBarEnabled = true;
+
+            // Sort by recent commits should always be disabled for now.
+            //
+            SortByRecentCommit = false;
 
             // Description window is disabled for now.
             //
