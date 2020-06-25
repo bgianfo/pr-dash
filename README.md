@@ -14,6 +14,9 @@ Note: This tool is not created by, affiliated with, or supported by Microsoft/Az
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
 
+### Screenshot
+
+![Screenshot of pr-dash running in demo mode](https://raw.githubusercontent.com/bgianfo/pr-dash/master/.assets/demo.png)
 
 ### Configuration
 
