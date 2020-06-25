@@ -34,7 +34,12 @@ Movement Keys:
  ↑ - Select one pull request up.
  ↓ - Select one pull request down.
  k - Select one pull request up.
- j - Select one pull request down.";
+ j - Select one pull request down.
+
+Mouse:
+ Scroll Up   - Select one pull request up.
+ Scroll Down - Select one pull request down.
+ Left Click  - Open the currently selected PR.";
 
         /// <summary>
         /// The calculated width of the dialog contents.

@@ -222,23 +222,54 @@ namespace PrDash.View
                 // Hook Enter to open the given pull request under the cursor.
                 //
                 case Key.Enter:
-                    if (SelectedItem < m_backingData.Count)
-                    {
-                        // TODO: Figure out the right way to do this.
-                        //
-#pragma warning disable EPC13
-
-                        Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
-
-#pragma warning restore EPC13
-
-                    }
+                    OnOpenSelectedItem();
                     return true;
             }
 
             // Forward everything else to the real implementation.
             //
             return base.ProcessKey(keyEvent);
+        }
+
+        /// <summary>
+        /// Implement custom mouse handling on this view.
+        /// </summary>
+        /// <param name="mouseEvent">Contains the details about the mouse action that produced the event.</param>
+        /// <returns>True if the event was handled, False otherwise.</returns>
+        public override bool MouseEvent(MouseEvent mouseEvent)
+        {
+            switch (mouseEvent.Flags)
+            {
+                case MouseFlags.WheeledDown:
+                    return base.ProcessKey(new KeyEvent { Key = Key.CursorDown } );
+
+                case MouseFlags.WheeledUp:
+                    return base.ProcessKey(new KeyEvent { Key = Key.CursorUp } );
+
+                case MouseFlags.Button1Clicked:
+                    OnOpenSelectedItem();
+                    return true;
+                default:
+                    return base.MouseEvent(mouseEvent);
+            }
+        }
+
+        /// <summary>
+        /// Handler for opening the selected pull request.
+        /// </summary>
+        private void OnOpenSelectedItem()
+        {
+            if (SelectedItem < m_backingData.Count)
+            {
+                // TODO: Figure out the right way to do this.
+                //
+#pragma warning disable EPC13
+
+                Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
+
+#pragma warning restore EPC13
+
+            }
         }
 
         /// <summary>

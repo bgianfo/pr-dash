@@ -67,6 +67,11 @@ Now you can run pr-dash and try it out.
      k - Select one pull request up.
      j - Select one pull request down.
 
+    Mouse:
+     Scroll Up   - Select one pull request up.
+     Scroll Down - Select one pull request down.
+     Left Click  - Open the currently selected PR.
+
 ### Building
 
 `pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
