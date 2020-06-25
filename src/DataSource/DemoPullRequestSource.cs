@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.WebApi;
 using PrDash.Handlers;
@@ -15,6 +16,23 @@ namespace PrDash.DataSource
     /// </summary>
     public class DemoPullRequestSource : IPullRequestSource
     {
+        /// <summary>
+        /// Class to generate random date times within a bound.
+        /// </summary>
+        internal class RandomDateTime
+        {
+            private static DateTime m_start = new DateTime(2019, 1, 1);
+            private Random m_gen = new Random();
+            private int m_range = (DateTime.Today - m_start).Days;
+
+            public DateTime Next()
+            {
+                return m_start.AddDays(m_gen.Next(m_range)).AddHours(m_gen.Next(0, 24)).AddMinutes(m_gen.Next(0, 60)).AddSeconds(m_gen.Next(0, 60));
+            }
+        }
+
+        private RandomDateTime m_dateTimeGen = new RandomDateTime();
+
         /// <summary>
         /// Statistics tracking
         /// </summary>
@@ -42,7 +60,7 @@ namespace PrDash.DataSource
             yield return Fake("Docs: Update README.md");
             yield return Fake("Feature: Add 's' hot key to filter view to signedoff pull requests");
             yield return Fake("Switch build version");
-            yield return Fake("Docs: Document AAD feature in README.md(35 hours ago)");
+            yield return Fake("Docs: Document AAD feature in README.md");
 
             m_statistics.SignedOff = 20;
             m_statistics.Waiting = 2;
@@ -65,23 +83,12 @@ namespace PrDash.DataSource
                 CreatedBy = new IdentityRef() { DisplayName = name },
                 Title = title,
                 ArtifactId = $"vstsid://{Guid.NewGuid()}",
-                CreationDate = RandomDate(),
+                CreationDate = m_dateTimeGen.Next(),
             };
 
             m_statistics.Actionable++;
 
             return new PullRequestViewElement(pr, new DemoPullRequestHandler());
-        }
-
-        /// <summary>
-        /// Generates a random date.
-        /// </summary>
-        /// <returns></returns>
-        private static DateTime RandomDate()
-        {
-            DateTime start = new DateTime(2020, 1, 1);
-            int range = (DateTime.Today - start).Days;
-            return start.AddDays(new Random().Next(range));
         }
 
         /// <summary>
