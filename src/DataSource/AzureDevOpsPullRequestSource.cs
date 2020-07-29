@@ -177,10 +177,7 @@ namespace PrDash.DataSource
                     // If we there are no active threads where we have participated, the PR is actionable to us.
                     //
                     List<GitPullRequestCommentThread> threads = await client.GetThreadsAsync(pr.Repository.Id, pr.PullRequestId);
-
-                    bool threadInvolvesUs(GitPullRequestCommentThread thread) => thread.Comments.Any(c => Guid.Parse(c.Author.Id) == userId);
-                    bool anyActiveThreads = threads.Any(t => t.Status == CommentThreadStatus.Active && threadInvolvesUs(t));
-                    return anyActiveThreads ? PrState.Waiting : PrState.Actionable;
+                    return threads.Any(t => t.IsActive() && t.InvolvesUser(userId)) ? PrState.Waiting : PrState.Actionable;
                 }
                 else
                 {
