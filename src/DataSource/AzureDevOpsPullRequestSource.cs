@@ -125,8 +125,8 @@ namespace PrDash.DataSource
 
                         yield return new PullRequestViewElement(pr, account.Handler!);
                     }
+                }
             }
-        }
         }
 
         /// <summary>
@@ -136,20 +136,11 @@ namespace PrDash.DataSource
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(GitHttpClient client, Guid userId, AccountConfig accountConfig, PrState state)
         {
-            await foreach (var pr in FetchAccountActivePullRequsts(client, userId, accountConfig))
+            async Task<PrState?> getState(GitPullRequest pr)
             {
-                // Hack to not display drafts for now.
-                //
                 if (pr.IsDraft == true)
                 {
-                    m_statistics.Drafts++;
-
-                    if (state == PrState.Drafts)
-                    {
-                        yield return pr;
-                    }
-
-                    continue;
+                    return PrState.Drafts;
                 }
 
                 // Try to find our selves in the reviewer list.
@@ -158,52 +149,47 @@ namespace PrDash.DataSource
                 {
                     //  Skip this review if we aren't assigned.
                     //
-                    continue;
+                    return null;
                 }
 
                 // Skip declined reviews.
                 //
                 if (reviewer.HasDeclined.HasValue && reviewer.HasDeclined.Value)
                 {
-                    continue;
+                    return null;
                 }
 
                 // If we have already casted a "final" vote, then skip it.
                 //
                 if (reviewer.HasFinalVoteBeenCast())
                 {
-                    m_statistics.SignedOff++;
-
-                    if (state == PrState.SignedOff)
-                    {
-                        yield return pr;
-                    }
-
-                    continue;
+                    return PrState.SignedOff;
                 }
 
-                // TODO: It would be nice if there was a way to tell if
-                // the review was changed since you started waiting.
-                //
                 if (reviewer.IsWaiting())
-                {
-                    m_statistics.Waiting++;
+                {   
+                    List<GitPullRequestCommentThread> threads = await client.GetThreadsAsync(pr.Repository.Id, pr.PullRequestId);
 
-                    if (state == PrState.Waiting)
-                    {
-                        yield return pr;
-                    }
+                    bool threadInvolvesUs(GitPullRequestCommentThread thread) => thread.Comments.Any(c => Guid.Parse(c.Author.Id) == userId);
+                    bool anyActiveThreads = threads.Any(t => t.Status == CommentThreadStatus.Active && threadInvolvesUs(t));
+                    return anyActiveThreads ? PrState.Waiting : PrState.Actionable;
                 }
                 else
                 {
                     // If these criteria haven't been met, then the PR is actionable.
                     //
-                    m_statistics.Actionable++;
+                    return PrState.Actionable;
+                }
+            }
 
-                    if (state == PrState.Actionable)
-                    {
-                        yield return pr;
-                    }
+            await foreach (var pr in FetchAccountActivePullRequsts(client, userId, accountConfig))
+            {
+                PrState? processedState = await getState(pr);
+
+                m_statistics.Accumulate(processedState);
+                if (state == processedState)
+                {
+                    yield return pr;
                 }
             }
 

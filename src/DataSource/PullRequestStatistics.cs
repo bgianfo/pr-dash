@@ -1,3 +1,5 @@
+using System;
+
 namespace PrDash.DataSource
 {
     // Ignore warning about not declare visible instance fields.
@@ -37,6 +39,19 @@ namespace PrDash.DataSource
             Waiting = 0;
             SignedOff = 0;
             Drafts = 0;
+        }
+
+        public void Accumulate(PrState? state)
+        {
+            _ = state switch
+            {
+                null => uint.MinValue,
+                PrState.Actionable => Actionable++,
+                PrState.Waiting => Waiting++,
+                PrState.SignedOff => SignedOff++,
+                PrState.Drafts => Drafts++,
+                _ => throw new ArgumentException("Unknown pr state: " + state)
+            };
         }
     }
 
