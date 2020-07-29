@@ -136,8 +136,12 @@ namespace PrDash.DataSource
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(GitHttpClient client, Guid userId, AccountConfig accountConfig, PrState state)
         {
+            // Gets the "processed" state of a PR.
+            //
             async Task<PrState?> getState(GitPullRequest pr)
             {
+                // If the PR is in draft, it's a draft.
+                //
                 if (pr.IsDraft == true)
                 {
                     return PrState.Drafts;
@@ -167,7 +171,11 @@ namespace PrDash.DataSource
                 }
 
                 if (reviewer.IsWaiting())
-                {   
+                {
+                    // If we are waiting on the PR, inspect the active threads in the PR.
+                    // If we have left a comment in a thread that is still active, the PR is not actionable to us.
+                    // If we there are no active threads where we have participated, the PR is actionable to us.
+                    //
                     List<GitPullRequestCommentThread> threads = await client.GetThreadsAsync(pr.Repository.Id, pr.PullRequestId);
 
                     bool threadInvolvesUs(GitPullRequestCommentThread thread) => thread.Comments.Any(c => Guid.Parse(c.Author.Id) == userId);
@@ -185,7 +193,7 @@ namespace PrDash.DataSource
             await foreach (var pr in FetchAccountActivePullRequsts(client, userId, accountConfig))
             {
                 PrState? processedState = await getState(pr);
-
+                
                 m_statistics.Accumulate(processedState);
                 if (state == processedState)
                 {

@@ -41,6 +41,10 @@ namespace PrDash.DataSource
             Drafts = 0;
         }
 
+        /// <summary>
+        /// Accumulate a PR status in this statistics object.
+        /// </summary>
+        /// <param name="state">Status of the PR to accumulate. Can be null for no accumulation.</param>
         public void Accumulate(PrState? state)
         {
             _ = state switch
