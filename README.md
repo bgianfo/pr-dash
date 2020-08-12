@@ -1,18 +1,21 @@
-pr-dash
--------
-
-`pr-dash` is a command line tool which allows you to monitor the status
-of all Azure Dev Ops pull requests you are assigned a reviewer of, right
-at home in your terminal.
-
-pr-dash is currently tested on Windows and Linux.
-
-Note: This tool is not created by, affiliated with, or supported by Microsoft/Azure DevOps.
 
 [![Build Status](https://travis-ci.org/bgianfo/pr-dash.svg?branch=master)](https://travis-ci.org/bgianfo/pr-dash)
 [![GitHub license](https://img.shields.io/github/license/bgianfo/pr-dash.svg)]()
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
+
+pr-dash
+-------
+
+`pr-dash` is a command line tool which allows you to monitor the status
+of all Azure Dev Ops pull requests you are assigned a reviewer of, right
+at home in your terminal. `pr-dash` was inspired by the **iron** code review
+system from janestreet, you can read more about that here:
+[PR Dash: A command line pull request dashboard](https://bjg.io/pr-dash/)
+
+pr-dash is currently tested on Windows and Linux.
+
+Note: This tool is not created by, affiliated with, or supported by Microsoft/Azure DevOps.
 
 ### Screenshot
 
