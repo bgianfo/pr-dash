@@ -140,6 +140,13 @@ namespace PrDash.DataSource
             //
             async Task<PrState?> getState(GitPullRequest pr)
             {
+                // Don't show PRs created by ourselves.
+                //
+                if (Guid.Parse(pr.CreatedBy.Id) == userId)
+                {
+                    return null;
+                }
+
                 // If the PR is in draft, it's a draft.
                 //
                 if (pr.IsDraft == true)
