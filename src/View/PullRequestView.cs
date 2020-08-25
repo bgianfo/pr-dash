@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Build.WebApi;
-using Mono.Terminal;
 using PrDash.DataSource;
 using Terminal.Gui;
 
@@ -80,7 +79,7 @@ namespace PrDash.View
             {
                 // Subscribe to selection change.
                 //
-                SelectedChanged += OnSelectedPullRequestChanged;
+                SelectedItemChanged += OnSelectedPullRequestChanged;
             }
 
             // Post request to the refresh task to populate this view.
@@ -257,7 +256,7 @@ namespace PrDash.View
         /// <summary>
         /// Handler for opening the selected pull request.
         /// </summary>
-        private void OnOpenSelectedItem()
+        public override bool OnOpenSelectedItem()
         {
             if (SelectedItem < m_backingData.Count)
             {
@@ -269,13 +268,16 @@ namespace PrDash.View
 
 #pragma warning restore EPC13
 
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>
         /// Selection change callback.
         /// </summary>
-        private void OnSelectedPullRequestChanged()
+        private void OnSelectedPullRequestChanged(ListViewItemEventArgs args)
         {
             if (SelectedItem > m_backingData.Count)
             {
