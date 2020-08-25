@@ -11,7 +11,7 @@
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.7.0" />
 
     <PackageReference Include="YamlDotNet" Version="8.1.2" />
-    <PackageReference Include="Terminal.Gui" Version="0.81.0" />
+    <PackageReference Include="Terminal.Gui" Version="0.89.4" />
     <PackageReference Include="Humanizer" Version="2.8.26" />
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.172.0-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="16.172.0-preview" />
