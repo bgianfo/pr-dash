@@ -13,22 +13,22 @@ namespace PrDash.DataSource
         /// <summary>
         /// The number of actionable pull requests.
         /// </summary>
-        public uint Actionable = 0;
+        public uint Actionable;
 
         /// <summary>
         /// The number of waiting pull requests.
         /// </summary>
-        public uint Waiting = 0;
+        public uint Waiting;
 
         /// <summary>
         /// The number of signed off pull requests.
         /// </summary>
-        public uint SignedOff = 0;
+        public uint SignedOff;
 
         /// <summary>
         /// The number of draft pull requests.
         /// </summary>
-        public uint Drafts = 0;
+        public uint Drafts;
 
         /// <summary>
         /// Resets all statistics values.
