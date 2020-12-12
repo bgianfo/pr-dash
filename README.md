@@ -81,7 +81,7 @@ Now you can run pr-dash and try it out.
 ### Building
 
 `pr-dash` is written in C#, targeting dotnet core so you'll need to grab a
-[dotnet core 3.1 installation](https://dotnet.microsoft.com/download/dotnet-core/3.1) in order to compile it.
+[dotnet core 5.0 installation](https://dotnet.microsoft.com/download/dotnet-core/5.0) in order to compile it.
 Building is easy:
 
 ```
