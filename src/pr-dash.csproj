@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="4.7.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="5.0.0" />
 
     <PackageReference Include="YamlDotNet" Version="8.1.2" />
     <PackageReference Include="Terminal.Gui" Version="0.81.0" />
