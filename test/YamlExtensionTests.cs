@@ -1,7 +1,7 @@
-﻿using Xunit;
+﻿using System;
 using PrDash.Configuration;
+using Xunit;
 using YamlDotNet.RepresentationModel;
-using System;
 
 namespace PrDash.Tests
 {

@@ -1,11 +1,11 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
-using YamlDotNet.RepresentationModel;
-using PrDash.Handlers;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.InteropServices;
+using PrDash.Handlers;
+using YamlDotNet.RepresentationModel;
 
 namespace PrDash.Configuration
 {

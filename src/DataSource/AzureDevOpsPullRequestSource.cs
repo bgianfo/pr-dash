@@ -197,7 +197,7 @@ namespace PrDash.DataSource
             await foreach (var pr in FetchAccountActivePullRequsts(client, userId, accountConfig))
             {
                 PrState? processedState = await getState(pr);
-                
+
                 m_statistics.Accumulate(processedState);
                 if (state == processedState)
                 {

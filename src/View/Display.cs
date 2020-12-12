@@ -1,8 +1,8 @@
 using System;
-using PrDash.DataSource;
-using PrDash.Configuration;
-using Terminal.Gui;
 using System.Linq;
+using PrDash.Configuration;
+using PrDash.DataSource;
+using Terminal.Gui;
 
 namespace PrDash.View
 {

@@ -1,6 +1,6 @@
 using System.IO;
-using Xunit;
 using PrDash.Configuration;
+using Xunit;
 
 namespace PrDash.Tests
 {

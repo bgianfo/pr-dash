@@ -241,10 +241,10 @@ namespace PrDash.View
             switch (mouseEvent.Flags)
             {
                 case MouseFlags.WheeledDown:
-                    return base.ProcessKey(new KeyEvent { Key = Key.CursorDown } );
+                    return base.ProcessKey(new KeyEvent { Key = Key.CursorDown });
 
                 case MouseFlags.WheeledUp:
-                    return base.ProcessKey(new KeyEvent { Key = Key.CursorUp } );
+                    return base.ProcessKey(new KeyEvent { Key = Key.CursorUp });
 
                 case MouseFlags.Button1Clicked:
                     OnOpenSelectedItem();

@@ -1,7 +1,7 @@
-﻿using PrDash.Configuration;
+﻿using CommandLine;
+using PrDash.Configuration;
 using PrDash.DataSource;
 using PrDash.View;
-using CommandLine;
 
 namespace PrDash
 {
