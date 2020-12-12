@@ -1,54 +1,80 @@
-name: "CodeQL"
+name: "CI Build and CodeQL Analysis"
 
 on:
   push:
-    branches: [master, ]
-  pull_request:
-    # The branches below must be a subset of the branches above
     branches: [master]
-  schedule:
-    - cron: '0 19 * * 3'
+  pull_request:
+    branches: [master]
 
 jobs:
-  analyse:
-    name: Analyse
+
+  format:
+    name: Format Check
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
       with:
-        # We must fetch at least the immediate parents so that if this is
-        # a pull request then we can checkout the head.
-        fetch-depth: 2
+        dotnet-version: 5.0.x
 
-    # If this run was triggered by a pull request event, then checkout
-    # the head of the pull request instead of the merge commit.
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
+    - name: Install dotnet-format
+      run: dotnet tool install --global dotnet-format
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      # Override language selection by uncommenting this and choosing your languages
-      with:
-         languages: csharp
+    - name: Format
+      run: dotnet format --check
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+  build:
+    name: Build & Test
+    env:	
+      DOTNET_NOLOGO: true
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
+    strategy:
+      matrix:
+        kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+          - kind: windows
+            os: windows-latest
+          - kind: macOS
+            os: macos-latest
 
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
 
-    #- run: |
-    #   make bootstrap
-    #   make release
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - run: git checkout HEAD^2
+        if: ${{ github.event_name == 'pull_request' }}
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+           languages: csharp
+
+      - name: Setup dotnet 5.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Build
+        run: |
+          dotnet build
+
+      - name: Test
+        run: |
+          dotnet test
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+
