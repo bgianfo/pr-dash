@@ -144,6 +144,11 @@ namespace PrDash.View
         /// <returns>True if the key was handled, False otherwise.</returns>
         public override bool ProcessKey(KeyEvent keyEvent)
         {
+            if (keyEvent == null)
+            {
+                throw new ArgumentNullException(nameof(keyEvent));
+            }
+
             // Handle specific characters we want to have behavior.
             //
             char keyChar = (char)((uint)keyEvent.Key & (uint)Key.CharMask);

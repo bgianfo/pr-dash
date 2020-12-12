@@ -272,11 +272,20 @@ namespace PrDash.DataSource
             //
             if (patTokenAccount == null)
             {
-                credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
+                // Note: The UserPrincipal API is only available on windows.
+                //
+                if (OperatingSystem.IsWindows())
+                {
+                    credential = new VssAadCredential(UserPrincipal.Current.EmailAddress);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"The configured orginization ({organizationUri}) has no configured PAT");
+                }
             }
             else
             {
-                credential = new VssBasicCredential(string.Empty, patTokenAccount.PersonalAccessToken);
+                credential = new VssBasicCredential(string.Empty, patTokenAccount?.PersonalAccessToken);
             }
 
             VssConnection connection = new VssConnection(organizationUri, credential);
