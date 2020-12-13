@@ -1,8 +1,8 @@
 
-[![Build Status](https://github.com/bgianfo/pr-dash/workflows/CI%20Build%20and%20CodeQL%20Analysis/badge.svg)](https://github.com/bgianfo/pr-dash/actions)
-[![GitHub License](https://img.shields.io/github/license/bgianfo/pr-dash.svg)](https://github.com/bgianfo/pr-dash/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/github/workflow/status/bgianfo/pr-dash/CI%20Build%20and%20CodeQL%20Analysis/master?color=green&logo=github)](https://github.com/bgianfo/pr-dash/actions)
+[![GitHub License](https://img.shields.io/github/license/bgianfo/pr-dash.svg?color=green)](https://github.com/bgianfo/pr-dash/blob/master/LICENSE)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=bgianfo/pr-dash)](https://dependabot.com)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/bgianfo/pr-dash.svg?color=green&logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bgianfo/pr-dash/alerts/)
 
 pr-dash
 -------
