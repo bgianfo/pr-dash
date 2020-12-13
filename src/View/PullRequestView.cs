@@ -89,7 +89,15 @@ namespace PrDash.View
             // Post request to the refresh task to populate this view.
             //
             m_refreshTask = RefreshTask.Create(this);
+        }
 
+        /// <summary>
+        /// Starts the view processing data.
+        /// </summary>
+        public void Start()
+        {
+            // Post request to the refresh task to populate this view.
+            //
             SwitchPrStateView(PrState.Actionable);
 
             // Setup a timer to fire in the future to refresh again.

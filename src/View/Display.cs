@@ -139,6 +139,10 @@ namespace PrDash.View
                 top.Add(statusWindow);
             }
 
+            // Start processing data within the view now that everything is constructed.
+            //
+            requestView.Start();
+
             Application.Run();
         }
     }
