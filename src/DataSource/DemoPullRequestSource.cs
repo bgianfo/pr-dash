@@ -16,7 +16,7 @@ namespace PrDash.DataSource
     /// </summary>
     public class DemoPullRequestSource : IPullRequestSource
     {
-        #pragma warning disable CA5394 // Do not use insecure randomness
+#pragma warning disable CA5394 // Do not use insecure randomness
 
         /// <summary>
         /// Class to generate random date times within a bound.
@@ -33,7 +33,7 @@ namespace PrDash.DataSource
             }
         }
 
-        #pragma warning restore CA5394 // Do not use insecure randomness
+#pragma warning restore CA5394 // Do not use insecure randomness
 
         private RandomDateTime m_dateTimeGen = new RandomDateTime();
 

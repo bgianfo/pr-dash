@@ -12,6 +12,8 @@ dotnet_sort_system_directives_first = true
 
 dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA1303.severity = none
+dotnet_diagnostic.CA1014.severity = none
+dotnet_diagnostic.CA9998.severity = none
 dotnet_diagnostic.IDE0063.severity = none
 dotnet_diagnostic.Wintellect004.severity = none
 dotnet_diagnostic.Wintellect007.severity = none
