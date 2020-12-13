@@ -103,8 +103,10 @@ Mouse:
         /// </summary>
         public static void Launch()
         {
-            HelpDialog dialog = new HelpDialog();
-            Application.Run(dialog);
+            using (HelpDialog dialog = new HelpDialog())
+            {
+                Application.Run(dialog);
+            }
         }
     }
 }

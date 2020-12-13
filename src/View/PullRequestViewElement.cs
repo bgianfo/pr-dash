@@ -218,15 +218,15 @@ namespace PrDash.View
         /// <summary>
         /// Computes hash code for the pull request value.
         /// </summary>
-        /// <param name="pr">Pull request to compare</param>
-        public int GetHashCode([DisallowNull] PullRequestViewElement pr)
+        /// <param name="obj">Pull request to compare</param>
+        public int GetHashCode([DisallowNull] PullRequestViewElement obj)
         {
-            if (pr == null)
+            if (obj == null)
             {
                 return 0;
             }
 
-            return string.GetHashCode(pr.m_pullRequest.ArtifactId, StringComparison.InvariantCultureIgnoreCase);
+            return string.GetHashCode(obj.m_pullRequest.ArtifactId, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace PrDash.DataSource
     /// <summary>
     /// Event arguments for callback on statistics updates.
     /// </summary>
-    public class StatisticsUpdateEventArgs
+    public class StatisticsUpdateEventArgs : EventArgs
     {
         public PullRequestStatistics? Statistics { get; set; }
     }

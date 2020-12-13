@@ -285,7 +285,7 @@ namespace PrDash.DataSource
             }
             else
             {
-                credential = new VssBasicCredential(string.Empty, patTokenAccount?.PersonalAccessToken);
+                credential = new VssBasicCredential(string.Empty, patTokenAccount.PersonalAccessToken);
             }
 
             VssConnection connection = new VssConnection(organizationUri, credential);

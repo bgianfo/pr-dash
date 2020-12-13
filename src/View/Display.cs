@@ -100,9 +100,9 @@ namespace PrDash.View
                 };
             }
 
-            PullRequestView requestView = new PullRequestView(source, descriptionView);
+            using PullRequestView requestView = new PullRequestView(source, descriptionView);
 
-            Window contentWindow = new Window(ActionableTitle)
+            using Window contentWindow = new Window(ActionableTitle)
             {
                 Width = Dim.Fill(),
                 Height = Dim.Fill() - computedHeight,

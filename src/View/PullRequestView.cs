@@ -140,24 +140,29 @@ namespace PrDash.View
         /// <summary>
         /// Implement custom key handling on this view.
         /// </summary>
-        /// <param name="keyEvent">Contains the details about the key that produced the event.</param>
+        /// <param name="kb">Contains the details about the key that produced the event.</param>
         /// <returns>True if the key was handled, False otherwise.</returns>
-        public override bool ProcessKey(KeyEvent keyEvent)
+        public override bool ProcessKey(KeyEvent kb)
         {
+            if (kb == null)
+            {
+                throw new ArgumentNullException(nameof(kb));
+            }
+
             // Handle specific characters we want to have behavior.
             //
-            char keyChar = (char)((uint)keyEvent.Key & (uint)Key.CharMask);
+            char keyChar = (char)((uint)kb.Key & (uint)Key.CharMask);
             switch (keyChar)
             {
                 // Map vim Keys to be up and down.
                 //
                 case 'j':
-                    keyEvent.Key = Key.CursorDown;
-                    return base.ProcessKey(keyEvent);
+                    kb.Key = Key.CursorDown;
+                    return base.ProcessKey(kb);
 
                 case 'k':
-                    keyEvent.Key = Key.CursorUp;
-                    return base.ProcessKey(keyEvent);
+                    kb.Key = Key.CursorUp;
+                    return base.ProcessKey(kb);
 
                 // Enable hotkey refresh.
                 //
@@ -210,7 +215,7 @@ namespace PrDash.View
 
             // Handle special characters.
             //
-            switch (keyEvent.Key)
+            switch (kb.Key)
             {
                 // Hook Control-C and Esc as exit.
                 //
@@ -228,17 +233,17 @@ namespace PrDash.View
 
             // Forward everything else to the real implementation.
             //
-            return base.ProcessKey(keyEvent);
+            return base.ProcessKey(kb);
         }
 
         /// <summary>
         /// Implement custom mouse handling on this view.
         /// </summary>
-        /// <param name="mouseEvent">Contains the details about the mouse action that produced the event.</param>
+        /// <param name="me">Contains the details about the mouse action that produced the event.</param>
         /// <returns>True if the event was handled, False otherwise.</returns>
-        public override bool MouseEvent(MouseEvent mouseEvent)
+        public override bool MouseEvent(MouseEvent me)
         {
-            switch (mouseEvent.Flags)
+            switch (me.Flags)
             {
                 case MouseFlags.WheeledDown:
                     return base.ProcessKey(new KeyEvent { Key = Key.CursorDown });
@@ -250,7 +255,7 @@ namespace PrDash.View
                     OnOpenSelectedItem();
                     return true;
                 default:
-                    return base.MouseEvent(mouseEvent);
+                    return base.MouseEvent(me);
             }
         }
 
