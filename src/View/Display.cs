@@ -12,53 +12,44 @@ namespace PrDash.View
     public sealed class Display
     {
         /// <summary>
-        /// Gets the title for the actionable pull requests view.
+        /// The title for the actionable pull requests view.
         /// </summary>
         public const string ActionableTitle = "Actionable PRs:";
 
         /// <summary>
-        /// Gets the title for the pull requests you created.
+        /// The title for the pull requests you created.
         /// </summary>
         public const string CreatedTitle = "Created PRs:";
 
         /// <summary>
-        /// Gets the title for the waiting pull requests view.
+        /// The title for the waiting pull requests view.
         /// </summary>
         public const string WaitingTitle = "Waiting PRs:";
 
         /// <summary>
-        /// Gets the title for the signed off pull requests view.
+        /// The title for the signed off pull requests view.
         /// </summary>
         public const string SignedOffTitle = "Signed Off PRs:";
 
         /// <summary>
-        /// Gets the title for the draft pull requests view.
+        /// The title for the draft pull requests view.
         /// </summary>
         public const string DraftsTitle = "Draft PRs:";
 
         /// <summary>
-        /// Gets the height of the status bar.
+        /// The height of the status bar.
         /// </summary>
-        private static Dim StatusBarHeight
-        {
-            get { return Dim.Sized(3); }
-        }
+        private static Dim StatusBarHeight => Dim.Sized(3);
 
         /// <summary>
-        /// Gets the height of the status bar.
+        /// The height of the status bar.
         /// </summary>
-        private static Dim DescriptionHeight
-        {
-            get { return Dim.Sized(10); }
-        }
+        private static Dim DescriptionHeight => Dim.Sized(10);
 
         /// <summary>
-        /// Gets the default window theme.
+        /// The default window theme.
         /// </summary>
-        private static ColorScheme WindowTheme
-        {
-            get { return CustomColorSchemes.MutedEdges; }
-        }
+        private static ColorScheme WindowTheme => CustomColorSchemes.MutedEdges;
 
         /// <summary>
         /// Initialize and run the UI main loop.

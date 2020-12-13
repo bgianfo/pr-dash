@@ -15,7 +15,7 @@ namespace PrDash.View
             /// <summary>
             /// Event used to notify the main thread of pending refresh requests.
             /// </summary>
-            private AutoResetEvent m_refreshEvent = new AutoResetEvent(false);
+            private AutoResetEvent m_refreshEvent = new AutoResetEvent(initialState: false);
 
             /// <summary>
             /// The pull request view that needs to be refreshed.

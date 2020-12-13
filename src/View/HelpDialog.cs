@@ -44,35 +44,17 @@ Mouse:
         /// <summary>
         /// The calculated width of the dialog contents.
         /// </summary>
-        private static int ContentWidth
-        {
-            get
-            {
-                return HelpText.Split("\n").Max(s => s.Length);
-            }
-        }
+        private static int ContentWidth => HelpText.Split("\n").Max(s => s.Length);
 
         /// <summary>
         /// The calculated height of the dialog contents.
         /// </summary>
-        private static int ContentHeight
-        {
-            get
-            {
-                return HelpText.Split("\n").Length;
-            }
-        }
+        private static int ContentHeight => HelpText.Split("\n").Length;
 
         /// <summary>
         /// The calculated rectangle of the dialog contents.
         /// </summary>
-        private static Rect ContentDimensions
-        {
-            get
-            {
-                return new Rect(0, 0, ContentWidth, ContentHeight);
-            }
-        }
+        private static Rect ContentDimensions => new Rect(0, 0, ContentWidth, ContentHeight);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
