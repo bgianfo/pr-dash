@@ -304,20 +304,24 @@ namespace PrDash.View
             var description = m_backingData[SelectedItem].Description.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             StringBuilder builder = new StringBuilder();
-            int actualWidth = 0;
+            const int spaceWidth = 1;
+            int lineWidth = 0;
+            int maxLineWidth = m_descriptionView!.Frame.Size.Width;
 
-            foreach (var chunk in description)
+            foreach (var word in description ?? Array.Empty<string>())
             {
-                actualWidth += chunk.Length + 1;
+                int size = word.Length;
 
-                if (actualWidth > m_descriptionView!.Frame.Size.Width)
+                if (lineWidth + size < maxLineWidth)
                 {
-                    builder.AppendLine();
-                    actualWidth = chunk.Length + 1;
+                    builder.Append(word + " ");
+                    lineWidth += size + spaceWidth;
                 }
-
-                builder.Append(chunk);
-                builder.Append(' ');
+                else
+                {
+                    builder.Append("\n" + word + " ");
+                    lineWidth = size + spaceWidth;
+                }
             }
 
             m_descriptionView!.Text = builder.ToString();
