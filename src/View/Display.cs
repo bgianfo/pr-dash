@@ -65,7 +65,13 @@ namespace PrDash.View
 
             Application.Init();
             Application.Current.ColorScheme = CustomColorSchemes.Main;
+
             Toplevel top = Application.Top;
+            top.X = Pos.Center();
+            top.Y = Pos.Center();
+            top.Height = Dim.Fill();
+            top.Width = Dim.Fill();
+
             Dim computedHeight = Dim.Sized(0);
 
             // We intentionally initialize the status bar first, as the status
@@ -87,6 +93,8 @@ namespace PrDash.View
 
                 descriptionView = new TextView()
                 {
+                    Height = Dim.Fill(),
+                    Width = Dim.Fill(),
                     ReadOnly = true,
                 };
             }

@@ -69,6 +69,9 @@ namespace PrDash.View
         public PullRequestView(IPullRequestSource source, TextView? descriptionView)
             : base(LoadingContents)
         {
+            Width = Dim.Fill();
+            Height = Dim.Fill();
+
             m_pullRequestSource = source;
             m_descriptionView = descriptionView;
 

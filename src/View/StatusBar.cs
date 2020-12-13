@@ -39,6 +39,7 @@ namespace PrDash.View
             }
 
             CanFocus = false;
+            Width = Dim.Fill();
             Height = 1;
             ColorScheme = CustomColorSchemes.MutedEdges;
 
@@ -47,7 +48,11 @@ namespace PrDash.View
             m_source = source;
             m_source.StatisticsUpdate += StatisUpdateCallback;
 
-            m_status = new Label(LoadingText);
+            m_status = new Label(LoadingText)
+            {
+                Height = Dim.Fill(),
+                Width = Dim.Fill(),
+            };
 
             Add(m_status);
         }

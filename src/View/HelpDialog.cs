@@ -71,10 +71,10 @@ Mouse:
 
             Button button = new Button("Back", is_default: true)
             {
-                Clicked = () => { Running = false; },
                 Y = Pos.Bottom(text),
                 X = Pos.Center(),
             };
+            button.Clicked += () => Running = false;
 
             Add(button);
             Add(text);
