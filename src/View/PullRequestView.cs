@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.TeamFoundation.Build.WebApi;
-using Mono.Terminal;
 using PrDash.DataSource;
 using Terminal.Gui;
 
@@ -83,10 +81,12 @@ namespace PrDash.View
             {
                 // Subscribe to selection change.
                 //
-                SelectedChanged += OnSelectedPullRequestChanged;
+                SelectedItemChanged += HandleSelectedPullRequestChanged;
             }
 
-            // Post request to the refresh task to populate this view.
+            OpenSelectedItem += HandleOpenSelectedItem;
+
+            // Initialize background refresh task.
             //
             m_refreshTask = RefreshTask.Create(this);
         }
@@ -234,12 +234,6 @@ namespace PrDash.View
                 case Key.ControlC:
                     Application.RequestStop();
                     return true;
-
-                // Hook Enter to open the given pull request under the cursor.
-                //
-                case Key.Enter:
-                    OnOpenSelectedItem();
-                    return true;
             }
 
             // Forward everything else to the real implementation.
@@ -273,35 +267,28 @@ namespace PrDash.View
         /// <summary>
         /// Handler for opening the selected pull request.
         /// </summary>
-        private void OnOpenSelectedItem()
+        private void HandleOpenSelectedItem(ListViewItemEventArgs args)
         {
-            if (SelectedItem < m_backingData.Count)
-            {
-                // TODO: Figure out the right way to do this.
-                //
+            PullRequestViewElement? pr = args.Value as PullRequestViewElement;
+
 #pragma warning disable EPC13
 
-                Task.Run(() => m_backingData[SelectedItem].OpenPullRequest());
+            Task.Run(() => pr?.OpenPullRequest());
 
 #pragma warning restore EPC13
 
-            }
         }
 
         /// <summary>
-        /// Selection change callback.
+        /// Handler for the current selected item changing.
         /// </summary>
-        private void OnSelectedPullRequestChanged()
+        private void HandleSelectedPullRequestChanged(ListViewItemEventArgs args)
         {
-            if (SelectedItem > m_backingData.Count)
-            {
-                m_descriptionView!.Text = string.Empty;
-                return;
-            }
+            PullRequestViewElement? pr = args.Value as PullRequestViewElement;
 
             // N.B. Implement basic word wrap, as it appears TextView's don't support it currently in the terminal library we use.
             //
-            var description = m_backingData[SelectedItem].Description.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var description = pr?.Description?.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             StringBuilder builder = new StringBuilder();
             const int spaceWidth = 1;
