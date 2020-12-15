@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using PrDash.Configuration;
 using PrDash.DataSource;
@@ -56,6 +57,7 @@ namespace PrDash.View
         /// </summary>
         /// <param name="source">The backing data source to render from.</param>
         /// <exception cref="ArgumentNullException"><paramref name="config"/> is <c>null</c>.</exception>
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Handled by base type.")]
         public static void RunUiLoop(Config config, IPullRequestSource source)
         {
             if (config == null)

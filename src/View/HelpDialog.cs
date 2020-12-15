@@ -59,6 +59,7 @@ Mouse:
         /// <summary>
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
         /// </summary>
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Base Type Disposes")]
         public HelpDialog() : base("Help", ContentWidth + 5, ContentHeight + 5)
         {
             ColorScheme = CustomColorSchemes.Main;
