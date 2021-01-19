@@ -31,7 +31,7 @@
     <PackageReference Include="Roslynator.Analyzers" Version="3.0.0">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="AsyncFixer" Version="1.4.0">
+    <PackageReference Include="AsyncFixer" Version="1.4.1">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ErrorProne.Net.CoreAnalyzers" Version="0.2.0-beta.7">
