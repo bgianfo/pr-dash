@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="5.0.0" />
 
-    <PackageReference Include="YamlDotNet" Version="11.2.0" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
     <PackageReference Include="Terminal.Gui" Version="0.90.3" />
     <PackageReference Include="Humanizer" Version="2.11.10" />
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.178.1-preview" />
