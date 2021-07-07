@@ -231,7 +231,7 @@ namespace PrDash.View
                 // Hook Control-C and Esc as exit.
                 //
                 case Key.Esc:
-                case Key.ControlC:
+                case Key.C | Key.CtrlMask:
                     Application.RequestStop();
                     return true;
             }
