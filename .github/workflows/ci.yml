@@ -15,10 +15,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Setup .NET 5.0
+    - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
 
     - name: Install dotnet-format
       run: dotnet tool install --global dotnet-format
@@ -28,7 +28,7 @@ jobs:
 
   build:
     name: Build & Test
-    env:	
+    env:
       DOTNET_NOLOGO: true
 
     strategy:
@@ -56,10 +56,10 @@ jobs:
         with:
            languages: csharp
 
-      - name: Setup dotnet 5.0
+      - name: Setup dotnet 6.0
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
 
       - name: Restore Dependencies
         run: |
