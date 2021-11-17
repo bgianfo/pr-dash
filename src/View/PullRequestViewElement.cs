@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Humanizer;
+using Microsoft.CodeAnalysis;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using PrDash.DataSource;
 using PrDash.Handlers;
@@ -225,8 +226,7 @@ namespace PrDash.View
             {
                 return 0;
             }
-
-            return string.GetHashCode(obj.m_pullRequest.ArtifactId, StringComparison.InvariantCultureIgnoreCase);
+            return SymbolEqualityComparer.Default.GetHashCode(obj.m_pullRequest as ISymbol);
         }
     }
 }

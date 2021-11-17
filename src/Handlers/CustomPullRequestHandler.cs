@@ -78,7 +78,7 @@ namespace PrDash.Handlers
 
             string url = $"{m_config.OrganizationUrl}&project={proj}&repo={repo}&pullRequest={pr.PullRequestId}&alert=true";
 
-            string escapedUrl = Uri.EscapeUriString(url);
+            string escapedUrl = Uri.EscapeDataString(url);
 
             return $"{m_protocolPrefix}://open/?server={escapedUrl}";
         }

@@ -80,8 +80,8 @@ namespace PrDash.Handlers
         /// </remarks>
         private string ConstructUri(GitPullRequest pr)
         {
-            string repo = Uri.EscapeUriString(pr.Repository.Name);
-            string proj = Uri.EscapeUriString(m_config.Project!);
+            string repo = Uri.EscapeDataString(pr.Repository.Name);
+            string proj = Uri.EscapeDataString(m_config.Project!);
             return $"{m_config.OrganizationUrl}/{proj}/_git/{repo}/pullrequest/{pr.PullRequestId}";
         }
     }

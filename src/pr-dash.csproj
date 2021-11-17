@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PublishTrimmed>true</PublishTrimmed>
     <Nullable>enable</Nullable>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="16.193.0-preview" />
     <PackageReference Include="Microsoft.VisualStudio.Services.Client" Version="16.193.0-preview" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>analyzers</PrivateAssets>
     </PackageReference>

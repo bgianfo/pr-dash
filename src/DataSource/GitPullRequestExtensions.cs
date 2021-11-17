@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -44,11 +45,13 @@ namespace PrDash.DataSource
             return $"{signedOff} / {reviewers}";
         }
 
+
         /// <summary>
         /// Returns a summarization of the changes in the pull request.
         /// </summary>
         /// <param name="pr">The pull request to process.</param>
         /// <exception cref="ArgumentNullException">identityRef</exception>
+        [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "Local doesn't matter here.")]
         public static string ChangeSize(this GitPullRequest pr)
         {
             if (pr == null)
