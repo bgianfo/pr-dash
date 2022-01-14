@@ -14,9 +14,9 @@
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
     <PackageReference Include="Terminal.Gui" Version="1.2.1" />
     <PackageReference Include="Humanizer" Version="2.13.14" />
-    <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.193.0-preview" />
-    <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="16.193.0-preview" />
-    <PackageReference Include="Microsoft.VisualStudio.Services.Client" Version="16.193.0-preview" />
+    <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.199.0-preview" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="16.199.0-preview" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.Client" Version="16.199.0-preview" />
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>analyzers</PrivateAssets>
