@@ -22,6 +22,20 @@ namespace PrDash.Tests
         }
 
         /// <summary>
+        /// Tests the get bool extension method in <see cref="YamlExtension"/>.
+        /// </summary>
+        [Fact]
+        public void TestGetBoolExtensionOnNullNode()
+        {
+            YamlMappingNode mappingNode = null;
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                mappingNode.GetBool("nonExistantField");
+            });
+        }
+
+        /// <summary>
         /// Tests the get Uri extension method in <see cref="YamlExtension"/>.
         /// </summary>
         [Fact]
