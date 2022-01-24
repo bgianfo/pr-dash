@@ -136,6 +136,8 @@ namespace PrDash.DataSource
         /// <returns>A stream of <see cref="GitPullRequest"/></returns>
         private async IAsyncEnumerable<GitPullRequest> FetchPullRequests(GitHttpClient client, Guid userId, AccountConfig accountConfig, PrState state)
         {
+            DateTime oneMonthAgo = DateTime.UtcNow - TimeSpan.FromDays(30);
+
             // Gets the "processed" state of a PR.
             //
             async Task<PrState?> getState(GitPullRequest pr)
@@ -143,6 +145,13 @@ namespace PrDash.DataSource
                 // Don't show PRs created by ourselves.
                 //
                 if (Guid.Parse(pr.CreatedBy.Id) == userId)
+                {
+                    return null;
+                }
+
+                if (accountConfig.HideAncientPullRequests.HasValue &&
+                    accountConfig.HideAncientPullRequests.Value && 
+                    pr.LatestCommitDate() < oneMonthAgo)
                 {
                     return null;
                 }

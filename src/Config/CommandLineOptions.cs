@@ -18,5 +18,8 @@ namespace PrDash.Configuration
         /// </summary>
         [Option('d', "demo-mode", HelpText = "Run in demo mode", Hidden = true)]
         public bool DemoMode { get; set; }
+
+        [Option('x', "hide-ancient", HelpText = "Hide Ancient PRs from View")]
+        public bool HideAnchientPrs { get; set; }
     }
 }

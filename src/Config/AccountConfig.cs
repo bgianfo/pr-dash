@@ -18,6 +18,11 @@ namespace PrDash.Configuration
         public string? PersonalAccessToken { get; set; }
 
         /// <summary>
+        /// Should we hide ancient pull requests or not.
+        /// </summary>
+        public bool? HideAncientPullRequests { get; set; }
+
+        /// <summary>
         /// Organization Url, for example: https://dev.azure.com/fabrikam
         /// </summary>
         public Uri? OrganizationUrl { get; set; }

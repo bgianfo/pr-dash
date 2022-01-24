@@ -37,6 +37,7 @@ accounts:
   - project_name: sample-project1
     org_url: https://dev.azure.com/example1
     pat: <your-personal-authentication-token>
+    hide_ancient: true
 
   - project_name: sample-project2
     org_url: https://example2.visualstudio.com

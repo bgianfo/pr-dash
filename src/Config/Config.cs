@@ -25,6 +25,11 @@ namespace PrDash.Configuration
         private static string YamlRootAccountsToken = "accounts";
 
         /// <summary>
+        /// The name of the root account node.
+        /// </summary>
+        private static string YamlRootUIToken = "ui";
+
+        /// <summary>
         /// The name of the PAT token field.
         /// </summary>
         private static string YamlFieldPatToken = "pat";
@@ -43,6 +48,11 @@ namespace PrDash.Configuration
         /// The name of the pull request handler token field.
         /// </summary>
         private static string YamlFieldHandlerToken = "handler";
+
+        /// <summary>
+        /// The name of the hide ancient pull request token field.
+        /// </summary>
+        private static string YamlFieldHideAncientPullRequestsToken = "hide_ancient";
 
         /// <summary>
         /// The fully qualified configuration file path.
@@ -118,6 +128,11 @@ namespace PrDash.Configuration
         /// The option to control demo mode.
         /// </summary>
         public bool DemoModeEnabled { get; }
+
+        /// <summary>
+        /// Configure if the we want to hide ancient pull requests.
+        /// </summary>
+        public bool HideAncientPullRequests { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
@@ -259,6 +274,20 @@ namespace PrDash.Configuration
                 else
                 {
                     newAccount.Handler = new WebPullRequestHandler(newAccount);
+                }
+
+                // Allow commandline to override the config file.
+                //
+                if (HideAncientPullRequests)
+                {
+                    newAccount.HideAncientPullRequests = HideAncientPullRequests;
+                }
+                else
+                {
+                    if (accountNode.Children.ContainsKey(YamlFieldHideAncientPullRequestsToken))
+                    {
+                        newAccount.HideAncientPullRequests = accountNode.GetBool(YamlFieldHideAncientPullRequestsToken);
+                    }
                 }
 
                 m_accounts.Add(newAccount);
