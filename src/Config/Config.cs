@@ -25,11 +25,6 @@ namespace PrDash.Configuration
         private static string YamlRootAccountsToken = "accounts";
 
         /// <summary>
-        /// The name of the root account node.
-        /// </summary>
-        private static string YamlRootUIToken = "ui";
-
-        /// <summary>
         /// The name of the PAT token field.
         /// </summary>
         private static string YamlFieldPatToken = "pat";
