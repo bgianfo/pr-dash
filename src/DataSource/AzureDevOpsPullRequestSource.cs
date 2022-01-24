@@ -150,7 +150,7 @@ namespace PrDash.DataSource
                 }
 
                 if (accountConfig.HideAncientPullRequests.HasValue &&
-                    accountConfig.HideAncientPullRequests.Value && 
+                    accountConfig.HideAncientPullRequests.Value &&
                     pr.LatestCommitDate() < oneMonthAgo)
                 {
                     return null;
