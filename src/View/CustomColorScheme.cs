@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Terminal.Gui;
-
+using TerminalAttribute = Terminal.Gui.Attribute;
 namespace PrDash.View
 {
     /// <summary>
@@ -24,10 +24,10 @@ namespace PrDash.View
         [SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Don't Care")]
         public static ColorScheme Main = new ColorScheme()
         {
-            Normal = Attribute.Make(Color.White, BackGround),
-            Focus = Attribute.Make(FocusedForGround, BackGround),
-            HotNormal = Attribute.Make(Color.White, BackGround),
-            HotFocus = Attribute.Make(FocusedForGround, BackGround),
+            Normal = TerminalAttribute.Make(Color.White, BackGround),
+            Focus = TerminalAttribute.Make(FocusedForGround, BackGround),
+            HotNormal = TerminalAttribute.Make(Color.White, BackGround),
+            HotFocus = TerminalAttribute.Make(FocusedForGround, BackGround),
 
         };
 
@@ -37,10 +37,10 @@ namespace PrDash.View
         [SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Don't Care")]
         public static ColorScheme MutedEdges = new ColorScheme()
         {
-            Normal = Attribute.Make(Color.DarkGray, BackGround),
-            Focus = Attribute.Make(FocusedForGround, BackGround),
-            HotNormal = Attribute.Make(Color.DarkGray, BackGround),
-            HotFocus = Attribute.Make(FocusedForGround, BackGround),
+            Normal = TerminalAttribute.Make(Color.DarkGray, BackGround),
+            Focus = TerminalAttribute.Make(FocusedForGround, BackGround),
+            HotNormal = TerminalAttribute.Make(Color.DarkGray, BackGround),
+            HotFocus = TerminalAttribute.Make(FocusedForGround, BackGround),
         };
     }
 }
