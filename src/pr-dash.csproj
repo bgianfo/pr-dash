@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.1" />
 
     <PackageReference Include="YamlDotNet" Version="13.1.1" />
     <PackageReference Include="Terminal.Gui" Version="1.2.1" />
